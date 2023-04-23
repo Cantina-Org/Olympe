@@ -21,6 +21,26 @@ database = DataBase(user=config_data['database'][0]['database_username'],
 database.connection()
 
 
+# Creation des tables des bases données
+database.create_table(
+    "CREATE TABLE IF NOT EXISTS cantina_administration.user(id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, token TEXT,  "
+    "user_name TEXT, salt TEXT, password TEXT, admin BOOL, work_Dir TEXT, last_online TEXT)")
+database.create_table(
+    "CREATE TABLE IF NOT EXISTS cantina_administration.log(id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, name TEXT,  "
+    "user_ip text, user_token TEXT, argument TEXT, log_level INT, date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)")
+database.create_table(
+    "CREATE TABLE IF NOT EXISTS cantina_administration.file_sharing(id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, "
+    "file_name TEXT, file_owner text, file_short_name TEXT, login_to_show BOOL DEFAULT 1, password TEXT, "
+    "date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)")
+database.create_table(
+    "CREATE TABLE IF NOT EXISTS cantina_administration.api(id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, token TEXT, "
+    "api_name TEXT, api_desc TEXT, owner TEXT)")
+database.create_table(
+    "CREATE TABLE IF NOT EXISTS cantina_administration.api_permission(token_api TEXT, create_file BOOL, upload_file "
+    "BOOL, delete_file BOOL, create_folder BOOL, delete_folder BOOL, share_file_and_folder BOOL, "
+    "delete_share_file_and_folder BOOL, create_user BOOL, delete_user BOOL)")
+
+
 @app.route('/')
 def home():
     return home_cogs(request, database)
