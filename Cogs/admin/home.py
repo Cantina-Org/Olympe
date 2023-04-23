@@ -12,5 +12,5 @@ def home_admin_cogs(ctx, database,):
                                     (ctx.cookies.get('userID'),))
         return render_template('admin/home.html', data=user_name, file_number=count)
     else:
-        make_log('login_error', ctx.remote_addr, ctx.cookies.get('userID'), 2)
+        make_log('login_error', ctx.remote_addr, ctx.cookies.get('userID'), 2, database)
         return redirect(url_for('home'))
