@@ -7,13 +7,14 @@ from Utils.utils import user_login, make_log
 from argon2 import PasswordHasher
 
 ph = PasswordHasher()
-dir_path = '/home/cantina/nephelees/file_cloud'
-share_path = '/home/cantina/nephelees/share'
 
 
 def add_user_cogs(ctx, database):
     admin = 0
     admin_and_login = user_login(database, ctx)
+    dir_path = '/home/cantina/nephelees/file_cloud'
+    share_path = database.select()
+
     if admin_and_login[0] and admin_and_login[1]:
         if ctx.method == 'GET':
             user_name = database.select('''SELECT user_name FROM cantina_administration.user WHERE token=%s''',

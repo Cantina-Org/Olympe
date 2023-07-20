@@ -21,31 +21,13 @@ database = DataBase(user=config_data['database'][0]['database_username'],
 database.connection()
 
 
-# Creation des tables des bases données
-database.create_table(
-    "CREATE TABLE IF NOT EXISTS cantina_administration.user(id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, token TEXT,  "
-    "user_name TEXT, salt TEXT, password TEXT, admin BOOL, work_Dir TEXT, last_online TEXT)")
-database.create_table(
-    "CREATE TABLE IF NOT EXISTS cantina_administration.log(id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, name TEXT,  "
-    "user_ip text, user_token TEXT, argument TEXT, log_level INT, date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)")
-database.create_table(
-    "CREATE TABLE IF NOT EXISTS cantina_administration.file_sharing(id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, "
-    "file_name TEXT, file_owner text, file_short_name TEXT, login_to_show BOOL DEFAULT 1, password TEXT, "
-    "date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)")
-database.create_table(
-    "CREATE TABLE IF NOT EXISTS cantina_administration.api(id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, token TEXT, "
-    "api_name TEXT, api_desc TEXT, owner TEXT)")
-database.create_table(
-    "CREATE TABLE IF NOT EXISTS cantina_administration.api_permission(token_api TEXT, create_file BOOL, upload_file "
-    "BOOL, delete_file BOOL, create_folder BOOL, delete_folder BOOL, share_file_and_folder BOOL, "
-    "delete_share_file_and_folder BOOL, create_user BOOL, delete_user BOOL)")
-
-
+# Redirection vers la fonction my_account().
 @app.route('/')
 def home():
     return home_cogs(request, database)
 
 
+# Fonction permettant de voir les informations de son compte Cantina.
 @app.route('/account/my', methods=['GET', 'POST'])
 def my_account():
     return my_account_cogs(request, database)
@@ -62,7 +44,7 @@ def admin_home():
     return home_admin_cogs(request, database)
 
 
-# Fonction permettant de visualiser les utilisateur de Cantina Cloud
+# Fonction permettant de visualiser les utilisateurs de Cantina Cloud
 @app.route('/admin/usermanager/')
 @app.route('/admin/usermanager/<user_name>')
 def admin_show_user(user_name=None):
@@ -75,7 +57,7 @@ def admin_add_user():
     return add_user_cogs(request, database)
 
 
-# Fonction permettant de voire les logs générer par Cantina Cloud
+# Fonction permettant de voire les logs générés par les systèmes Cantina
 @app.route('/admin/show_log/')
 @app.route('/admin/show_log/<log_id>')
 def admin_show_log(log_id=None):

@@ -16,7 +16,7 @@ def make_log(action_name, user_ip, user_token, log_level, database, argument=Non
 
 def user_login(database, ctx):
     data = database.select('''SELECT user_name, admin FROM cantina_administration.user WHERE token = %s''',
-                           (ctx.cookies.get('userID'),), 1)
+                           (ctx.cookies.get('token'),), 1)
     try:
         if data[0] != '' and data[1]:
             return True, True
