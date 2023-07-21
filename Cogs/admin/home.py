@@ -9,7 +9,7 @@ def home_admin_cogs(ctx, database,):
     admin_and_login = user_login(database, ctx)
     if admin_and_login[0] and admin_and_login[1]:
         user_name = database.select('''SELECT user_name FROM cantina_administration.user WHERE token=%s''',
-                                    (ctx.cookies.get('userID'),))
+                                    (ctx.cookies.get('token'),), 1)
         return render_template('admin/home.html', data=user_name, file_number=count)
     else:
         make_log('login_error', ctx.remote_addr, ctx.cookies.get('userID'), 2, database)
