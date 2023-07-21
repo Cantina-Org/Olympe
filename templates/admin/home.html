@@ -10,11 +10,9 @@
 <body>
     <div class="has-text-centered">
         <h1 class="is-size-1"><a href="{{ url_for('home') }}">Cantina</a></h1><br>
-        <h1 class="is-size-3">Bonjour {{ data[0][0] }}!</h1><br>
+        <h1 class="is-size-3">Bonjour {{ data[0] }}!</h1><br>
         <a class="is-size-4" href="{{ url_for('admin_show_user') }}">User Manager</a><br>
-        <a class="is-size-4" href="{{ url_for('admin_api_manager') }}">API Manager</a><br>
         <a class="is-size-4" href="{{ url_for('admin_show_log') }}">Show Log</a><br>
-        <a class="is-size-4" href="{{ url_for('admin_show_share_file') }}">Show Share Files</a>
     </div>
 </body>
 </html>
