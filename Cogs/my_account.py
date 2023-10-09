@@ -9,8 +9,6 @@ def my_account_cogs(ctx, database):
 
     user_data = database.select('''SELECT * FROM cantina_administration.user WHERE token=%s''',
                                 (ctx.cookies.get('token')), 1)
-    mess_data = database.select('''SELECT * FROM cantina_hermes.data WHERE token=%s''', (ctx.cookies.get('token')), 1)
-
     if user_data is None:
         return redirect(url_for('auth'))
 
