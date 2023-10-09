@@ -31,8 +31,12 @@
         <div id="hermes">
             <h1 class="is-size-3 is-underlined">Hermes</h1><br>
             <div class="is-size-5">
-                <p>Nombre de message que vous avez envoyé: {{ messsage_data[1] }}</p>
-                <p>Nombre de message que vous avez reçu: {{ messsage_data[2] }}</p>
+                {% if folder_size == 'error' %}
+                    <p class="has-text-danger">Une erreur est survenue lors de la récupération des données de Hermes. Avez vous installée Hermes?</p>
+                {% else %}
+                    <p>Nombre de message que vous avez envoyé: {{ messsage_data[1] }}</p>
+                    <p>Nombre de message que vous avez reçu: {{ messsage_data[2] }}</p>
+                {% endif %}
             </div>
         </div>
     </div>
