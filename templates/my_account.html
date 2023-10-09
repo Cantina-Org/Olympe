@@ -2,9 +2,9 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="{{ url_for("static", filename="bulma.css") }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cantina - Login</title>
+    <title>Cantina - Mon compte</title>
 </head>
 <body class="has-text-centered">
     <h1 class="is-size-1">Cantina - Mon Compte</h1><br>
@@ -12,9 +12,10 @@
         <div id="main">
             <h1 class="is-size-3 is-underlined">Principale</h1>
             <div class="is-size-5">
-                <p>Nom d'utilisateur: {{ user_data[2] }}</p>
-                <p>Mots de passe: <a href="#">Modifier le mot de passe</a></p>
-                <p>Permission d'administrateur: {% if user_data[5] == 1 %}Oui{% else %}Non{% endif %}</p>
+                <p>Nom d'utilisateur : {{ user_data[2] }}</p>
+                <p>Mots de passe : <a href="#">Modifier le mot de passe</a></p>
+                <p>Permission d'administrateur : {% if user_data[5] == 1 %}Oui{% else %}Non{% endif %}</p>
+                {% if user_data[5] == 1 %}<a href="{{ url_for('admin_home') }}">Panel d'administration</a>{% else %}{% endif %}
             </div>
         </div> <br>
         <div id="nephelees">
@@ -31,8 +32,12 @@
         <div id="hermes">
             <h1 class="is-size-3 is-underlined">Hermes</h1><br>
             <div class="is-size-5">
-                <p>Nombre de message que vous avez envoyé: {{ messsage_data[1] }}</p>
-                <p>Nombre de message que vous avez reçu: {{ messsage_data[2] }}</p>
+                {% if folder_size == 'error' %}
+                    <p class="has-text-danger">Une erreur est survenue lors de la récupération des données de Hermes. Avez vous installée Hermes?</p>
+                {% else %}
+                    <p>Nombre de message que vous avez envoyé: {{ messsage_data[1] }}</p>
+                    <p>Nombre de message que vous avez reçu: {{ messsage_data[2] }}</p>
+                {% endif %}
             </div>
         </div>
     </div>
