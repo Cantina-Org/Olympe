@@ -44,7 +44,8 @@ Rendez-vous sur la page `[host:port]/` pour visualiser le service.
 
 ## Pour utiliser Cantina Olympe en production :
 
-### ⚠️: Olympe est encore en développement et peut donc causer des problèmes irréversible sur votre machine (pouvant entrainer une réinstallation complète du système hôte!) si vous faites de mauvaises manipulations !
+#### ⚠️: Olympe est encore en développement et peut donc causer des problèmes irréversible sur votre machine (pouvant entrainer une réinstallation complète du système hôte!) si vous faites de mauvaises manipulations !
 
-Olympe peux être 
+L'installation de **Olympe** en production peux être faite grâce à notre outils [**Ouranos**](https://github.com/Cantina-Org/Ouranos). 
+Pour cela, veuiller suivres les instructions donnée dans le fichier `README.md` de [**Ouranos**](https://github.com/Cantina-Org/Ouranos)
 
