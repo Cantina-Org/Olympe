@@ -1,7 +1,6 @@
 from json import load
 from os import path, getcwd
 from flask import Flask, request
-
 from Cogs.admin.add_user import add_user_cogs
 from Cogs.admin.home import home_admin_cogs
 from Cogs.admin.show_log import show_log_cogs
@@ -9,7 +8,7 @@ from Cogs.admin.show_user import show_user_cogs
 from Cogs.home import home_cogs
 from Cogs.login import login_cogs
 from Cogs.my_account import my_account_cogs
-from Utils.database import DataBase
+from cantinaUtils.Database import DataBase
 
 app = Flask(__name__)
 conf_file = open(path.abspath(getcwd()) + "/config.json", 'r')
