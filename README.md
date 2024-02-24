@@ -1,5 +1,7 @@
 # Olympe
 
+# Olympe est actuellement en refonte totale ! Il est très fortement recommandé de ne pas l'installer !
+
 Olympe est l'outils d'administration en ligne de la suite cantina
 
 ### ⚠️: Installer Olympe peut causer des problèmes sur votre machine si vous faites de mauvaises manipulations ! À vos risques et périls 😆 !
@@ -40,12 +42,5 @@ Lancer le fichier `app.py` via votre éditeur de code. (Vous devez exécuter le 
 ### Étapes 5:
 Rendez-vous sur la page `[host:port]/` pour visualiser le service.
 
-*** 
-
-## Pour utiliser Cantina Olympe en production :
-
-#### ⚠️: Olympe est encore en développement et peut donc causer des problèmes irréversible sur votre machine (pouvant entrainer une réinstallation complète du système hôte!) si vous faites de mauvaises manipulations !
-
-L'installation de **Olympe** en production peux être faite grâce à notre outils [**Ouranos**](https://github.com/Cantina-Org/Ouranos). 
-Pour cela, veuiller suivres les instructions donnée dans le fichier `README.md` de [**Ouranos**](https://github.com/Cantina-Org/Ouranos)
+***
 
