@@ -29,6 +29,8 @@ database.connection()  # Connexion à la base de données
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.user(id INT PRIMARY KEY AUTO_INCREMENT, 
 token TEXT,  username TEXT, password TEXT, email TEXT, email_verified BOOL, email_verification_code TEXT, A2F BOOL, 
 A2F_secret TEXT, last_connection DATE, admin BOOL, desactivated BOOL DEFAULT FALSE)""", None)
+database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.config(id INT PRIMARY KEY AUTO_INCREMENT, 
+name TEXT, content TEXT)""", None)
 
 # recreate_db(database)
 # create_user(database, 'matyu', 'LeMdPDeTest', 'test@test.com', 1, 1)

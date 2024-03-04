@@ -1,4 +1,4 @@
-from flask import request, render_template, redirect, url_for
+from flask import request, render_template, redirect, url_for, make_response
 from argon2 import PasswordHasher
 
 
@@ -10,11 +10,20 @@ def sso_login_cogs(database, error):
         row = database.select("""SELECT password, token FROM cantina_administration.user WHERE username = %s""",
                               (username,), number_of_data=1)
 
-        if row is None:
+        if row is None:  # Si aucune correspondance, redirect vers la page de login avec le message d'erreur n°1
             return redirect(url_for('sso_login', error='1'))
         else:
-            match = PasswordHasher().verify(row[0], password)
+            match = PasswordHasher().verify(row[0], password)  # Verification de la correspondance du MDP
 
-        return str(match)
+        if not match:  # Si le MDP correspond pas, redirect vers la page de login avec le message d'erreur n°1
+            return redirect(url_for('sso_login', error='1'))
+        else:
+            validation_code = database.select("""SELECT content FROM cantina_administration.config WHERE name=%s""",
+                                              ('secret_token',), number_of_data=1)
+            response = make_response(redirect(url_for('home')))
+            response.set_cookie('token', row[1])
+            response.set_cookie('validation', validation_code[0])
+            return response
+
     elif request.method == 'GET':
         return render_template('SSO/login.html', error=error)
