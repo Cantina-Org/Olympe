@@ -31,6 +31,8 @@ token TEXT,  username TEXT, password TEXT, email TEXT, email_verified BOOL, emai
 A2F_secret TEXT, last_connection DATE, admin BOOL, desactivated BOOL DEFAULT FALSE)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.config(id INT PRIMARY KEY AUTO_INCREMENT, 
 name TEXT, content TEXT)""", None)
+database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.modules(id INT PRIMARY KEY AUTO_INCREMENT, 
+name TEXT, fqdn TEXT)""", None)
 
 # recreate_db(database)
 # create_user(database, 'matyu', 'LeMdPDeTest', 'test@test.com', 1, 1)

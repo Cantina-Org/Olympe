@@ -10,6 +10,12 @@ def sso_login_cogs(database, error):
         row = database.select("""SELECT password, token FROM cantina_administration.user WHERE username = %s""",
                               (username,), number_of_data=1)
 
+        validation_code = database.select("""SELECT content FROM cantina_administration.config WHERE name=%s""",
+                                          ('secret_token',), number_of_data=1)
+
+        domain_to_redirect = database.select("""SELECT fqdn FROM cantina_administration.modules WHERE name=%s""",
+                                             (request.args.get('modules'),), number_of_data=1)
+
         if row is None:  # Si aucune correspondance, redirect vers la page de login avec le message d'erreur n°1
             return redirect(url_for('sso_login', error='1'))
         else:
@@ -18,9 +24,11 @@ def sso_login_cogs(database, error):
         if not match:  # Si le MDP correspond pas, redirect vers la page de login avec le message d'erreur n°1
             return redirect(url_for('sso_login', error='1'))
         else:
-            validation_code = database.select("""SELECT content FROM cantina_administration.config WHERE name=%s""",
-                                              ('secret_token',), number_of_data=1)
-            response = make_response(redirect(url_for('home')))
+            if domain_to_redirect is ():
+                response = make_response(redirect(url_for('home')))
+            else:
+                response = make_response(redirect(domain_to_redirect[0], code=302))
+            # Création des cookies de vérification d'authentification
             response.set_cookie('token', row[1])
             response.set_cookie('validation', validation_code[0])
             return response
