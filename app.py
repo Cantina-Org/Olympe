@@ -5,6 +5,9 @@ from Cogs.SSO.login import sso_login_cogs
 from os import path, getcwd
 from json import load
 
+from Utils.devtools.create_user import create_user
+from Utils.devtools.recreate_db import recreate_db
+
 file_path = path.abspath(path.join(getcwd(), "config.json"))  # Trouver le chemin complet du fichier config.json
 
 # Lecture du fichier JSON
@@ -18,13 +21,17 @@ database = Database.DataBase(
     user=config_data['database'][0]['username'],
     password=config_data['database'][0]['password'],
     host=config_data['database'][0]['address'],
-    port=config_data['database'][0]['port']
+    port=config_data['database'][0]['port'],
+    database='cantina_administration'
 )  # Création de l'objet pour se connecter à la base de données via le module cantina
 database.connection()  # Connexion à la base de données
 
-database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.user(id INT PRIMARY KEY, token TEXT, 
-username TEXT, password TEXT, email TEXT, email_verified BOOL, email_verification_code TEXT, A2F BOOL, A2F_secret TEXT, 
-last_connection DATE, admin BOOL, desactivated BOOL)""", None)
+database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.user(id INT PRIMARY KEY AUTO_INCREMENT, 
+token TEXT,  username TEXT, password TEXT, email TEXT, email_verified BOOL, email_verification_code TEXT, A2F BOOL, 
+A2F_secret TEXT, last_connection DATE, admin BOOL, desactivated BOOL DEFAULT FALSE)""", None)
+
+# recreate_db(database)
+# create_user(database, 'matyu', 'LeMdPDeTest', 'test@test.com', 1, 1)
 
 
 @app.route('/')
@@ -33,8 +40,8 @@ def home():
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])
-def sso_login():
-    return sso_login_cogs(database)
+def sso_login(error=0):
+    return sso_login_cogs(database, error)
 
 
 if __name__ == '__main__':
