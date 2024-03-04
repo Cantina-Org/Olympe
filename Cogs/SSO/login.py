@@ -7,12 +7,8 @@ def sso_login_cogs(database, error):
         username = request.form['username']
         password = request.form['password']
 
-        print(username, password)
-
-        row = database.exec("""SELECT password, token FROM cantina_administration.user WHERE username = %s LIMIT 1""",
-                            (username,))
-
-        print(row)
+        row = database.select("""SELECT password, token FROM cantina_administration.user WHERE username = %s""",
+                              (username,), number_of_data=1)
 
         if row is None:
             return redirect(url_for('sso_login', error='1'))
