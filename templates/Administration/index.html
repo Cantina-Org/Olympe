@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cantina - Olympe</title>
+    <script type="application/javascript" src={{ url_for('static', filename='JS/Administration/index.js') }}></script>
+</head>
+<body>
+    <h1>Cantina  - Olympe</h1>
+    <div id="data">
+        <p>
+            Profil Picture: {{ user_information[7] }}<br>
+            Username: {{ user_information[2] }}<br>
+            Password: ••••••••••••••••<br>
+            Email: {{ user_information[4] }}<br>
+            Email verified: {% if not user_information[5] or user_information[5] == 0 %} Non {% else %} Oui {% endif %} <br>
+            A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
+            Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
+            <button onclick="showForm()">Modifier les informations</button>
+        </p>
+    </div>
+    <div id="form" hidden>
+        <form method="post" action="#">
+            Profil Picture: {{ user_information[7] }}<br>
+            <label>
+                Username:
+                <input type="text" value="{{ user_information[2] }}" name="username">
+            </label><br>
+            <label>
+                Password:
+                <input type="password" placeholder="••••••••••••••••" name="password">
+            </label><br>
+            <label>
+                Email:
+                <input type="email" value="{{ user_information[4] }}" name="email">
+            </label><br>
+            Email verified: {% if not user_information[5] or user_information[5] == 0 %} Non {% else %} Oui {% endif %}<br>
+            A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
+            Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
+            <button type="submit">Modifier</button>
+        </form>
+    </div>
+</body>
+</html>

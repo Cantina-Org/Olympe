@@ -4,6 +4,7 @@ from cantinaUtils import Database
 from os import path, getcwd
 from json import load
 from Cogs.SSO.login import sso_login_cogs
+from Cogs.User.home import user_home_cogs
 
 from Utils.devtools.create_user import create_user
 from Utils.devtools.recreate_db import recreate_db
@@ -27,8 +28,10 @@ database = Database.DataBase(
 database.connection()  # Connexion à la base de données
 
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.user(id INT PRIMARY KEY AUTO_INCREMENT, 
-token TEXT,  username TEXT, password TEXT, email TEXT, email_verified BOOL, email_verification_code TEXT, A2F BOOL, 
-A2F_secret TEXT, last_connection DATE, admin BOOL, desactivated BOOL DEFAULT FALSE)""", None)
+token TEXT NOT NULL,  username TEXT NOT NULL, password TEXT NOT NULL, email TEXT NOT NULL, 
+picture_id TEXT DEFAULT 'none', email_verified BOOL DEFAULT FALSE, email_verification_code TEXT, 
+A2F BOOL DEFAULT FALSE, A2F_secret TEXT, last_connection DATE, admin BOOL DEFAULT FALSE, 
+desactivated BOOL DEFAULT FALSE)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.config(id INT PRIMARY KEY AUTO_INCREMENT, 
 name TEXT, content TEXT)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.modules(id INT PRIMARY KEY AUTO_INCREMENT, 
@@ -38,9 +41,9 @@ name TEXT, fqdn TEXT)""", None)
 # create_user(database, 'matyu', 'LeMdPDeTest', 'test@test.com', 1, 1)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('index.html')
+    return user_home_cogs(database)
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])
