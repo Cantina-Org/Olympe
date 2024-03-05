@@ -25,7 +25,7 @@ def sso_login_cogs(database, error):
         if not match:  # Si le MDP correspond pas, redirect vers la page de login avec le message d'erreur n°1
             return redirect(url_for('sso_login', error='1'))
         else:
-            if domain_to_redirect == ():
+            if domain_to_redirect is None:
                 response = make_response(redirect(url_for('home')))
             else:
                 response = make_response(redirect(domain_to_redirect[0], code=302))

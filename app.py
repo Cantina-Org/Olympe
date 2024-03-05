@@ -1,9 +1,9 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 from cantinaUtils import Database
-from Cogs.SSO.login import sso_login_cogs
 from os import path, getcwd
 from json import load
+from Cogs.SSO.login import sso_login_cogs
 
 from Utils.devtools.create_user import create_user
 from Utils.devtools.recreate_db import recreate_db
