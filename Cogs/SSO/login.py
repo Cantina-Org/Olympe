@@ -1,4 +1,5 @@
 from flask import request, render_template, redirect, url_for, make_response
+from Utils.verify_login import verify_login
 from argon2 import PasswordHasher
 
 
@@ -24,7 +25,7 @@ def sso_login_cogs(database, error):
         if not match:  # Si le MDP correspond pas, redirect vers la page de login avec le message d'erreur n°1
             return redirect(url_for('sso_login', error='1'))
         else:
-            if domain_to_redirect is ():
+            if domain_to_redirect == ():
                 response = make_response(redirect(url_for('home')))
             else:
                 response = make_response(redirect(domain_to_redirect[0], code=302))
@@ -34,4 +35,14 @@ def sso_login_cogs(database, error):
             return response
 
     elif request.method == 'GET':
+
+        if verify_login(database):
+            domain_to_redirect = database.select("""SELECT fqdn FROM cantina_administration.modules WHERE name=%s""",
+                                                 (request.args.get('modules'),), number_of_data=1)
+
+            if domain_to_redirect is None:
+                return redirect(url_for('home'))
+            else:
+                return redirect(domain_to_redirect[0], code=302)
+
         return render_template('SSO/login.html', error=error)
