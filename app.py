@@ -17,6 +17,8 @@ with open(file_path, 'r') as file:
 
 app = Flask(__name__)  # Création de l'application Flask
 socketio = SocketIO(app)  # Lien entre l'application Flaks et le WebSocket
+app.config['UPLOAD_FOLDER'] = path.abspath(path.join(getcwd(), "static/ProfilePicture/"))
+
 
 database = Database.DataBase(
     user=config_data['database'][0]['username'],

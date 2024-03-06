@@ -22,7 +22,14 @@
     </div>
     <div id="form" hidden>
         <form method="post" action="#">
-            Profil Picture: {{ user_information[7] }}<br>
+            {% if user_permission[6] %}
+                <label>
+                    Profil Picture:
+                    <input type="file" accept="image/*" name="profile_picture"><br>
+                </label>
+            {% else %}
+                Profil Picture: {{ user_information[7] }}<br>
+            {% endif %}
             {% if user_permission[3] %}
                 <label>
                     Username:
