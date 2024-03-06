@@ -50,13 +50,13 @@ def user_home_cogs(database, upload_path):
         except BadRequestKeyError:
             pass  # Permission refusé
 
-        req = request
-
         if 'profile_picture' in request.files:
             profile_picture = request.files['profile_picture']
             if profile_picture.filename != '':
                 profile_picture.save(path.join(upload_path, secure_filename(request.cookies.get('token')) + '.' +
                                                profile_picture.filename.rsplit('.', 1)[1].lower()))
+                database.exec('''UPDATE cantina_administration.user SET picture = 1 WHERE token = %s''',
+                              (request.cookies.get('token')))
 
         return redirect(url_for('home'))
         
