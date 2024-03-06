@@ -10,7 +10,7 @@
     <p>{{ user_permission }}</p>
     <div id="data">
         <p>
-            Profil Picture: {{ user_information[7] }}<br>
+            Profil Picture: {% if user_information[7] == 0 %} Non {% else %} Oui {% endif %}<br>
             Username: {{ user_information[2] }}<br>
             Password: ••••••••••••••••<br>
             Email: {{ user_information[4] }}<br>
@@ -21,7 +21,7 @@
         </p>
     </div>
     <div id="form" hidden>
-        <form method="post" action="#">
+        <form method="post" action="#" enctype="multipart/form-data">
             {% if user_permission[6] %}
                 <label>
                     Profil Picture:

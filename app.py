@@ -31,7 +31,7 @@ database.connection()  # Connexion à la base de données
 
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.user(id INT PRIMARY KEY AUTO_INCREMENT, 
 token TEXT NOT NULL,  username TEXT NOT NULL, password TEXT NOT NULL, email TEXT NOT NULL, 
-picture_id TEXT DEFAULT 'none', email_verified BOOL DEFAULT FALSE, email_verification_code TEXT, 
+picture BOOL DEFAULT false, email_verified BOOL DEFAULT FALSE, email_verification_code TEXT, 
 A2F BOOL DEFAULT FALSE, A2F_secret TEXT, last_connection DATE, admin BOOL DEFAULT FALSE, 
 desactivated BOOL DEFAULT FALSE)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.config(id INT PRIMARY KEY AUTO_INCREMENT, 
@@ -57,7 +57,7 @@ delete_modules BOOL DEFAULT FALSE, add_modules BOOL DEFAULT FALSE)""", None)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return user_home_cogs(database)
+    return user_home_cogs(database, app.config['UPLOAD_FOLDER'])
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])
