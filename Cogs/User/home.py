@@ -11,6 +11,8 @@ def user_home_cogs(database):
                                        (request.cookies.get('token')), number_of_data=1)
 
     if request.method == 'GET':
+        # user_permission = database.select("""SELECT * FROM cantina_administration.pe""")
+
         return render_template('Administration/index.html', user_information=user_information)
 
     elif request.method == 'POST':
