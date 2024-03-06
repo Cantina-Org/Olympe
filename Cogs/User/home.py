@@ -12,17 +12,18 @@ def user_home_cogs(database):
 
     if request.method == 'GET':
         return render_template('Administration/index.html', user_information=user_information)
+
     elif request.method == 'POST':
-        if request.form['username'] != user_information[2]:
+        if request.form['username'] != user_information[2] :
             database.exec('''UPDATE cantina_administration.user SET username = %s WHERE token = %s''',
                           (request.form['username'], request.cookies.get('token')))
         try:
-            if PasswordHasher().verify(user_information[3], request.form['password']):
+            if PasswordHasher().verify(user_information[3], request.form['password1']):
                 print('Le mot de passe ne change pas !')
         except exceptions.VerifyMismatchError:
-            if request.form['password'] != '':
+            if request.form['password1'] != '' and request.form['password1'] == request.form['password2']:
                 database.exec('''UPDATE cantina_administration.user SET password = %s WHERE token = %s''',
-                              (PasswordHasher().hash(password=request.form['password']), request.cookies.get('token')))
+                              (PasswordHasher().hash(password=request.form['password1']), request.cookies.get('token')))
             else:
                 print('Le champs est vide !')
 
