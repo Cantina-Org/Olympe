@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>Cantina  - Olympe</h1>
+    <p>{{ user_permission }}</p>
     <div id="data">
         <p>
             Profil Picture: {{ user_information[7] }}<br>
@@ -22,22 +23,34 @@
     <div id="form" hidden>
         <form method="post" action="#">
             Profil Picture: {{ user_information[7] }}<br>
-            <label>
-                Username:
-                <input type="text" value="{{ user_information[2] }}" name="username">
-            </label><br>
-            <label>
-                Password:
-                <input type="password" placeholder="••••••••••••••••" name="password1">
-            </label>
-            <label>
-                Confirm Password:
-                <input type="password" placeholder="••••••••••••••••" name="password2">
-            </label><br>
-            <label>
-                Email:
-                <input type="email" value="{{ user_information[4] }}" name="email">
-            </label><br>
+            {% if user_permission[3] %}
+                <label>
+                    Username:
+                    <input type="text" value="{{ user_information[2] }}" name="username">
+                </label><br>
+            {% else %}
+                Username: {{ user_information[2] }}<br>
+            {% endif %}
+            {% if user_permission[5] %}
+                <label>
+                    Password:
+                    <input type="password" placeholder="••••••••••••••••" name="password1">
+                </label>
+                <label>
+                    Confirm Password:
+                    <input type="password" placeholder="••••••••••••••••" name="password2">
+                </label><br>
+            {% else %}
+                Password: ••••••••••••••••<br>
+            {% endif %}
+            {% if user_permission[4] %}
+            	<label>
+                    Email:
+                    <input type="email" value="{{ user_information[4] }}" name="email">
+                </label><br>
+            {% else %}
+                Email: {{ user_information[4] }}<br>
+            {% endif %}
             Email verified: {% if not user_information[5] or user_information[5] == 0 %} Non {% else %} Oui {% endif %}<br>
             A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
             Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
