@@ -5,6 +5,7 @@ from os import path, getcwd
 from json import load
 from Cogs.SSO.login import sso_login_cogs
 from Cogs.User.home import user_home_cogs
+from Cogs.User.doublefa_add import doubleFA_add_cogs
 
 from Utils.devtools.create_user import create_user
 from Utils.devtools.recreate_db import recreate_db
@@ -58,6 +59,11 @@ delete_modules BOOL DEFAULT FALSE, add_modules BOOL DEFAULT FALSE)""", None)
 @app.route('/', methods=['GET', 'POST'])
 def home():
     return user_home_cogs(database, app.config['UPLOAD_FOLDER'])
+
+
+@app.route('/2FA/add/', methods=['GET', 'POST'])
+def double2FA_add():
+    return doubleFA_add_cogs(database)
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])

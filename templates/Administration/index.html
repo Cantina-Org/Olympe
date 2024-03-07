@@ -7,7 +7,6 @@
 </head>
 <body>
     <h1>Cantina  - Olympe</h1>
-    <p>{{ user_permission }}</p>
     <div id="data">
         <p>
             Profil Picture: {% if user_information[7] == 0 %} Non {% else %} Oui {% endif %}<br>
@@ -15,7 +14,7 @@
             Password: ••••••••••••••••<br>
             Email: {{ user_information[4] }}<br>
             Email verified: {% if not user_information[5] or user_information[5] == 0 %} Non <a href="#">Verifier mon email.</a> {% else %} Oui {% endif %} <br>
-            A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
+            A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé <button onclick="window.location.href='{{ url_for('double2FA_add') }}'">Ajouter la double authentification.</button> {% else %} Activé {% endif %}<br>
             Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
             <button onclick="showForm()">Modifier les informations</button>
         </p>
