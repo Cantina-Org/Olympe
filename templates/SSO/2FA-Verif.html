@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cantina - Login</title>
+</head>
+<body>
+    <h1>Connexion Cantina</h1>
+    <form method="post" action="#">
+        <input type="hidden" name="username" value="{{ username }}">
+        <input type="hidden" name="password" value="{{ password }}">
+        <label>
+            Votre code de double authentification
+            <input type="text" name="a2f-code">
+        </label>
+        <button type="submit">
+            Se connecter
+        </button>
+    </form>
+</body>
+</html>

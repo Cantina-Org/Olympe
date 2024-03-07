@@ -1,5 +1,4 @@
 from pyotp import random_base32, totp
-from qrcode import make
 from flask import request, render_template, redirect, url_for
 from Utils.verify_login import verify_A2F
 

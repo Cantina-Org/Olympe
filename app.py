@@ -71,6 +71,11 @@ def sso_login(error=0):
     return sso_login_cogs(database, error)
 
 
+@app.route('/sso/a2f', methods=['GET', 'POST'])
+def sso_a2f_verif():
+    return a2f_verif_cogs(database)
+
+
 if __name__ == '__main__':
     socketio.run(app,
                  allow_unsafe_werkzeug=True,

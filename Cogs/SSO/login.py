@@ -1,14 +1,19 @@
 from flask import request, render_template, redirect, url_for, make_response
-from Utils.verify_login import verify_login
+from Utils.verify_login import verify_login, verify_A2F
 from argon2 import PasswordHasher
+from werkzeug.exceptions import BadRequestKeyError
 
 
 def sso_login_cogs(database, error):
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        try:
+            dfa_code = request.form['a2f-code']
+        except BadRequestKeyError:
+            dfa_code = None
 
-        row = database.select("""SELECT password, token FROM cantina_administration.user WHERE username = %s""",
+        row = database.select("""SELECT password, token, A2F FROM cantina_administration.user WHERE username = %s""",
                               (username,), number_of_data=1)
 
         validation_code = database.select("""SELECT content FROM cantina_administration.config WHERE name=%s""",
@@ -25,14 +30,18 @@ def sso_login_cogs(database, error):
         if not match:  # Si le MDP correspond pas, redirect vers la page de login avec le message d'erreur n°1
             return redirect(url_for('sso_login', error='1'))
         else:
-            if domain_to_redirect is None:
-                response = make_response(redirect(url_for('home')))
-            else:
-                response = make_response(redirect(domain_to_redirect[0], code=302))
-            # Création des cookies de vérification d'authentification
-            response.set_cookie('token', row[1])
-            response.set_cookie('validation', validation_code[0])
-            return response
+            if row[2] and dfa_code is None:
+                return render_template('SSO/2FA-Verif.html', password=password, username=username)
+            elif not row[2] or verify_A2F(database):
+                if domain_to_redirect is None:
+                    response = make_response(redirect(url_for('home')))
+                else:
+                    response = make_response(redirect(domain_to_redirect[0], code=302))
+
+                # Création des cookies de vérification d'authentification
+                response.set_cookie('token', row[1])
+                response.set_cookie('validation', validation_code[0])
+                return response
 
     elif request.method == 'GET':
 
