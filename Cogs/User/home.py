@@ -46,7 +46,7 @@ def user_home_cogs(database, upload_path):
             if request.form['email'] != user_information[4]:
                 # Modification de l'email. Modification du code de verif et email_verified mis sur 0 car plus vérifié
                 database.exec('''UPDATE cantina_administration.user SET email = %s, email_verification_code = %s, 
-                email_verified = 0 WHERE token = %s''', (request.form['email'], '000000', request.cookies.get('token')))
+                email_verified = 0 WHERE token = %s''', (request.form['email'], 'reset', request.cookies.get('token')))
         except BadRequestKeyError:
             pass  # Permission refusé
 

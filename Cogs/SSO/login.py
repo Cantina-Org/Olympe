@@ -30,9 +30,9 @@ def sso_login_cogs(database, error):
         if not match:  # Si le MDP correspond pas, redirect vers la page de login avec le message d'erreur n°1
             return redirect(url_for('sso_login', error='1'))
         else:
-            if row[2] and dfa_code is None:
+            if row[2] and dfa_code is None:  # Si l'A2F est activé mais qu'aucun code n'est fournis
                 return render_template('SSO/2FA-Verif.html', password=password, username=username)
-            elif not row[2] or verify_A2F(database):
+            elif not row[2] or verify_A2F(database):  # Si l'A2F n'est pas activé ou que le code est correcte
                 if domain_to_redirect is None:
                     response = make_response(redirect(url_for('home')))
                 else:
@@ -42,6 +42,8 @@ def sso_login_cogs(database, error):
                 response.set_cookie('token', row[1])
                 response.set_cookie('validation', validation_code[0])
                 return response
+            else:  # Dans tout les autres cas
+                return redirect(url_for('sso_login', error='1'))
 
     elif request.method == 'GET':
 
