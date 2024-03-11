@@ -1,5 +1,7 @@
 # Olympe
 
+# Olympe est en cours de refonte! Pour la sécurité de vos appareils, veuillez éviter d'installer ce service ! 
+
 Olympe est l'outils d'administration en ligne de la suite cantina
 
 ### ⚠️: Installer Olympe peut causer des problèmes sur votre machine si vous faites de mauvaises manipulations ! À vos risques et périls 😆 !
