@@ -10,6 +10,7 @@ from Cogs.User.email_verif import email_verif_cogs
 
 from Utils.devtools.create_user import create_user
 from Utils.devtools.recreate_db import recreate_db
+from Utils.devtools.clear_log import clear_log
 
 file_path = path.abspath(path.join(getcwd(), "config.json"))  # Trouver le chemin complet du fichier config.json
 
@@ -51,10 +52,12 @@ allow_edit_profile_picture BOOL DEFAULT FALSE, allow_edit_A2F BOOL DEFAULT FALSE
 delete_account BOOL DEFAULT FALSE, desactivate_account BOOL DEFAULT FALSE, edit_permission BOOL DEFAULT FALSE, 
 show_all_modules BOOL DEFAULT FALSE, on_off_modules BOOL DEFAULT FALSE, on_off_maintenance BOOL DEFAULT FALSE, 
 delete_modules BOOL DEFAULT FALSE, add_modules BOOL DEFAULT FALSE)""", None)
-
+database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.log(id INT PRIMARY KEY AUTO_INCREMENT, 
+    action_name TEXT, user_ip TEXT, user_token TEXT, details TEXT, log_level INT)""", None)
 
 # recreate_db(database)
 # create_user(database, 'matyu', 'LeMdPDeTest', 'test@test.com', 1, 1)
+# clear_log(database)
 
 
 @app.route('/', methods=['GET', 'POST'])
