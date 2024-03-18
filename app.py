@@ -77,9 +77,9 @@ def email_verif():
     return email_verif_cogs(database)
 
 
-@app.route('/admin/user/')
+@app.route('/admin/user/', methods=['GET', 'POST'])
 def show_user():
-    return show_user_cogs(database)
+    return show_user_cogs(database, app.config['UPLOAD_FOLDER'])
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])

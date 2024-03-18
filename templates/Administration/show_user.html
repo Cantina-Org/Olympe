@@ -4,12 +4,72 @@
     <meta charset="UTF-8">
     <title>Cantina - Olympe</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/table.css') }}">
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/show_edit_user_form.js') }}"></script>
 </head>
 <body>
-    <h1>Cantina  - Olympe</h1>
+    <h1>Cantina  - Olympe - Admin Mode</h1>
     {% if user_info %}
-        Unique
-        {{ user_info }}
+        <div id="data">
+            <p>
+                Profil Picture: {% if user_info[7] == 0 %} Non {% else %} Oui {% endif %}<br>
+                Username: {{ user_info[2] }}<br>
+                Password: ••••••••••••••••<br>
+                Email: {{ user_info[4] }}<br>
+                Email verified: {% if not user_info[5] or user_info[5] == 0 %} Non {% else %} Oui {% endif %} <br>
+                A2F: {% if not user_info[8] or user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
+                Desactivated: {% if not user_info[12] or user_info[12] == 0 %} Non {% else %} Oui {% endif %}<br>
+                Theme: {{ user_info[13] }}<br>
+                {% if user_permission[10] or user_permission[11] or user_permission[12] or user_permission[13] %}
+                    <button onclick="showForm()">Modifier les informations</button>
+                {% endif %}
+            </p>
+        </div>
+        <div id="form" hidden>
+        <form method="post" action="#" enctype="multipart/form-data">
+            <input type="hidden" value="{{ user_info[1] }}" name="token">
+            {% if user_permission[13] %}
+                <label>
+                    Profil Picture:
+                    <input type="file" accept="image/*" name="profile_picture"><br>
+                </label>
+            {% else %}
+                Profil Picture: {{ user_info[7] }}<br>
+            {% endif %}
+            {% if user_permission[10] %}
+                <label>
+                    Username:
+                    <input type="text" value="{{ user_info[2] }}" name="username">
+                </label><br>
+            {% else %}
+                Username: {{ user_info[2] }}<br>
+            {% endif %}
+            {% if user_permission[12] %}
+                <label>
+                    Password:
+                    <input type="password" placeholder="••••••••••••••••" name="password1">
+                </label>
+                <label>
+                    Confirm Password:
+                    <input type="password" placeholder="••••••••••••••••" name="password2">
+                </label><br>
+            {% else %}
+                Password: ••••••••••••••••<br>
+            {% endif %}
+            {% if user_permission[11] %}
+            	<label>
+                    Email:
+                    <input type="email" value="{{ user_info[4] }}" name="email">
+                </label><br>
+            {% else %}
+                Email: {{ user_info[4] }}<br>
+            {% endif %}
+            Email verified: {% if not user_info[5] or user_info[5] == 0 %} Non {% else %} Oui {% endif %}<br>
+            A2F: {% if not user_info[8] or user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
+            Desactivated: {% if not user_info[12] or user_info[12] == 0 %} Non {% else %} Oui {% endif %}<br>
+            Theme: {{ user_info[13] }}<br>
+            <button type="submit">Modifier</button>
+        </form>
+    </div>
     {% elif multiple_user_info %}
         <table>
             <thead>
