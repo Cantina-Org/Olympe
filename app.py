@@ -1,12 +1,14 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_socketio import SocketIO
 from cantinaUtils import Database
 from os import path, getcwd
 from json import load
+
 from Cogs.SSO.login import sso_login_cogs
 from Cogs.User.home import user_home_cogs
 from Cogs.User.doublefa_add import doubleFA_add_cogs
 from Cogs.User.email_verif import email_verif_cogs
+from Cogs.Administration.show_user import show_user_cogs
 
 from Utils.devtools.create_user import create_user
 from Utils.devtools.recreate_db import recreate_db
@@ -73,6 +75,11 @@ def double2FA_add():
 @app.route('/email/verif/', methods=['GET', 'POST'])
 def email_verif():
     return email_verif_cogs(database)
+
+
+@app.route('/admin/user/')
+def show_user():
+    return show_user_cogs(database)
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])

@@ -13,8 +13,8 @@ def email_verif_cogs(database):
             WHERE token = %s''', ('checked', request.cookies.get('token')))
             return redirect(url_for('home'))
         else:
-            return render_template('Administration/email-verif.html', error=1)
+            return render_template('User/email-verif.html', error=1)
 
     elif request.method == 'GET':
         send_verification_email(database)
-        return render_template('Administration/email-verif.html')
+        return render_template('User/email-verif.html')

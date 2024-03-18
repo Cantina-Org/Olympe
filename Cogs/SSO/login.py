@@ -1,6 +1,7 @@
 from flask import request, render_template, redirect, url_for, make_response
 from Utils.verify_login import verify_login, verify_A2F
 from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 from werkzeug.exceptions import BadRequestKeyError
 
 
@@ -24,12 +25,9 @@ def sso_login_cogs(database, error):
 
         if row is None:  # Si aucune correspondance, redirect vers la page de login avec le message d'erreur n°1
             return redirect(url_for('sso_login', error='1'))
-        else:
-            match = PasswordHasher().verify(row[0], password)  # Verification de la correspondance du MDP
 
-        if not match:  # Si le MDP correspond pas, redirect vers la page de login avec le message d'erreur n°1
-            return redirect(url_for('sso_login', error='1'))
-        else:
+        try:
+            PasswordHasher().verify(row[0], password)  # Verification de la correspondance du MDP
             if row[2] and dfa_code is None:  # Si l'A2F est activé mais qu'aucun code n'est fournis
                 return render_template('SSO/2FA-Verif.html', password=password, username=username)
             elif not row[2] or verify_A2F(database):  # Si l'A2F n'est pas activé ou que le code est correcte
@@ -44,6 +42,9 @@ def sso_login_cogs(database, error):
                 return response
             else:  # Dans tout les autres cas
                 return redirect(url_for('sso_login', error='1'))
+
+        except VerifyMismatchError:  # Si le MDP correspond pas, redirect vers la page de login avec le message d'erreur n°1
+            return redirect(url_for('sso_login', error='1'))
 
     elif request.method == 'GET':
 

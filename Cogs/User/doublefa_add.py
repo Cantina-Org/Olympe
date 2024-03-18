@@ -17,7 +17,7 @@ def doubleFA_add_cogs(database):
                 issuer_name=database.select("""SELECT username FROM cantina_administration.user WHERE token = %s""",
                                             (request.cookies.get('token'),), number_of_data=1)[0]
             )
-            return render_template('Administration/2FA-add.html', totp_auth=totp_auth,
+            return render_template('User/2FA-add.html', totp_auth=totp_auth,
                                    error=1)
     elif request.method == 'GET':
         if database.select('''SELECT A2F FROM cantina_administration.user WHERE token=%s''',
@@ -37,5 +37,5 @@ def doubleFA_add_cogs(database):
             issuer_name=database.select("""SELECT username FROM cantina_administration.user WHERE token = %s""",
                                         (request.cookies.get('token'),), number_of_data=1)[0]
         )
-        return render_template('Administration/2FA-add.html', totp_auth=totp_auth,
+        return render_template('User/2FA-add.html', totp_auth=totp_auth,
                                error=0)

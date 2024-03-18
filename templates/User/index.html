@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Cantina - Olympe</title>
-    <script type="application/javascript" src={{ url_for('static', filename='JS/Administration/index.js') }}></script>
+    <script type="application/javascript" src={{ url_for('static', filename='JS/User/index.js') }}></script>
 </head>
 <body>
     <h1>Cantina  - Olympe</h1>
@@ -77,8 +77,10 @@
         </form>
     </div>
 
-    <div id="">
-
+    <div id="link">
+        {% if user_permission[9] %}
+            <a href="{{ url_for('show_user') }}">Voir les comptes utilisateurs</a>
+        {% endif %}
     </div>
 </body>
 </html>

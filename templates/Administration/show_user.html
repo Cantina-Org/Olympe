@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cantina - Olympe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/table.css') }}">
+</head>
+<body>
+    <h1>Cantina  - Olympe</h1>
+    {% if user_info %}
+        Unique
+        {{ user_info }}
+    {% elif multiple_user_info %}
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Profile Picture</th>
+                    <th scope="col">A2F</th>
+                    <th scope="col">Admin</th>
+                    <th scope="col">Desactivated</th>
+                    <th scope="col">Link to profile</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for element in multiple_user_info %}
+                    <tr>
+                        <th scope="row">{{ element[0] }}</th>
+                        <td>{{ element[2] }}</td>
+                        <td>{{ element[4] }}</td>
+                        <td>{{ element[7] }}</td>
+                        <td>{{ element[8] }}</td>
+                        <td>{{ element[11] }}</td>
+                        <td>{{ element[12] }}</td>
+                        <td><button onclick="window.location.href='{{ url_for('show_user', user_token=element[1]) }}'">Go to profile</button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</body>
+</html>

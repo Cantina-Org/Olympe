@@ -7,3 +7,4 @@ def create_user(database, username, password, email, email_verified, admin):
     hashed_password = PasswordHasher().hash(password)
     database.exec("""INSERT INTO cantina_administration.user(token, username, password, email, email_verified, admin) 
     VALUES (%s, %s, %s, %s, %s, %s)""", (token, username, hashed_password, email, email_verified, admin))
+    database.exec("""INSERT INTO cantina_administration.permission(user_token) VALUES (%s)""", (token,))
