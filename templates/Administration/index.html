@@ -16,6 +16,7 @@
             Email verified: {% if not user_information[5] or user_information[5] == 0 %} Non <button onclick="window.location.href='{{ url_for('email_verif') }}'">Vérifier mon email.</button>  {% else %} Oui {% endif %} <br>
             A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé <button onclick="window.location.href='{{ url_for('double2FA_add') }}'">Ajouter la double authentification.</button> {% else %} Activé {% endif %}<br>
             Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
+            Theme: {{ user_information[13] }}<br>
             <button onclick="showForm()">Modifier les informations</button>
         </p>
     </div>
@@ -60,8 +61,24 @@
             Email verified: {% if not user_information[5] or user_information[5] == 0 %} Non {% else %} Oui {% endif %}<br>
             A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
             Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
+            {% if user_permission[8] %}
+                <label>
+                    Theme:
+                    <input list="theme" value="{{ user_information[13] }}" name="theme">
+                    <datalist id="theme">
+                        <option name="white">White</option>
+                        <option name="dark">Dark</option>
+                    </datalist>
+                </label><br>
+            {% else %}
+                Theme: {{ user_information[13] }}<br>
+            {% endif %}
             <button type="submit">Modifier</button>
         </form>
+    </div>
+
+    <div id="">
+
     </div>
 </body>
 </html>

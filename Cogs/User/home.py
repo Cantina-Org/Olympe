@@ -50,6 +50,14 @@ def user_home_cogs(database, upload_path):
         except BadRequestKeyError:
             pass  # Permission refusé
 
+        try:
+            if request.form['theme'] != user_information[13]:
+                # Modification du theme si il est différent de celui déjà mis.
+                database.exec('''UPDATE cantina_administration.user SET theme = %s WHERE token = %s''',
+                              (request.form['theme'], request.cookies.get('token')))
+        except BadRequestKeyError:
+            pass  # Permission refusé
+
         if 'profile_picture' in request.files:
             profile_picture = request.files['profile_picture']
             if profile_picture.filename != '':

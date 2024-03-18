@@ -4,7 +4,7 @@ def recreate_db(database):
     token TEXT NOT NULL,  username TEXT NOT NULL, password TEXT NOT NULL, email TEXT NOT NULL, 
     email_verified BOOL DEFAULT FALSE, email_verification_code TEXT, picture BOOL DEFAULT FALSE,
     A2F BOOL DEFAULT FALSE, A2F_secret TEXT, last_connection DATE, admin BOOL DEFAULT FALSE, 
-    desactivated BOOL DEFAULT FALSE)""", None)
+    desactivated BOOL DEFAULT FALSE, theme TEXT DEFAULT 'white')""", None)
     database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.permission(id INT PRIMARY KEY AUTO_INCREMENT,
     user_token TEXT NOT NULL, show_log BOOL DEFAULT FALSE, edit_username BOOL DEFAULT FALSE, 
     edit_email BOOL DEFAULT FALSE,edit_password BOOL DEFAULT FALSE, edit_profile_picture BOOL DEFAULT FALSE, 
