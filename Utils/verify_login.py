@@ -1,10 +1,13 @@
-from flask import request
+from flask import request, redirect
 from pyotp import totp
 from werkzeug.exceptions import BadRequestKeyError
 
 
 def verify_login(database):
     token = request.cookies.get('token')
+    if database.select("""SELECT desactivated FROM cantina_administration.user WHERE token = %s""", (token,), 1):
+        return "desactivated"
+
     token_validation = database.select("""SELECT id FROM cantina_administration.user WHERE token=%s""", (token,),
                                        number_of_data=1)
     validation = request.cookies.get('validation')

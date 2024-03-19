@@ -8,6 +8,8 @@
     <h1>Connexion Cantina</h1>
     {% if request.args.get('error') == '1' %}
         <p>L'identifiant ou le mots de passe est incorrecte !</p>
+    {% elif request.args.get('error') == '2' %}
+        <p>Votre compte a été désactivé ! Merci de contacter votre Administrateur pour continuer.</p>
     {% endif %}
     <form method="post" action="#">
         <label>

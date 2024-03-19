@@ -9,6 +9,7 @@ from Cogs.User.home import user_home_cogs
 from Cogs.User.doublefa_add import doubleFA_add_cogs
 from Cogs.User.email_verif import email_verif_cogs
 from Cogs.Administration.show_user import show_user_cogs
+from Cogs.Administration.desactivate_user import desactivate_user_cogs
 
 from Utils.devtools.create_user import create_user
 from Utils.devtools.recreate_db import recreate_db
@@ -80,6 +81,11 @@ def email_verif():
 @app.route('/admin/user/', methods=['GET', 'POST'])
 def show_user():
     return show_user_cogs(database, app.config['UPLOAD_FOLDER'])
+
+
+@app.route('/admin/user/desactivate', methods=['POST'])
+def desactivate_user():
+    return desactivate_user_cogs(database)
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])

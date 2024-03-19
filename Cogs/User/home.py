@@ -9,6 +9,10 @@ from os import path
 def user_home_cogs(database, upload_path):
     if not verify_login(database):
         return redirect(url_for('sso_login', error='0'))
+    elif verify_login(database) == 'desactivated':
+        login_url = database.select('''SELECT fqdn FROM cantina_administration.modules WHERE name = 'Olympe' ''', None,
+                                    number_of_data=1)[0]
+        return redirect(login_url+'/sso/login/?error=2')
 
     user_information = database.select("""SELECT * FROM cantina_administration.user WHERE token = %s""",
                                        (request.cookies.get('token')), 1)

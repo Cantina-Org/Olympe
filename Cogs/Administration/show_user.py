@@ -1,5 +1,4 @@
 from os import path
-
 from cantinaUtils.verify_login import verify_login
 from flask import request, render_template, redirect, url_for
 from werkzeug.exceptions import BadRequestKeyError

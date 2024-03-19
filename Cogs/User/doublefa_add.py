@@ -1,9 +1,16 @@
 from pyotp import random_base32, totp
 from flask import request, render_template, redirect, url_for
-from Utils.verify_login import verify_A2F
+from Utils.verify_login import verify_A2F, verify_login
 
 
 def doubleFA_add_cogs(database):
+    if not verify_login(database):
+        return redirect(url_for('sso_login', error='0'))
+    elif verify_login(database) == 'desactivated':
+        login_url = database.select('''SELECT fqdn FROM cantina_administration.modules WHERE name = 'Olympe' ''', None,
+                                    number_of_data=1)[0]
+        return redirect(login_url+'/sso/login/?error=2')
+
     if request.method == 'POST':
         if verify_A2F(database):
             database.exec('''UPDATE cantina_administration.user SET A2F = 1 WHERE token=%s''',

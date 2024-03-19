@@ -43,12 +43,12 @@ def sso_login_cogs(database, error):
             else:  # Dans tout les autres cas
                 return redirect(url_for('sso_login', error='1'))
 
-        except VerifyMismatchError:  # Si le MDP correspond pas, redirect vers la page de login avec le message d'erreur n°1
+        except VerifyMismatchError:  # Si le MDP correspond pas, redirect vers le login avec le message d'erreur n°1
             return redirect(url_for('sso_login', error='1'))
 
     elif request.method == 'GET':
 
-        if verify_login(database):
+        if verify_login(database) and verify_login(database) != 'desactivated':
             domain_to_redirect = database.select("""SELECT fqdn FROM cantina_administration.modules WHERE name=%s""",
                                                  (request.args.get('modules'),), number_of_data=1)
 
