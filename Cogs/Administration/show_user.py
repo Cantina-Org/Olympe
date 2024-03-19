@@ -1,5 +1,5 @@
 from os import path
-from cantinaUtils.verify_login import verify_login
+from Utils.verify_login import verify_login
 from flask import request, render_template, redirect, url_for
 from werkzeug.exceptions import BadRequestKeyError
 from argon2 import PasswordHasher, exceptions
@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 
 
 def show_user_cogs(database, upload_path):
-    if verify_login(database):
+    if verify_login(database) and verify_login(database) != "desactivated":
         if request.method == 'GET':
             user_permission = database.select('''SELECT * FROM cantina_administration.permission 
             WHERE user_token = %s''', (request.cookies.get('token')), 1)
@@ -76,5 +76,7 @@ def show_user_cogs(database, upload_path):
             return redirect(url_for('show_user', user_token=request.form['token']))
         else:
             return redirect('https://i.pinimg.com/originals/cd/0d/76/cd0d7619041d1f141d3e6fea29bb2724.jpg')
+    elif verify_login(database) == "desactivated":
+        return redirect(url_for('sso_login', error='2'))
     else:
         return redirect(url_for('sso_login'))

@@ -11,7 +11,10 @@
     <h1>Cantina  - Olympe - Admin Mode</h1>
     {% if user_info %}
         <button onclick="">Supprimer ce compte</button>
-        <button onclick="desactivate_account()">Désactiver ce compte</button>
+        <form action="{{ url_for('desactivate_user') }}" method="post" id="desactivate_account">
+            <input type='hidden' name='token_to_desactivate' value="{{ user_info[1] }}"/>
+            <button type="button" class="btn btn-primary" onclick="desactivate_account()">Désactiver le compte</button>
+        </form>
         <div id="data">
             <p>
                 Profil Picture: {% if user_info[7] == 0 %} Non {% else %} Oui {% endif %}<br>
