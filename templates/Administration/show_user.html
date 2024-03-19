@@ -6,11 +6,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/table.css') }}">
     <script type="application/javascript" src="{{ url_for('static', filename='JS/show_edit_user_form.js') }}"></script>
     <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/desactivate_account.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/delete_account.js') }}"></script>
 </head>
 <body>
     <h1>Cantina  - Olympe - Admin Mode</h1>
     {% if user_info %}
-        <button onclick="">Supprimer ce compte</button>
+        <form action="{{ url_for('delete_user') }}" method="post" id="delete_account">
+            <input type='hidden' name='token_to_delete' value="{{ user_info[1] }}"/>
+            <button type="button" class="btn btn-primary" onclick="delete_account()">Supprimer le compte</button>
+        </form>
         <form action="{{ url_for('desactivate_user') }}" method="post" id="desactivate_account">
             <input type='hidden' name='token_to_desactivate' value="{{ user_info[1] }}"/>
             <button type="button" class="btn btn-primary" onclick="desactivate_account()">Désactiver le compte</button>

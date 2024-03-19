@@ -5,8 +5,11 @@ from werkzeug.exceptions import BadRequestKeyError
 
 def verify_login(database):
     token = request.cookies.get('token')
-    if database.select("""SELECT desactivated FROM cantina_administration.user WHERE token = %s""", (token,), 1)[0]:
-        return "desactivated"
+    try:
+        if database.select("""SELECT desactivated FROM cantina_administration.user WHERE token = %s""", (token,), 1)[0]:
+            return "desactivated"
+    except TypeError:
+        return False
 
     token_validation = database.select("""SELECT id FROM cantina_administration.user WHERE token=%s""", (token,),
                                        number_of_data=1)

@@ -10,6 +10,7 @@ from Cogs.User.doublefa_add import doubleFA_add_cogs
 from Cogs.User.email_verif import email_verif_cogs
 from Cogs.Administration.show_user import show_user_cogs
 from Cogs.Administration.desactivate_user import desactivate_user_cogs
+from Cogs.Administration.delete_user import delete_user_cogs
 
 from Utils.devtools.create_user import create_user
 from Utils.devtools.recreate_db import recreate_db
@@ -86,6 +87,11 @@ def show_user():
 @app.route('/admin/user/desactivate', methods=['POST'])
 def desactivate_user():
     return desactivate_user_cogs(database)
+
+
+@app.route('/admin/user/delete', methods=['POST'])
+def delete_user():
+    return delete_user_cogs(database)
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])
