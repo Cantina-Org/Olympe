@@ -11,14 +11,18 @@
 <body>
     <h1>Cantina  - Olympe - Admin Mode</h1>
     {% if user_info %}
-        <form action="{{ url_for('delete_user') }}" method="post" id="delete_account">
-            <input type='hidden' name='token_to_delete' value="{{ user_info[1] }}"/>
-            <button type="button" class="btn btn-primary" onclick="delete_account()">Supprimer le compte</button>
-        </form>
-        <form action="{{ url_for('desactivate_user') }}" method="post" id="desactivate_account">
-            <input type='hidden' name='token_to_desactivate' value="{{ user_info[1] }}"/>
-            <button type="button" class="btn btn-primary" onclick="desactivate_account()">Désactiver le compte</button>
-        </form>
+        {% if user_permission[20] %}
+            <form action="{{ url_for('delete_user') }}" method="post" id="delete_account">
+                <input type='hidden' name='token_to_delete' value="{{ user_info[1] }}"/>
+                <button type="button" class="btn btn-primary" onclick="delete_account()">Supprimer le compte</button>
+            </form>
+        {% endif %}
+        {% if user_permission[21] %}
+            <form action="{{ url_for('desactivate_user') }}" method="post" id="desactivate_account">
+                <input type='hidden' name='token_to_desactivate' value="{{ user_info[1] }}"/>
+                <button type="button" class="btn btn-primary" onclick="desactivate_account()">Désactiver le compte</button>
+            </form>
+        {% endif %}
         <div id="data">
             <p>
                 Profil Picture: {% if user_info[7] == 0 %} Non {% else %} Oui {% endif %}<br>
