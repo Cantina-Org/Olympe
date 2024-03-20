@@ -11,6 +11,8 @@
 <body>
     <h1>Cantina  - Olympe - Admin Mode</h1>
     {% if user_info %}
+        <a href="{{ url_for('show_user') }}">All users</a>
+
         {% if user_permission[20] %}
             <form action="{{ url_for('delete_user') }}" method="post" id="delete_account">
                 <input type='hidden' name='token_to_delete' value="{{ user_info[1] }}"/>
@@ -85,6 +87,10 @@
         </form>
     </div>
     {% elif multiple_user_info %}
+        <a href="{{ url_for('home') }}">Home</a><br>
+        {% if user_permission[19] %}
+            <button onclick="window.location.href = '{{ url_for('add_user') }}'">Add user</button>
+        {% endif %}
         <table>
             <thead>
                 <tr>
