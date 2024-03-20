@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cantina - Olympe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/table.css') }}">
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/show_edit_user_form.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/desactivate_account.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/delete_account.js') }}"></script>
+</head>
+<body>
+    <h1>Cantina  - Olympe - Admin Mode</h1>
+    <a href="{{ url_for('show_user') }}">Show user</a>
+    <form action="#" method="post">
+        <span style="text-decoration: underline; font-weight: bold">Global</span><br>
+        <label>
+            Username
+            <input type="text" name="username">
+        </label><br>
+        <label>
+            Password
+            <input type="password" name="password-1">
+        </label><br>
+        <label>
+            Confirm password
+            <input type="password" name="password-2">
+        </label><br>
+        <label>
+            email
+            <input type="email" name="email">
+        </label><br><br>
+
+        <span style="text-decoration: underline; font-weight: bold">Permission</span><br>
+        <span style="text-decoration: underline">User Perm</span><br>
+        <label>
+            Edit Username
+            <input type="checkbox" name="edit-username">
+        </label><br>
+        <label>
+            Edit Email
+            <input type="checkbox" name="edit-email">
+        </label><br>
+        <label>
+            Edit Password
+            <input type="checkbox" name="edit-password">
+        </label><br>
+        <label>
+            Edit Profile Picture
+            <input type="checkbox" name="edit-profile-picture">
+        </label><br>
+        <label>
+            Edit A2F
+            <input type="checkbox" name="edit-a2f">
+        </label><br>
+        <label>
+            Edit Theme
+            <input type="checkbox" name="edit-theme">
+        </label><br>
+
+        <span style="text-decoration: underline">Administration</span><br>
+        <label>
+            Edit Username Admin
+            <input type="checkbox" name="edit-username">
+        </label><br>
+        <label>
+            Edit Email Admin
+            <input type="checkbox" name="edit-email">
+        </label><br>
+        <label>
+            Edit Password Admin
+            <input type="checkbox" name="edit-password">
+        </label><br>
+        <label>
+            Edit Profile Picture Admin
+            <input type="checkbox" name="edit-profile-picture">
+        </label><br>
+        <label>
+            Edit A2F Admin
+            <input type="checkbox" name="edit-a2f">
+        </label><br>
+        <label>
+            Edit Theme Admin
+            <input type="checkbox" name="edit-theme">
+        </label><br>
+    </form>
+</body>
+</html>
