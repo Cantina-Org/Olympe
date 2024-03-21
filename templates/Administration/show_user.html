@@ -22,7 +22,11 @@
         {% if user_permission[21] %}
             <form action="{{ url_for('desactivate_user') }}" method="post" id="desactivate_account">
                 <input type='hidden' name='token_to_desactivate' value="{{ user_info[1] }}"/>
-                <button type="button" class="btn btn-primary" onclick="desactivate_account()">Désactiver le compte</button>
+                {% if not user_info[12] or user_info[12] == 0 %}
+                    <button type="button" class="btn btn-primary" onclick="desactivate_account(1)">Désactiver le compte</button>
+                {% elif user_info[12] == 1 %}
+                    <button type="button" class="btn btn-primary" onclick="desactivate_account(0)">Réactiver le compte</button>
+                {% endif %}
             </form>
         {% endif %}
         <div id="data">

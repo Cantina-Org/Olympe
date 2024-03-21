@@ -8,7 +8,7 @@ def desactivate_user_cogs(database):
         WHERE user_token = %s""", (request.form['token_action_author']), 1)[0]:
             return redirect(url_for('show_user'))
 
-        database.exec('''UPDATE cantina_administration.user SET desactivated = 1 WHERE token = %s''',
+        database.exec('''UPDATE cantina_administration.user SET desactivated = NOT desactivated WHERE token = %s''',
                       (request.form['token_to_desactivate']))
         return redirect(url_for('show_user', user_token=request.form['token_to_desactivate']))
 
