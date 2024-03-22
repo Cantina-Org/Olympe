@@ -4,19 +4,21 @@ from Utils.verify_login import verify_A2F, verify_login
 
 
 def doubleFA_add_cogs(database):
+    # Verification si l'utilisateur est connecté
     if not verify_login(database):
         return redirect(url_for('sso_login', error='0'))
-    elif verify_login(database) == 'desactivated':
+    elif verify_login(database) == 'desactivated':  # Si l'utilisateur est connecté mais que son compte est désactivé
         login_url = database.select('''SELECT fqdn FROM cantina_administration.modules WHERE name = 'Olympe' ''', None,
                                     number_of_data=1)[0]
         return redirect(login_url+'/sso/login/?error=2')
 
-    if request.method == 'POST':
-        if verify_A2F(database):
+    if request.method == 'POST':  # Si l'utilisateur valide le formulaire
+        if verify_A2F(database):  # Vérification réussi du code via la base de donnée
             database.exec('''UPDATE cantina_administration.user SET A2F = 1 WHERE token=%s''',
-                          (request.cookies.get('token')))
+                          (request.cookies.get('token')))  # Activation de l'A2F pour l'authentification
             return redirect(url_for('home'))
-        else:
+        else:  # Vérification raté du code
+            # Génération du lien avec la chaine de caractère lié a l'utilisateur.
             key = database.select('''SELECT A2F_secret FROM cantina_administration.user WHERE token = %s''',
                                   (request.cookies.get('token')), number_of_data=1)[0]
             totp_auth = totp.TOTP(key).provisioning_uri(
@@ -26,19 +28,23 @@ def doubleFA_add_cogs(database):
             )
             return render_template('User/2FA-add.html', totp_auth=totp_auth,
                                    error=1)
-    elif request.method == 'GET':
+    elif request.method == 'GET':  # Si l'utilisateur consulte la page du formulaire.
+        # Si l'utilisateur à déjà l'A2F d'activé, redirection vers la page d'accueil.
         if database.select('''SELECT A2F FROM cantina_administration.user WHERE token=%s''',
                            (request.cookies.get('token')), number_of_data=1)[0]:
             return redirect(url_for('home'))
 
+        # Si aucune chaine de caractère n'avait été généré
         if database.select('''SELECT A2F_secret FROM cantina_administration.user WHERE token = %s''',
                            (request.cookies.get('token')), number_of_data=1)[0] is None:
-            key = random_base32()
+            key = random_base32()  # Génération d'une chaine de caractère unique
             database.exec("""UPDATE cantina_administration.user SET A2F_secret = %s WHERE token = %s""",
                           (key, request.cookies.get('token')))
-        else:
+        else:  # Sinon, la valeur de la base de données est séléctionné
             key = database.select('''SELECT A2F_secret FROM cantina_administration.user WHERE token = %s''',
                                   (request.cookies.get('token')), number_of_data=1)[0]
+
+        # Génération du lien avec la chaine de caractère lié a l'utilisateur.
         totp_auth = totp.TOTP(key).provisioning_uri(
             name='Cantina Olympe',
             issuer_name=database.select("""SELECT username FROM cantina_administration.user WHERE token = %s""",
