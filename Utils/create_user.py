@@ -5,13 +5,15 @@ from flask import request
 
 
 def create_user(database):
-    token = str(uuid3(uuid1(), str(uuid1())))
-    hashed_password = PasswordHasher().hash(request.form['password-1'])
+    token = str(uuid3(uuid1(), str(uuid1())))  # Génération d'un token unique
+    hashed_password = PasswordHasher().hash(request.form['password-1'])  # Hashage des mots de passe
 
+    # Création de l'utilisateur dans la base de données
     database.exec("""INSERT INTO cantina_administration.user(token, username, password, email, admin) 
     VALUES (%s, %s, %s, %s, %s)""", (token, request.form['username'], hashed_password, request.form['email'],
                                      check_perm('user-admin')))
 
+    # Création des permissions de l'utilisateur dans la base de données
     database.exec("""INSERT INTO cantina_administration.permission(user_token, show_log, edit_username, edit_email, 
     edit_password, edit_profile_picture, edit_A2F, edit_ergo, show_specific_account, edit_username_admin, 
     edit_email_admin, edit_password_admin, edit_profile_picture_admin, allow_edit_username, allow_edit_email, 
@@ -35,6 +37,6 @@ def create_user(database):
 
 def check_perm(perm_name):
     try:
-        return 1 if request.form[perm_name] else 0
+        return 1 if request.form[perm_name] else 0  # Vérifie si perm_name existe dans le formulaire.
     except BadRequestKeyError:
         return 0
