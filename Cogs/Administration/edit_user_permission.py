@@ -4,12 +4,15 @@ from Utils.create_user import check_perm
 
 
 def edit_user_permission_cogs(database):
+    # Vérification de si l'utilisateur est bien connecté et n'a pas un compte désactivé
     if verify_login(database) and verify_login(database) != 'desactivated':
+        # Si l'utilisateur n'a pas les permissions, redirection vers la page d'accueil
         if (not database.select("""SELECT edit_permission FROM cantina_administration.permission 
         WHERE user_token = %s""", (request.cookies.get('token')), 1)[0]
                 and request.cookies.get('token') != request.form['token']):
             return redirect(url_for('show_user'))
 
+        # Modification des permissions de l'utilisateur.
         database.exec('''UPDATE cantina_administration.permission SET show_log = %s, 
         edit_username = %s, edit_email = %s, edit_password = %s, edit_profile_picture = %s, edit_A2F = %s,
         edit_ergo = %s, show_specific_account = %s, edit_username_admin = %s, edit_email_admin = %s, 
