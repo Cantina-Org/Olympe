@@ -7,30 +7,34 @@ from werkzeug.utils import secure_filename
 
 
 def show_user_cogs(database, upload_path):
+    # Vérification de si l'utilisateur est bien connecté et n'a pas un compte désactivé
     if verify_login(database) and verify_login(database) != "desactivated":
-        if request.method == 'GET':
+        if request.method == 'GET':  # Si il fait une requete de type GET
             user_permission = database.select('''SELECT * FROM cantina_administration.permission 
-            WHERE user_token = %s''', (request.cookies.get('token')), 1)
-            if not user_permission[9]:
+            WHERE user_token = %s''', (request.cookies.get('token')), 1)  # On prend les permissions de l'utilsateur
+            if not user_permission[9]:  # Si l'utilisateur n'a pas les permissions, redirection vers la page d'accueil
                 return redirect(url_for('home'))
 
+            # Si l'utilisateur souhaite voir un utilisateur en particulier
             if request.args.get('user_token'):
+                # Sélectionne les données et permissions de l'utilisateur souhaité
                 user_data = database.select('SELECT * FROM cantina_administration.user WHERE token = %s',
                                             (request.args.get('user_token')), number_of_data=1)
                 selected_user_permission = database.select('''SELECT * FROM cantina_administration.permission WHERE 
                 user_token = %s''', (request.args.get('user_token')), number_of_data=1)
+
                 return render_template('Administration/show_user.html', user_info=user_data, multiple_user_info=None,
                                        user_permission=user_permission,
                                        selected_user_permission=selected_user_permission)
-            else:
+            else:  # Sinon, on séléctionne toute la base de données
                 users_data = database.select('SELECT * FROM cantina_administration.user', None)
                 return render_template('Administration/show_user.html', user_info=None, multiple_user_info=users_data,
                                        user_permission=user_permission, selected_user_permission=None)
-        elif request.method == 'POST':
+        elif request.method == 'POST':  # Si l'utilisateur fait une requete POST
             user_information = database.select("""SELECT * FROM cantina_administration.user WHERE token = %s""",
                                                (request.form['token']), 1)
             try:
-                if request.form['username'] != user_information[2]:
+                if request.form['username'] != user_information[2]:  # Vérification que le username ai changé
                     # Modification de l'username après vérification qu'il ai changé
                     database.exec('''UPDATE cantina_administration.user SET username = %s WHERE token = %s''',
                                   (request.form['username'], request.cookies.get('token')))
@@ -68,16 +72,18 @@ def show_user_cogs(database, upload_path):
             except BadRequestKeyError:
                 pass  # Permission refusé
 
-            if 'profile_picture' in request.files:
-                profile_picture = request.files['profile_picture']
+            if 'profile_picture' in request.files:  # Si une photo de profile a été envoyé
+                profile_picture = request.files['profile_picture']  # Récupération de la photo
                 if profile_picture.filename != '':
+                    # Sauvegarde de la photo
                     profile_picture.save(path.join(upload_path, secure_filename(request.form['token']) + '.' +
                                                    profile_picture.filename.rsplit('.', 1)[1].lower()))
+                    # Modification dans la base de données pour pouvoir utiliser la photo.
                     database.exec('''UPDATE cantina_administration.user SET picture = 1 WHERE token = %s''',
                                   (request.form['token']))
 
             return redirect(url_for('show_user', user_token=request.form['token']))
-        else:
+        else:  # Si l'utilisateur utilise un autre moyen d'acceder à la page, un easter egg apparait
             return redirect('https://i.pinimg.com/originals/cd/0d/76/cd0d7619041d1f141d3e6fea29bb2724.jpg')
     elif verify_login(database) == "desactivated":
         return redirect(url_for('sso_login', error='2'))
