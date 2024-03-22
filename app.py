@@ -14,6 +14,7 @@ from Cogs.Administration.show_user import show_user_cogs
 from Cogs.Administration.desactivate_user import desactivate_user_cogs
 from Cogs.Administration.delete_user import delete_user_cogs
 from Cogs.Administration.add_user import add_user_cogs
+from Cogs.Administration.edit_user_permission import edit_user_permission_cogs
 
 
 from Utils.devtools.create_user import create_user
@@ -91,6 +92,11 @@ def show_user():
 @app.route('/admin/user/add', methods=['GET', 'POST'])
 def add_user():
     return add_user_cogs(database)
+
+
+@app.route('/admin/user/edit_permission', methods=['POST'])
+def edit_permission_user():
+    return edit_user_permission_cogs(database)
 
 
 @app.route('/admin/user/desactivate', methods=['POST'])

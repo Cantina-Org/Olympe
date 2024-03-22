@@ -17,12 +17,15 @@ def show_user_cogs(database, upload_path):
             if request.args.get('user_token'):
                 user_data = database.select('SELECT * FROM cantina_administration.user WHERE token = %s',
                                             (request.args.get('user_token')), number_of_data=1)
+                selected_user_permission = database.select('''SELECT * FROM cantina_administration.permission WHERE 
+                user_token = %s''', (request.args.get('user_token')), number_of_data=1)
                 return render_template('Administration/show_user.html', user_info=user_data, multiple_user_info=None,
-                                       user_permission=user_permission)
+                                       user_permission=user_permission,
+                                       selected_user_permission=selected_user_permission)
             else:
                 users_data = database.select('SELECT * FROM cantina_administration.user', None)
                 return render_template('Administration/show_user.html', user_info=None, multiple_user_info=users_data,
-                                       user_permission=user_permission)
+                                       user_permission=user_permission, selected_user_permission=None)
         elif request.method == 'POST':
             user_information = database.select("""SELECT * FROM cantina_administration.user WHERE token = %s""",
                                                (request.form['token']), 1)

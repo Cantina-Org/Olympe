@@ -5,7 +5,7 @@ from flask import redirect, url_for, request
 def desactivate_user_cogs(database):
     if verify_login(database) and verify_login(database) != 'desactivated':
         if not database.select("""SELECT desactivate_account FROM cantina_administration.permission 
-        WHERE user_token = %s""", (request.form['token_action_author']), 1)[0]:
+        WHERE user_token = %s""", (request.cookies.get('token')), 1)[0]:
             return redirect(url_for('show_user'))
 
         database.exec('''UPDATE cantina_administration.user SET desactivated = NOT desactivated WHERE token = %s''',

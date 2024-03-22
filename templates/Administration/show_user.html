@@ -30,7 +30,7 @@
             </form>
         {% endif %}
         <div id="data">
-            <p id>
+            <p id="user-info">
                 Profil Picture: {% if user_info[7] == 0 %} Non {% else %} Oui {% endif %}<br>
                 Username: {{ user_info[2] }}<br>
                 Password: ••••••••••••••••<br>
@@ -38,93 +38,216 @@
                 Email verified: {% if not user_info[5] or user_info[5] == 0 %} Non {% else %} Oui {% endif %} <br>
                 A2F: {% if not user_info[8] or user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
                 Desactivated: {% if not user_info[12] or user_info[12] == 0 %} Non {% else %} Oui {% endif %}<br>
-                Theme: {{ user_info[13] }}<br><br>
+                Theme: {{ user_info[13] }}<br>
                 {% if user_permission[10] == 1 or user_permission[11] == 1 or user_permission[12] == 1 or user_permission[13] == 1 %}
-                    <button onclick="showForm()">Modifier les informations</button>
+                    <button onclick="showUserForm()">Modifier les informations</button>
                 {% endif %}
             </p>
-            <p id="">
+            <form method="post" action="#" enctype="multipart/form-data" id="user-info-form" hidden>
+            <br>
+                <input type="hidden" value="{{ user_info[1] }}" name="token">
+                {% if user_permission[13] %}
+                    <label>
+                        Profil Picture:
+                        <input type="file" accept="image/*" name="profile_picture"><br>
+                    </label>
+                {% else %}
+                    Profil Picture: {{ user_info[7] }}<br>
+                {% endif %}
+                {% if user_permission[10] %}
+                    <label>
+                        Username:
+                        <input type="text" value="{{ user_info[2] }}" name="username">
+                    </label><br>
+                {% else %}
+                    Username: {{ user_info[2] }}<br>
+                {% endif %}
+                {% if user_permission[12] %}
+                    <label>
+                        Password:
+                        <input type="password" placeholder="••••••••••••••••" name="password1">
+                    </label>
+                    <label>
+                        Confirm Password:
+                        <input type="password" placeholder="••••••••••••••••" name="password2">
+                    </label><br>
+                {% else %}
+                    Password: ••••••••••••••••<br>
+                {% endif %}
+                {% if user_permission[11] %}
+                    <label>
+                        Email:
+                        <input type="email" value="{{ user_info[4] }}" name="email">
+                    </label><br>
+                {% else %}
+                    Email: {{ user_info[4] }}<br>
+                {% endif %}
+                Email verified: {% if not user_info[5] or user_info[5] == 0 %} Non {% else %} Oui {% endif %}<br>
+                A2F: {% if not user_info[8] or user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
+                Desactivated: {% if not user_info[12] or user_info[12] == 0 %} Non {% else %} Oui {% endif %}<br>
+                Theme: {{ user_info[13] }}<br>
+                <button type="submit">Valider</button>
+            </form>
+        </div>
+        <div id="form">
+            <br>
+            <p id="user-permission">
                 <span style="text-decoration: underline; font-weight: bold">Permission</span><br>
                 <span style="text-decoration: underline">User Perm</span><br>
-                Edit Username<br>
-                Edit Email<br>
-                Edit Password<br>
-                Edit Profile Picture<br>
-                Edit A2F<br>
-                Edit Theme<br>
+                Edit Username: {{ selected_user_permission[3] }}<br>
+                Edit Email: {{ selected_user_permission[4] }}<br>
+                Edit Password: {{ selected_user_permission[5] }}<br>
+                Edit Profile Picture: {{ selected_user_permission[6] }}<br>
+                Edit A2F: {{ selected_user_permission[7] }}<br>
+                Edit Theme: {{ selected_user_permission[8] }}<br>
                 <span style="text-decoration: underline">Administration</span><br>
-                Admin<br>
-                Edit Username Admin<br>
-                Edit Email Admin<br>
-                Edit Password Admin<br>
-                Edit Profile Picture Admin<br>
-                Edit A2F Admin<br>
-                On/Off edit username<br>
-                On/Off edit email<br>
-                On/Off edit password<br>
-                On/Off edit Profile Picture<br>
-                Allow edit A2F<br>
-                Show all user<br>
-                Create User<br>
-                Delete User<br>
-                Desactivate User<br>
-                Edit User Permission<br>
-                Show Log<br>
-                Show All Modules<br>
-                On/Off Modules<br>
-                On/Off Maintenance Mode<br>
-                Delete module<br>
-                Add module<br>
-                {% if user_permission[22]%}
-                    <button onclick="showForm()">Modifier les permissions</button>
+                Admin: {{ user_info[11] }}<br>
+                Edit Username Admin: {{ selected_user_permission[10] }}<br>
+                Edit Email Admin: {{ selected_user_permission[11] }}<br>
+                Edit Password Admin: {{ selected_user_permission[12] }}<br>
+                Edit Profile Picture Admin: {{ selected_user_permission[13] }}<br>
+                Edit A2F Admin: soon<br>
+                On/Off edit username: {{ selected_user_permission[14] }}<br>
+                On/Off edit email: {{ selected_user_permission[15] }}<br>
+                On/Off edit password: {{ selected_user_permission[16] }}<br>
+                On/Off edit Profile Picture: {{ selected_user_permission[17] }}<br>
+                Allow edit A2F: {{ selected_user_permission[18] }}<br>
+                Show all user: {{ selected_user_permission[9] }}<br>
+                Create User: {{ selected_user_permission[19] }}<br>
+                Delete User: {{ selected_user_permission[20] }}<br>
+                Desactivate User: {{ selected_user_permission[21] }}<br>
+                Edit User Permission: {{ selected_user_permission[22] }}<br>
+                Show Log: {{ selected_user_permission[2] }}<br>
+                Show All Modules: {{ selected_user_permission[23] }}<br>
+                On/Off Modules: {{ selected_user_permission[24] }}<br>
+                On/Off Maintenance Mode: {{ selected_user_permission[25] }}<br>
+                Delete module: {{ selected_user_permission[26] }}<br>
+                Add module: {{ selected_user_permission[27] }}<br>
+                {% if user_permission[22] and user_info[1] != request.cookies.get('token')%}
+                    <button onclick="showPermissionForm()">Modifier les permissions</button>
                 {% endif %}
-            </p>
-        </div>
-        <div id="form" hidden>
-        <br>
-        <form method="post" action="#" enctype="multipart/form-data">
+        </p>
+
+        <form method="post" action="{{ url_for('edit_permission_user') }}" enctype="multipart/form-data" id="user-permission-form" hidden>
             <input type="hidden" value="{{ user_info[1] }}" name="token">
-            {% if user_permission[13] %}
-                <label>
-                    Profil Picture:
-                    <input type="file" accept="image/*" name="profile_picture"><br>
-                </label>
-            {% else %}
-                Profil Picture: {{ user_info[7] }}<br>
-            {% endif %}
-            {% if user_permission[10] %}
-                <label>
-                    Username:
-                    <input type="text" value="{{ user_info[2] }}" name="username">
-                </label><br>
-            {% else %}
-                Username: {{ user_info[2] }}<br>
-            {% endif %}
-            {% if user_permission[12] %}
-                <label>
-                    Password:
-                    <input type="password" placeholder="••••••••••••••••" name="password1">
-                </label>
-                <label>
-                    Confirm Password:
-                    <input type="password" placeholder="••••••••••••••••" name="password2">
-                </label><br>
-            {% else %}
-                Password: ••••••••••••••••<br>
-            {% endif %}
-            {% if user_permission[11] %}
-            	<label>
-                    Email:
-                    <input type="email" value="{{ user_info[4] }}" name="email">
-                </label><br>
-            {% else %}
-                Email: {{ user_info[4] }}<br>
-            {% endif %}
-            Email verified: {% if not user_info[5] or user_info[5] == 0 %} Non {% else %} Oui {% endif %}<br>
-            A2F: {% if not user_info[8] or user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
-            Desactivated: {% if not user_info[12] or user_info[12] == 0 %} Non {% else %} Oui {% endif %}<br>
-            Theme: {{ user_info[13] }}<br>
-            <button type="submit">Modifier</button>
+
+            <span style="text-decoration: underline; font-weight: bold">Permission</span><br>
+            <span style="text-decoration: underline">User Perm</span><br>
+            <label>
+                Edit Username
+                <input type="checkbox" name="edit-username" {% if selected_user_permission[3] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit Email
+                <input type="checkbox" name="edit-email" {% if selected_user_permission[4] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit Password
+                <input type="checkbox" name="edit-password" {% if selected_user_permission[5] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit Profile Picture
+                <input type="checkbox" name="edit-profile-picture" {% if selected_user_permission[6] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit A2F
+                <input type="checkbox" name="edit-a2f" {% if selected_user_permission[7] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit Theme
+                <input type="checkbox" name="edit-theme" {% if selected_user_permission[8] %} checked {% endif %}>
+            </label><br>
+
+            <span style="text-decoration: underline">Administration</span><br>
+            <label>
+                Admin
+                <input type="checkbox" name="user-admin" {% if user_info[11] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit Username Admin
+                <input type="checkbox" name="edit-username-admin" {% if selected_user_permission[10] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit Email Admin
+                <input type="checkbox" name="edit-email-admin" {% if selected_user_permission[11] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit Password Admin
+                <input type="checkbox" name="edit-password-admin" {% if selected_user_permission[12] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit Profile Picture Admin
+                <input type="checkbox" name="edit-profile-picture-admin" {% if selected_user_permission[13] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit A2F Admin
+                soon
+            </label><br>
+            <label>
+                On/Off edit username
+                <input type="checkbox" name="allow-edit-username" {% if selected_user_permission[14] %} checked {% endif %}>
+            </label><br>
+            <label>
+                On/Off edit email
+                <input type="checkbox" name="allow-edit-email" {% if selected_user_permission[15] %} checked {% endif %}>
+            </label><br>
+            <label>
+                On/Off edit password
+                <input type="checkbox" name="allow-edit-password" {% if selected_user_permission[16] %} checked {% endif %}>
+            </label><br>
+            <label>
+                On/Off edit Profile Picture
+                <input type="checkbox" name="allow-edit-profile-picture" {% if selected_user_permission[17] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Allow edit A2F
+                <input type="checkbox" name="allow-edit-a2f" {% if selected_user_permission[18] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Show all user
+                <input type="checkbox" name="show-all-user" {% if selected_user_permission[9] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Create User
+                <input type="checkbox" name="create-user" {% if selected_user_permission[19] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Delete User
+                <input type="checkbox" name="delete-user" {% if selected_user_permission[20] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Desactivate
+                <input type="checkbox" name="desactivate-user" {% if selected_user_permission[21] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit User Permission
+                <input type="checkbox" name="edit-user-permission" {% if selected_user_permission[22] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Show Log
+                <input type="checkbox" name="show-log" {% if selected_user_permission[2] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Show All Modules
+                <input type="checkbox" name="show-all-modules" {% if selected_user_permission[23] %} checked {% endif %}>
+            </label><br>
+            <label>
+                On/Off Modules
+                <input type="checkbox" name="on-off-modules" {% if selected_user_permission[24] %} checked {% endif %}>
+            </label><br>
+            <label>
+                On/Off Maintenance Mode
+                <input type="checkbox" name="on-off-maintenance" {% if selected_user_permission[25] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Delete module
+                <input type="checkbox" name="delete-module" {% if selected_user_permission[26] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Add module
+                <input type="checkbox" name="add-module" {% if selected_user_permission[27] %} checked {% endif %}>
+            </label><br>
+            <button type="submit">Edit Permission</button>
         </form>
     </div>
     {% elif multiple_user_info %}
