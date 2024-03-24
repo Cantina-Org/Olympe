@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Cantina  - Olympe</h1>
-    <div id="data">
+    <div id="user-info">
         <p>
             Profil Picture: {% if user_information[7] == 0 %} Non {% else %} Oui {% endif %}<br>
             Username: {{ user_information[2] }}<br>
@@ -17,10 +17,10 @@
             A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé <button onclick="window.location.href='{{ url_for('double2FA_add') }}'">Ajouter la double authentification.</button> {% else %} Activé {% endif %}<br>
             Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
             Theme: {{ user_information[13] }}<br>
-            <button onclick="showForm()">Modifier les informations</button>
+            <button onclick="showUserForm()">Modifier les informations</button>
         </p>
     </div>
-    <div id="form" hidden>
+    <div id="user-info-form" hidden>
         <form method="post" action="#" enctype="multipart/form-data">
             {% if user_permission[6] %}
                 <label>
@@ -80,6 +80,9 @@
     <div id="link">
         {% if user_permission[9] %}
             <a href="{{ url_for('show_user') }}">Voir les comptes utilisateurs</a>
+        {% endif %}
+        {% if user_permission[14] or user_permission[15] or user_permission[16] or user_permission[17] or user_permission[18] %}
+            <br><a href="{{ url_for('global_permission') }}">Permission générale</a>
         {% endif %}
     </div>
 </body>

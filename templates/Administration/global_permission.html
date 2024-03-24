@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cantina - Olympe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/table.css') }}">
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/show_form_global_permission.js') }}"></script>
+</head>
+<body>
+    <h1>Cantina  - Olympe - Admin Mode</h1>
+    <a href="{{ url_for('home') }}">Global Permission</a>
+    <div>
+        <p id="global-permission">
+            Allow edit username: {{ permission[0] }}<br>
+            Allow edit password: {{ permission[1] }}<br>
+            Allow edit email: {{ permission[2] }}<br>
+            Allow edit profile picture: {{ permission[3] }}<br>
+            Allow edit A2F: {{ permission[4] }}<br>
+            {% if user_permission[14] or user_permission[15] or user_permission[16] or user_permission[17] or user_permission[18] %}
+                <button onclick="showGlobalPermissionForm()">Edit Global Permission</button>
+            {% endif %}
+        </p>
+        <form id="global-permission-form" method="post" action="#" hidden>
+            <br>
+            {% if user_permission[14] %}
+                <label>
+                    Allow edit username: <input type="checkbox" name="edit_username" {% if permission[0] %}checked{% endif %}><br>
+                </label>
+            {% else %}
+                Allow edit username: {{ permission[0] }}<br>
+            {% endif %}
+            {% if user_permission[15] %}
+                <label>
+                    Allow edit password: <input type="checkbox" name="edit_password" {% if permission[1] %}checked{% endif %}><br>
+                </label>
+            {% else %}
+                Allow edit password: {{ permission[1] }}<br>
+            {% endif %}
+            {% if user_permission[16] %}
+                <label>
+                    Allow edit email: <input type="checkbox" name="edit_email" {% if permission[2] %}checked{% endif %}><br>
+                </label>
+            {% else %}
+                Allow edit email: {{ permission[2] }}<br>
+            {% endif %}
+            {% if user_permission[17] %}
+                <label>
+                    Allow edit profile picture: <input type="checkbox" name="edit_profile_picture" {% if permission[3] %}checked{% endif %}><br>
+                </label>
+            {% else %}
+                Allow edit profile picture: {{ permission[3] }}<br>
+            {% endif %}
+            {% if user_permission[14] %}
+                <label>
+                    Allow edit A2F: <input type="checkbox" name="edit_a2f" {% if permission[4] %}checked{% endif %}><br>
+                </label>
+            {% else %}
+                Allow edit A2F: {{ permission[4] }}<br>
+            {% endif %}
+            {% if user_permission[14] or user_permission[15] or user_permission[16] or user_permission[17] or user_permission[18] %}
+                <button onclick="showGlobalPermissionForm()">Edit Global Permission</button>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>
