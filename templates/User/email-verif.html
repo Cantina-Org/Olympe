@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cantina - Olympe</title>
+</head>
+<body>
+    <h1>Cantina  - Olympe</h1>
+    {% if error == 1 %}
+        <h2>Erreur, le code n'est pas bon !</h2>
+    {% endif %}
+    <form method="post">
+        <label>
+            Code envoyé par mail
+            <input type="text" name="mail-code" required>
+        </label>
+        <button type="submit">Valider le code</button>
+    </form>
+</body>
+</html>
