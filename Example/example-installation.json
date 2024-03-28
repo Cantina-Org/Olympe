@@ -1,0 +1,11 @@
+{
+  "name": "test",
+  "url-repo": "https://matyu.fr/",
+  "guidelines": "#",
+  "configuration": [{
+    "input-name": [{
+      "type": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input",
+      "default-value": ""
+    }]
+  }]
+}

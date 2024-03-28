@@ -16,6 +16,7 @@ from Cogs.Administration.delete_user import delete_user_cogs
 from Cogs.Administration.add_user import add_user_cogs
 from Cogs.Administration.edit_user_permission import edit_user_permission_cogs
 from Cogs.Administration.global_permission import global_permission_cogs
+from Cogs.Administration.show_modules import show_modules_cogs
 
 
 from Utils.devtools.create_user import create_user
@@ -113,6 +114,11 @@ def delete_user():
 @app.route('/admin/permission/global', methods=['POST', 'GET'])
 def global_permission():
     return global_permission_cogs(database)
+
+
+@app.route('/admin/modules', methods=['POST', 'GET'])
+def show_modules():
+    return show_modules_cogs(database)
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])
