@@ -85,7 +85,7 @@
             <br><a href="{{ url_for('global_permission') }}">Permission générale</a>
         {% endif %}
         {% if user_permission[23] or user_permission[24] or user_permission[25] or user_permission[26] or user_permission[27] %}
-            <br><a href="{{ None }}">Gestion des modules</a>
+            <br><a href="{{ url_for('show_modules') }}">Gestion des modules</a>
         {% endif %}
     </div>
 </body>
