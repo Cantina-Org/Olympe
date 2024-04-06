@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cantina - Olympe</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/User/2FA-add.js') }}"></script>
+</head>
+<body>
+    <h1>Cantina  - Olympe</h1>
+    {% if error == 1 %}
+        <h2>Erreur, le code n'est pas bon !</h2>
+    {% endif %}
+    <div id="qrcode"></div>
+    <script type="application/javascript">
+        new QRCode(document.getElementById('qrcode'), '{{ totp_auth }}')
+    </script>
+    <form method="post">
+        <input type="hidden" value="{{ totp_auth }}" name="totp_auth">
+        <label>
+            Code générer par l'application
+            <input type="text" name="a2f-code" required>
+        </label>
+        <button type="submit">Valider le code</button>
+    </form>
+</body>
+</html>

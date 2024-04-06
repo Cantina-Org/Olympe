@@ -1,68 +1,135 @@
-from json import load
+from flask import Flask
+from flask_socketio import SocketIO
+from cantinaUtils import Database
 from os import path, getcwd
-from flask import Flask, request
-
-from Cogs.admin.add_user import add_user_cogs
-from Cogs.admin.home import home_admin_cogs
-from Cogs.admin.show_log import show_log_cogs
-from Cogs.admin.show_user import show_user_cogs
-from Cogs.home import home_cogs
-from Cogs.login import login_cogs
-from Cogs.my_account import my_account_cogs
-from Utils.database import DataBase
-
-app = Flask(__name__)
-conf_file = open(path.abspath(getcwd()) + "/config.json", 'r')
-config_data = load(conf_file)
-
-# Connection aux bases de données
-database = DataBase(user=config_data['database'][0]['database_username'],
-                    password=config_data['database'][0]['database_password'], host="localhost", port=3306)
-database.connection()
+from json import load
 
 
-# Redirection vers la fonction my_account().
-@app.route('/')
+from Cogs.SSO.login import sso_login_cogs
+from Cogs.User.home import user_home_cogs
+from Cogs.User.doublefa_add import doubleFA_add_cogs
+from Cogs.User.email_verif import email_verif_cogs
+
+from Cogs.Administration.show_user import show_user_cogs
+from Cogs.Administration.desactivate_user import desactivate_user_cogs
+from Cogs.Administration.delete_user import delete_user_cogs
+from Cogs.Administration.add_user import add_user_cogs
+from Cogs.Administration.edit_user_permission import edit_user_permission_cogs
+from Cogs.Administration.global_permission import global_permission_cogs
+from Cogs.Administration.show_modules import show_modules_cogs
+
+
+from Utils.devtools.create_user import create_user
+from Utils.devtools.recreate_db import recreate_db
+from Utils.devtools.clear_log import clear_log
+
+file_path = path.abspath(path.join(getcwd(), "config.json"))  # Trouver le chemin complet du fichier config.json
+
+# Lecture du fichier JSON
+with open(file_path, 'r') as file:
+    config_data = load(file)  # Ouverture du fichier config.json
+
+app = Flask(__name__)  # Création de l'application Flask
+socketio = SocketIO(app)  # Lien entre l'application Flaks et le WebSocket
+app.config['UPLOAD_FOLDER'] = path.abspath(path.join(getcwd(), "static/ProfilePicture/"))
+
+
+database = Database.DataBase(
+    user=config_data['database'][0]['username'],
+    password=config_data['database'][0]['password'],
+    host=config_data['database'][0]['address'],
+    port=config_data['database'][0]['port'],
+    database='cantina_administration'
+)  # Création de l'objet pour se connecter à la base de données via le module cantina
+database.connection()  # Connexion à la base de données
+
+database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.user(id INT PRIMARY KEY AUTO_INCREMENT, 
+token TEXT NOT NULL,  username TEXT NOT NULL, password TEXT NOT NULL, email TEXT NOT NULL, 
+picture BOOL DEFAULT false, email_verified BOOL DEFAULT FALSE, email_verification_code TEXT, 
+A2F BOOL DEFAULT FALSE, A2F_secret TEXT, last_connection DATE, admin BOOL DEFAULT FALSE, 
+desactivated BOOL DEFAULT FALSE, theme TEXT DEFAULT 'white')""", None)
+database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.config(id INT PRIMARY KEY AUTO_INCREMENT, 
+name TEXT, content TEXT)""", None)
+database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.modules(id INT PRIMARY KEY AUTO_INCREMENT, 
+name TEXT, fqdn TEXT, maintenance BOOL default FALSE, status INTEGER DEFAULT 0, socket_url TEXT)""", None)
+database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.permission(id INT PRIMARY KEY AUTO_INCREMENT,
+user_token TEXT NOT NULL, show_log BOOL DEFAULT FALSE, edit_username BOOL DEFAULT FALSE, edit_email BOOL DEFAULT FALSE, 
+edit_password BOOL DEFAULT FALSE, edit_profile_picture BOOL DEFAULT FALSE, edit_A2F BOOL DEFAULT FALSE, 
+edit_ergo BOOL DEFAULT FALSE, show_specific_account BOOL DEFAULT FALSE, edit_username_admin BOOL DEFAULT FALSE,
+edit_email_admin BOOL DEFAULT FALSE, edit_password_admin BOOL DEFAULT FALSE, 
+edit_profile_picture_admin BOOl DEFAULT FALSE, allow_edit_username BOOL DEFAULT FALSE, 
+allow_edit_email BOOL DEFAULT FALSE, allow_edit_password BOOL DEFAULT FALSE,
+allow_edit_profile_picture BOOL DEFAULT FALSE, allow_edit_A2F BOOL DEFAULT FALSE, create_user BOOL DEFAULT FALSE, 
+delete_account BOOL DEFAULT FALSE, desactivate_account BOOL DEFAULT FALSE, edit_permission BOOL DEFAULT FALSE, 
+show_all_modules BOOL DEFAULT FALSE, on_off_modules BOOL DEFAULT FALSE, on_off_maintenance BOOL DEFAULT FALSE, 
+delete_modules BOOL DEFAULT FALSE, add_modules BOOL DEFAULT FALSE, edit_name_module BOOL DEFAULT FALSE, 
+edit_url_module BOOL DEFAULT FALSE)""", None)
+database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.log(id INT PRIMARY KEY AUTO_INCREMENT, 
+    action_name TEXT, user_ip TEXT, user_token TEXT, details TEXT, log_level INT)""", None)
+
+# recreate_db(database)
+# create_user(database, 'matyu', 'LeMdPDeTest', 'test@test.com', 1, 1)
+# clear_log(database)
+
+
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return home_cogs(request, database)
+    return user_home_cogs(database, app.config['UPLOAD_FOLDER'])
 
 
-# Fonction permettant de voir les informations de son compte Cantina.
-@app.route('/account/my', methods=['GET', 'POST'])
-def my_account():
-    return my_account_cogs(request, database)
+@app.route('/2FA/add/', methods=['GET', 'POST'])
+def double2FA_add():
+    return doubleFA_add_cogs(database)
 
 
-@app.route('/login')
-def auth():
-    return login_cogs(request, database)
+@app.route('/email/verif/', methods=['GET', 'POST'])
+def email_verif():
+    return email_verif_cogs(database)
 
 
-# Fonction permettant de voire la page 'principale' du panel Admin de Cantina Cloud
-@app.route('/admin/home')
-def admin_home():
-    return home_admin_cogs(request, database)
+@app.route('/admin/user/', methods=['GET', 'POST'])
+def show_user():
+    return show_user_cogs(database, app.config['UPLOAD_FOLDER'])
 
 
-# Fonction permettant de visualiser les utilisateurs de Cantina Cloud
-@app.route('/admin/usermanager/')
-@app.route('/admin/usermanager/<user_name>')
-def admin_show_user(user_name=None):
-    return show_user_cogs(request, database, user_name)
+@app.route('/admin/user/add', methods=['GET', 'POST'])
+def add_user():
+    return add_user_cogs(database)
 
 
-# Fonction permettant de créer un utilisateur
-@app.route('/admin/add_user/', methods=['POST', 'GET'])
-def admin_add_user():
-    return add_user_cogs(request, database)
+@app.route('/admin/user/edit_permission', methods=['POST'])
+def edit_permission_user():
+    return edit_user_permission_cogs(database)
 
 
-# Fonction permettant de voire les logs générés par les systèmes Cantina
-@app.route('/admin/show_log/')
-@app.route('/admin/show_log/<log_id>')
-def admin_show_log(log_id=None):
-    return show_log_cogs(request, database, log_id)
+@app.route('/admin/user/desactivate', methods=['POST'])
+def desactivate_user():
+    return desactivate_user_cogs(database)
+
+
+@app.route('/admin/user/delete', methods=['POST'])
+def delete_user():
+    return delete_user_cogs(database)
+
+
+@app.route('/admin/permission/global', methods=['POST', 'GET'])
+def global_permission():
+    return global_permission_cogs(database)
+
+
+@app.route('/admin/modules', methods=['POST', 'GET'])
+def show_modules():
+    return show_modules_cogs(database)
+
+
+@app.route('/sso/login/', methods=['GET', 'POST'])
+def sso_login(error=0):
+    return sso_login_cogs(database, error)
 
 
 if __name__ == '__main__':
-    app.run(port=config_data["port"])
+    socketio.run(app,
+                 allow_unsafe_werkzeug=True,
+                 debug=config_data["modules"][0]["debug_mode"],
+                 port=config_data["modules"][0]["port"]
+                 )
