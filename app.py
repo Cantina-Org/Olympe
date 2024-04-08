@@ -10,18 +10,13 @@ from Cogs.User.home import user_home_cogs
 from Cogs.User.doublefa_add import doubleFA_add_cogs
 from Cogs.User.email_verif import email_verif_cogs
 
-from Cogs.Administration.show_user import show_user_cogs
-from Cogs.Administration.desactivate_user import desactivate_user_cogs
-from Cogs.Administration.delete_user import delete_user_cogs
-from Cogs.Administration.add_user import add_user_cogs
-from Cogs.Administration.edit_user_permission import edit_user_permission_cogs
-from Cogs.Administration.global_permission import global_permission_cogs
-from Cogs.Administration.show_modules import show_modules_cogs
-
-
-from Utils.devtools.create_user import create_user
-from Utils.devtools.recreate_db import recreate_db
-from Utils.devtools.clear_log import clear_log
+from Cogs.Administration.User.show_user import show_user_cogs
+from Cogs.Administration.User.desactivate_user import desactivate_user_cogs
+from Cogs.Administration.User.delete_user import delete_user_cogs
+from Cogs.Administration.User.add_user import add_user_cogs
+from Cogs.Administration.User.edit_user_permission import edit_user_permission_cogs
+from Cogs.Administration.User.global_permission import global_permission_cogs
+from Cogs.Administration.Modules.show_modules import show_modules_cogs
 
 file_path = path.abspath(path.join(getcwd(), "config.json"))  # Trouver le chemin complet du fichier config.json
 
