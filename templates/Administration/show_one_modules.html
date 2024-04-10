@@ -15,16 +15,16 @@
         Url: <a href="{{ modules_info[2] }}">{{ modules_info[2] }}</a><br>
         Maintenance: {% if modules_info[3] %}Oui{% else %}Non{% endif %}<br>
         Status: {{ modules_info[4] }}<br>
-        Url du Socket: {{ modules_info[5] }}<br>
+        Url du Socket: {{ modules_info[2] }}{{ modules_info[5] }}<br>
         <button onclick="showModuleEditForm()">Modifier les informations</button>
     </p>
     <form method="post" id="module-form" hidden>
         ID: {{ modules_info[0] }}<br>
-        Nom: {{ modules_info[1] }}<br>
-        Url: <a href="{{ modules_info[2] }}">{{ modules_info[2] }}</a><br>
+        Nom: {% if not user_permission[28] %}{{ modules_info[1] }}{% else %}<label><input type="text" name="module_name" value="{{ modules_info[1] }}"></label>{% endif %}<br>
+        Url: {% if not user_permission[29] %}<a href="{{ modules_info[2] }}">{{ modules_info[2] }}</a>{% else %}<label><input type="text" name="edit" value="{{ modules_info[2] }}"></label>{% endif %}<br>
         Maintenance: {% if modules_info[3] %}Oui{% else %}Non{% endif %}<br>
         Status: {{ modules_info[4] }}<br>
-        Url du Socket: {{ modules_info[5] }}<br>
+        Url du Socket: {% if not user_permission[30] %}{{ modules_info[2] }}{{ modules_info[5] }}{% else %}<label><input type="text" name="module_url" value="{{ modules_info[5] }}"></label>{% endif %}<br>
         <button>Valider les informations</button>
     </form>
 </body>
