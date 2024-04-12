@@ -12,10 +12,24 @@ def show_modules_cogs(database):
         if request.method == 'POST':
             try:
                 if user_permission[28] and request.form["module_name"]:
+                    edit_name = 1
+            except Exception as e:
+                print(e)
+                edit_name = 0
+
+            try:
+                if user_permission[29] and request.form["module_url"]:
                     edit_url = 1
             except Exception as e:
                 print(e)
                 edit_url = 0
+
+            try:
+                if user_permission[29] and request.form["module_url"]:
+                    edit_socket_url = 1
+            except Exception as e:
+                print(e)
+                edit_socket_url = 0
 
             return redirect(url_for('show_modules'))
         else:

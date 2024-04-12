@@ -1,6 +1,6 @@
 from Utils.verify_login import verify_login
 from flask import redirect, url_for, request
-from Utils.create_user import check_perm
+from Utils.Administration.User.create_user import check_perm
 
 
 def edit_user_permission_cogs(database):
