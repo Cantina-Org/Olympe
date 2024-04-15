@@ -26,10 +26,10 @@
                 {% for element in modules_info %}
                     <tr>
                         <th scope="row">{{ element[0] }}</th>
-                        <td>{{ element[1] }}</td>
                         <td>{{ element[2] }}</td>
-                        <td>{{ element[4] }}</td>
-                        <td><button onclick="window.location.href='{{ url_for('show_modules', module_name=element[1]) }}'">Plus d'info</button></td>
+                        <td>{{ element[3] }}</td>
+                        <td>{{ element[5] }}</td>
+                        <td><button onclick="window.location.href='{{ url_for('show_modules', module_name=element[2]) }}'">Plus d'info</button></td>
                     </tr>
                 {% endfor %}
             </tbody>

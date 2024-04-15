@@ -46,7 +46,7 @@ desactivated BOOL DEFAULT FALSE, theme TEXT DEFAULT 'white')""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.config(id INT PRIMARY KEY AUTO_INCREMENT, 
 name TEXT, content TEXT)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.modules(id INT PRIMARY KEY AUTO_INCREMENT, 
-name TEXT, fqdn TEXT, maintenance BOOL default FALSE, status INTEGER DEFAULT 0, 
+token TEXT, name TEXT, fqdn TEXT, maintenance BOOL default FALSE, status INTEGER DEFAULT 0, 
 socket_url TEXT DEFAULT '/socket/')""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.permission(id INT PRIMARY KEY AUTO_INCREMENT,
 user_token TEXT NOT NULL, show_log BOOL DEFAULT FALSE, edit_username BOOL DEFAULT FALSE, edit_email BOOL DEFAULT FALSE, 
