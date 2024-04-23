@@ -87,6 +87,9 @@
         {% if user_permission[23]%}
             <br><a href="{{ url_for('show_modules') }}">Gestion des modules</a>
         {% endif %}
+        {% if user_permission[31]%}
+            <br><a href="{{ url_for('smtp_config') }}">Configuration SMTP</a>
+        {% endif %}
     </div>
 </body>
 </html>

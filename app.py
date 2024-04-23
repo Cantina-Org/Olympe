@@ -16,6 +16,7 @@ from Cogs.Administration.User.delete_user import delete_user_cogs
 from Cogs.Administration.User.add_user import add_user_cogs
 from Cogs.Administration.User.edit_user_permission import edit_user_permission_cogs
 from Cogs.Administration.User.global_permission import global_permission_cogs
+from Cogs.Administration.User.smtp_config import smtp_config_cogs
 from Cogs.Administration.Modules.show_modules import show_modules_cogs
 
 file_path = path.abspath(path.join(getcwd(), "config.json"))  # Trouver le chemin complet du fichier config.json
@@ -59,7 +60,7 @@ allow_edit_profile_picture BOOL DEFAULT FALSE, allow_edit_A2F BOOL DEFAULT FALSE
 delete_account BOOL DEFAULT FALSE, desactivate_account BOOL DEFAULT FALSE, edit_permission BOOL DEFAULT FALSE, 
 show_all_modules BOOL DEFAULT FALSE, on_off_modules BOOL DEFAULT FALSE, on_off_maintenance BOOL DEFAULT FALSE, 
 delete_modules BOOL DEFAULT FALSE, add_modules BOOL DEFAULT FALSE, edit_name_module BOOL DEFAULT FALSE, 
-edit_url_module BOOL DEFAULT FALSE, edit_socket_url BOOL DEFAULT FALSE)""", None)
+edit_url_module BOOL DEFAULT FALSE, edit_socket_url BOOL DEFAULT FALSE, edit_smtp_config BOOL DEFAULT FALSE)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.log(id INT PRIMARY KEY AUTO_INCREMENT, 
     action_name TEXT, user_ip TEXT, user_token TEXT, details TEXT, log_level INT)""", None)
 
@@ -116,6 +117,11 @@ def global_permission():
 @app.route('/admin/modules', methods=['POST', 'GET'])
 def show_modules():
     return show_modules_cogs(database)
+
+
+@app.route('/admin/smtp/config', methods=['POST', 'GET'])
+def smtp_config():
+    return smtp_config_cogs(database)
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])

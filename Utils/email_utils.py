@@ -12,13 +12,13 @@ def send_verification_email(database):
                                 number_of_data=1)[0]
     conn_email = database.select('''SELECT content FROM cantina_administration.config WHERE name='SMTP_EMAIL' ''', None,
                                  number_of_data=1)[0]
-    conn_passwd = database.select('''SELECT content FROM cantina_administration.config WHERE name='SMTP_PASSWD' ''',
+    conn_passwd = database.select('''SELECT content FROM cantina_administration.config WHERE name='SMTP_PASSWORD' ''',
                                   None, number_of_data=1)[0]
 
-    subject = database.select('''SELECT content FROM cantina_administration.config WHERE name='MAIL_VERIF_SUBJECT' ''',
-                              None, number_of_data=1)[0]
-    message = database.select('''SELECT content FROM cantina_administration.config WHERE name='MAIL_VERIF_CONTENT' ''',
-                              None, number_of_data=1)[0]
+    subject = database.select('''SELECT content FROM cantina_administration.config WHERE 
+    name='MAIL_VERIFICATION_SUJET' ''', None, number_of_data=1)[0]
+    message = database.select('''SELECT content FROM cantina_administration.config WHERE 
+    name='MAIL_VERIFICATION_CONTENU' ''', None, number_of_data=1)[0]
     destinataire = database.select('''SELECT email FROM cantina_administration.user WHERE token = %s''',
                                    (request.cookies.get('token')), number_of_data=1)[0]
 
