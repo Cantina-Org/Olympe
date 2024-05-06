@@ -18,6 +18,7 @@ from Cogs.Administration.User.edit_user_permission import edit_user_permission_c
 from Cogs.Administration.User.global_permission import global_permission_cogs
 from Cogs.Administration.User.smtp_config import smtp_config_cogs
 from Cogs.Administration.Modules.show_modules import show_modules_cogs
+from Cogs.Administration.Modules.add_modules import add_modules_cogs
 
 file_path = path.abspath(path.join(getcwd(), "config.json"))  # Trouver le chemin complet du fichier config.json
 
@@ -117,6 +118,11 @@ def global_permission():
 @app.route('/admin/modules', methods=['POST', 'GET'])
 def show_modules():
     return show_modules_cogs(database)
+
+
+@app.route('/admin/modules/add', methods=['POST', 'GET'])
+def add_modules():
+    return add_modules_cogs(database)
 
 
 @app.route('/admin/smtp/config', methods=['POST', 'GET'])
