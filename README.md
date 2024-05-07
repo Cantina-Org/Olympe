@@ -24,7 +24,7 @@ Remplisser le fichier `config.json` avec ça:
     "username": "db_database",
     "password": "db_password",
     "address": "db_address",
-    "port": 1
+    "port": 3306
   }],
   "modules": [{
     "name": "olympe",
