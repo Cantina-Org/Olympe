@@ -4,24 +4,22 @@
     <meta charset="UTF-8">
     <title>Cantina - Olympe</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/table.css') }}">
-    <script type="application/javascript" src="{{ url_for('static', filename='JS/show_edit_user_form.js') }}"></script>
-    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/desactivate_account.js') }}"></script>
-    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/delete_account.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/Modules/show_file_input.js') }}"></script>
 </head>
 <body>
     <h1>Cantina  - Olympe - Admin Mode</h1>
     <a href="{{ url_for('show_modules') }}">Show modules</a>
      <form method="post">
          <div id="step-1">
-             <label>
-                 <input list="modules" placeholder="Module à installer">
-                 <datalist id="modules">
-                     <option value="Néphélées">
-                     <option value="Hermes">
-                     <option value="Autre">
-                 </datalist>
+             <label id="modules-name-select">
+                 <select id="modules-name" name="modules" onchange="">
+                     <option value="" selected disabled>--Please choose an option--</option>
+                     <option value="Néphélées">Néphélées</option>
+                     <option value="Hermes">Hermes</option>
+                     <option value="Autre">Autre</option>
+                 </select>
              </label>
-             <label>
+             <label id="modules-name-file">
                  <input type="file" name="file-input">
              </label>
              <button type="button">Séléctionner le modules</button>
