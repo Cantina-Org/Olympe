@@ -24,7 +24,7 @@ Remplisser le fichier `config.json` avec ça:
     "username": "db_database",
     "password": "db_password",
     "address": "db_address",
-    "port": 1
+    "port": 3306
   }],
   "modules": [{
     "name": "olympe",
@@ -34,7 +34,7 @@ Remplisser le fichier `config.json` avec ça:
   }]
 }
 ``` 
-Compléter les champs de la catégorie `database` avec les identifiants de votre base de données.
+Compléter les champs de la catégorie `database` avec les identifiants de votre base de données de teste.
 
 ### Étapes 4:
 Lancer le fichier `app.py` via votre éditeur de code. (Vous devez exécuter le fichier depuis le dossier du projet). 
