@@ -15,5 +15,16 @@ function create_form() {
         }
         fr.readAsText(files.item(0));
         console.log(config)
+    } else if (files.length === 0 && modules_name.value === "Autre") {
+        alert('Problem in file maybe file isn\'t uploaded to webpage')
+    } else if (modules_name.value !== "Autre") {
+        fetch(`file:///Users/matyu/Code/Cantina/Olympe/Example/${modules_name.value.toLowerCase()}-install-file.json`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(response => console.log(JSON.stringify(response)))
     }
 }
