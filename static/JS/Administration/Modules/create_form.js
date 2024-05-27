@@ -18,10 +18,12 @@ function create_form() {
     } else if (files.length === 0 && modules_name.value === "Autre") {
         alert('Problem in file maybe file isn\'t uploaded to webpage')
     } else if (modules_name.value !== "Autre") {
-        fetch(`file:///Users/matyu/Code/Cantina/Olympe/Example/${modules_name.value.toLowerCase()}-install-file.json`, {
+        fetch(`https://matyu.fr/cantina/Olympe/${modules_name.value.toLowerCase()}-install-file.json`, {
             method: 'GET',
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Allow': "GET, POST, HEAD",
+                'Access-Control-Allow-Origin': '*'
             }
         })
             .then(response => response.json())
