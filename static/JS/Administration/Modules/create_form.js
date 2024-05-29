@@ -20,10 +20,9 @@ function create_form() {
     } else if (modules_name.value !== "Autre") {
         fetch(`https://matyu.fr/cantina/Olympe/${modules_name.value.toLowerCase()}-install-file.json`, {
             method: 'GET',
+            mode: "cors",
             headers: {
                 'Accept': 'application/json',
-                'Allow': "GET, POST, HEAD",
-                'Access-Control-Allow-Origin': '*'
             }
         })
             .then(response => response.json())
