@@ -1,23 +1,23 @@
-var config = 'ee';
+let config;
 
 function create_form() {
     let files = document.getElementById('file-input').files;
     let modules_name = document.getElementById('modules-name');
 
-    if (files.length !== 0 && modules_name.value === "Autre") {
+    if (files.length !== 0 && modules_name.value === "autre") {
         let fr = new FileReader();
 
         fr.onload = async function(e) {
             console.log(e);
             let result = JSON.parse(e.target.result);
             config = JSON.stringify(result, null, 2);
-            console.log(config)
+            // console.log(config)
         }
         fr.readAsText(files.item(0));
         console.log(config)
     } else if (files.length === 0 && modules_name.value === "Autre") {
         alert('Problem in file maybe file isn\'t uploaded to webpage')
-    } else if (modules_name.value !== "Autre") {
+    } else if (modules_name.value !== "autre") {
         fetch(`https://matyu.fr/cantina/Olympe/${modules_name.value.toLowerCase()}-install-file.json`, {
             method: 'GET',
             mode: "cors",
