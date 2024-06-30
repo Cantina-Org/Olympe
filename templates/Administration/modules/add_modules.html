@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cantina - Olympe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/table.css') }}">
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/Modules/show_file_input.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/Modules/create_form.js') }}"></script>
+</head>
+<body>
+    <h1>Cantina  - Olympe - Admin Mode</h1>
+    <a href="{{ url_for('show_modules') }}">Show modules</a>
+     <form method="post">
+         <div id="step-1">
+             <label id="modules-name-select">
+                 <select id="modules-name" name="modules" onchange="show_file_input()">
+                     <option value="" selected disabled>--Please choose an option--</option>
+                     <option value="nephelees">Néphélées</option>
+                     <option value="hermes">Hermes</option>
+                     <option value="example">Exemple</option>
+                     <option value="autre">Autre</option>
+                 </select>
+             </label>
+             <label id="modules-name-file" hidden="hidden">
+                 <input type="file" name="file-input" id="file-input">
+             </label>
+             <button type="button" onclick="create_form()">Séléctionner le modules</button>
+         </div>
+     </form>
+</body>
+</html>

@@ -1,6 +1,6 @@
 from flask import request, redirect, url_for, render_template
 from cantinaUtils.verify_login import verify_login
-from Utils.check_global_permission_edit import check_perm
+from Utils.Administration.User.check_global_permission_edit import check_perm
 
 
 def global_permission_cogs(database):

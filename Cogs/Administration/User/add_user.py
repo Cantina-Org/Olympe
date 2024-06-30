@@ -1,4 +1,4 @@
-from Utils.create_user import create_user
+from Utils.Administration.User.create_user import create_user
 from Utils.verify_login import verify_login
 from flask import redirect, url_for, request, render_template
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cantina - Olympe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/table.css') }}">
+    <script src="{{ url_for('static', filename='JS/Administration/show_form_smtp_edit.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/edit_input_size.js') }}"></script>
+</head>
+<body>
+    <h1>Cantina  - Olympe - Admin Mode</h1>
+    <a href="{{ url_for('home') }}">Home</a><br>
+    <p id="smtp-data">
+        {% for element in smtp_info %}
+            {{ element[1].replace("_", " ").lower() }} : {{ element[2] }}<br>
+        {% endfor %}
+        {% if user_permission[31] %}
+            <button onclick="showSMTPEditForm()">Modifier les informations</button>
+        {% endif %}
+    </p>
+    <form method="post" id="smtp-form" hidden>
+        {% for element in smtp_info %}
+            {{ element[1].replace("_", " ").lower() }} :
+            <label>
+                {% if element[1].startswith('MAIL_') %}
+                    <textarea oninput="edit_input_size(this)" name="{{ element[1] }}">{{ element[2] }}</textarea>
+                {% else %}
+                    <input size="{{ element[2].length }}" oninput="edit_input_size(this)" type="{% if element[1].endswith('EMAIL') %}email{% else %}text{% endif %}" value="{{ element[2] }}" name="{{ element[1] }}">
+                {% endif %}
+            </label><br>
+        {% endfor %}
+        <button>Valider les informations</button>
+    </form>
+</body>
+</html>

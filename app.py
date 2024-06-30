@@ -10,18 +10,15 @@ from Cogs.User.home import user_home_cogs
 from Cogs.User.doublefa_add import doubleFA_add_cogs
 from Cogs.User.email_verif import email_verif_cogs
 
-from Cogs.Administration.show_user import show_user_cogs
-from Cogs.Administration.desactivate_user import desactivate_user_cogs
-from Cogs.Administration.delete_user import delete_user_cogs
-from Cogs.Administration.add_user import add_user_cogs
-from Cogs.Administration.edit_user_permission import edit_user_permission_cogs
-from Cogs.Administration.global_permission import global_permission_cogs
-from Cogs.Administration.show_modules import show_modules_cogs
-
-
-from Utils.devtools.create_user import create_user
-from Utils.devtools.recreate_db import recreate_db
-from Utils.devtools.clear_log import clear_log
+from Cogs.Administration.User.show_user import show_user_cogs
+from Cogs.Administration.User.desactivate_user import desactivate_user_cogs
+from Cogs.Administration.User.delete_user import delete_user_cogs
+from Cogs.Administration.User.add_user import add_user_cogs
+from Cogs.Administration.User.edit_user_permission import edit_user_permission_cogs
+from Cogs.Administration.User.global_permission import global_permission_cogs
+from Cogs.Administration.User.smtp_config import smtp_config_cogs
+from Cogs.Administration.Modules.show_modules import show_modules_cogs
+from Cogs.Administration.Modules.add_modules import add_modules_cogs
 
 file_path = path.abspath(path.join(getcwd(), "config.json"))  # Trouver le chemin complet du fichier config.json
 
@@ -51,7 +48,8 @@ desactivated BOOL DEFAULT FALSE, theme TEXT DEFAULT 'white')""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.config(id INT PRIMARY KEY AUTO_INCREMENT, 
 name TEXT, content TEXT)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.modules(id INT PRIMARY KEY AUTO_INCREMENT, 
-name TEXT, fqdn TEXT, maintenance BOOL default FALSE, status INTEGER DEFAULT 0, socket_url TEXT)""", None)
+token TEXT, name TEXT, fqdn TEXT, maintenance BOOL default FALSE, status INTEGER DEFAULT 0, 
+socket_url TEXT DEFAULT '/socket/')""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.permission(id INT PRIMARY KEY AUTO_INCREMENT,
 user_token TEXT NOT NULL, show_log BOOL DEFAULT FALSE, edit_username BOOL DEFAULT FALSE, edit_email BOOL DEFAULT FALSE, 
 edit_password BOOL DEFAULT FALSE, edit_profile_picture BOOL DEFAULT FALSE, edit_A2F BOOL DEFAULT FALSE, 
@@ -63,7 +61,7 @@ allow_edit_profile_picture BOOL DEFAULT FALSE, allow_edit_A2F BOOL DEFAULT FALSE
 delete_account BOOL DEFAULT FALSE, desactivate_account BOOL DEFAULT FALSE, edit_permission BOOL DEFAULT FALSE, 
 show_all_modules BOOL DEFAULT FALSE, on_off_modules BOOL DEFAULT FALSE, on_off_maintenance BOOL DEFAULT FALSE, 
 delete_modules BOOL DEFAULT FALSE, add_modules BOOL DEFAULT FALSE, edit_name_module BOOL DEFAULT FALSE, 
-edit_url_module BOOL DEFAULT FALSE)""", None)
+edit_url_module BOOL DEFAULT FALSE, edit_socket_url BOOL DEFAULT FALSE, edit_smtp_config BOOL DEFAULT FALSE)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.log(id INT PRIMARY KEY AUTO_INCREMENT, 
     action_name TEXT, user_ip TEXT, user_token TEXT, details TEXT, log_level INT)""", None)
 
@@ -120,6 +118,16 @@ def global_permission():
 @app.route('/admin/modules', methods=['POST', 'GET'])
 def show_modules():
     return show_modules_cogs(database)
+
+
+@app.route('/admin/modules/add', methods=['POST', 'GET'])
+def add_modules():
+    return add_modules_cogs(database)
+
+
+@app.route('/admin/smtp/config', methods=['POST', 'GET'])
+def smtp_config():
+    return smtp_config_cogs(database)
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])

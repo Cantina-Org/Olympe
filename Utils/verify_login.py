@@ -27,4 +27,4 @@ def verify_A2F(database):
     except BadRequestKeyError:
         key = totp.TOTP(database.select('''SELECT A2F_secret FROM cantina_administration.user WHERE token=%s''',
                                         (request.cookies.get('token')), number_of_data=1)[0])
-    return key.verify(request.form['a2f-code'].replace(" ", ""))
+    return key.verify(request.form['2fa-code'].replace(" ", ""))
