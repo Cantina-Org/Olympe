@@ -10,7 +10,8 @@ def add_modules_cogs(database):
             return redirect(url_for('home'))
 
         if request.method == 'GET':
-            return render_template('Administration/modules/add_modules.html')
+            return render_template('Administration/disabled_feature.html')
+            # return render_template('Administration/modules/add_modules.html')
 
     elif verify_login(database) == 'desactivated':
         return redirect(url_for('sso_login', error='2'))
