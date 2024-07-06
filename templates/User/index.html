@@ -91,5 +91,11 @@
             <br><a href="{{ url_for('smtp_config') }}">Configuration SMTP</a>
         {% endif %}
     </div>
+
+    <div id="portal"><br>
+        {% for element in modules_info %}
+            <a href="{{ element[3] }}" target="_blank">{{ element[2] }}</a><br>
+        {% endfor %}
+    </div>
 </body>
 </html>
