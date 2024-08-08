@@ -23,9 +23,10 @@ def user_home_cogs(database, upload_path):
         # Récupération des permission de l'utilisateur
         user_permission = database.select("""SELECT * FROM cantina_administration.permission WHERE user_token = %s""",
                                           (request.cookies.get('token')), 1)
+        modules_info = database.select("""SELECT * FROM cantina_administration.modules""", None)
 
         return render_template('User/index.html', user_information=user_information,
-                               user_permission=user_permission)
+                               user_permission=user_permission, modules_info=modules_info)
 
     elif request.method == 'POST':
         try:
