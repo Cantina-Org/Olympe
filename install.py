@@ -22,9 +22,24 @@ def create_user():
     allow_edit_password, allow_edit_profile_picture, allow_edit_A2F, create_user, delete_account, desactivate_account, 
     edit_permission, show_all_modules, on_off_modules, on_off_maintenance, delete_modules, add_modules) VALUES (%s, %s, 
     %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s)""",
-                  (token, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
+                   (token, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
+
+    secret_token = sha256(PasswordHasher().hash(token).encode())
+
     con.commit()
     return token
+
+
+def create_config():
+    token = str(uuid3(uuid1(), str(uuid1())))  # Génération d'un token unique
+    secret_token = sha256(PasswordHasher().hash(token).encode())
+    cursor.execute("""INSERT INTO cantina_administration.config(name, content) VALUES (%s, %s)""",
+                   ("secret_token", secret_token))
+    perm_list = ["edit_username", "edit_password", "edit_email", "edit_profile_picture", "edit_a2f", "SMTP_URL",
+                 "SMTP_PORT", "SMTP_EMAIL", "SMTP_PASSWORD", "MAIL_VERIFICATION_SUJET", "MAIL_VERIFICATION_CONTENU"]
+    for element in perm_list:
+        cursor.execute("""INSERT INTO cantina_administration.config(name, content) VALUES (%s, %s)""",
+                       (element, 0))
 
 
 CRED = '\033[91m'
@@ -72,7 +87,6 @@ print(CRED +
       "----------------------------------------------------------------------------------------------------------------"
       "--------------------------------------------------------" + CEND
       )
-
 
 print("Identifiants de connexion aux bases de données: ")
 database_username = input("    Nom d'utilisateur: ")
@@ -137,6 +151,7 @@ password = input("    Mots de passe: ")
 email = input("     Email: ")
 
 create_user()
+create_config()
 
 print(CRED +
       "----------------------------------------------------------------------------------------------------------------"
@@ -158,20 +173,19 @@ print(CRED +
       "--------------------------------------------------------" + CEND
       )
 
-
 json_data = {
-  "database": [{
-    "username": database_username,
-    "password": database_password,
-    "address": database_host,
-    "port": int(database_port)
-  }],
-  "modules": [{
-    "name": "olympe",
-    "port": port,
-    "maintenance": False,
-    "debug_mode": False
-  }]
+    "database": [{
+        "username": database_username,
+        "password": database_password,
+        "address": database_host,
+        "port": int(database_port)
+    }],
+    "modules": [{
+        "name": "olympe",
+        "port": port,
+        "maintenance": False,
+        "debug_mode": False
+    }]
 }
 
 with open("/home/cantina/Olympe/config.json", "w") as outfile:
