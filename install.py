@@ -20,11 +20,10 @@ def create_user():
     edit_password, edit_profile_picture, edit_A2F, edit_ergo, show_specific_account, edit_username_admin, 
     edit_email_admin, edit_password_admin, edit_profile_picture_admin, allow_edit_username, allow_edit_email, 
     allow_edit_password, allow_edit_profile_picture, allow_edit_A2F, create_user, delete_account, desactivate_account, 
-    edit_permission, show_all_modules, on_off_modules, on_off_maintenance, delete_modules, add_modules) VALUES (%s, %s, 
-    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s)""",
-                   (token, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
-
-    secret_token = sha256(PasswordHasher().hash(token).encode())
+    edit_permission, show_all_modules, on_off_modules, on_off_maintenance, delete_modules, add_modules, 
+    edit_name_module, edit_url_module, edit_socket_url, edit_smtp_config) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 
+    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s)""",
+                   (token, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
     con.commit()
     return token
