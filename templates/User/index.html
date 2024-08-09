@@ -13,7 +13,7 @@
             Username: {{ user_information[2] }}<br>
             Password: ••••••••••••••••<br>
             Email: {{ user_information[4] }}<br>
-            Email verified: {% if not user_information[5] or user_information[5] == 0 %} Non {% if user_information[4] %}<button onclick="window.location.href='{{ url_for('email_verif') }}'">Vérifier mon email.</button>{% endif %}  {% else %} Oui {% endif %} <br>
+            Email verified: {% if not user_information[6] or user_information[6] == 0 %} Non {% if user_information[4] %}<button onclick="window.location.href='{{ url_for('email_verif') }}'">Vérifier mon email.</button>{% endif %}  {% else %} Oui {% endif %} <br>
             A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé <button onclick="window.location.href='{{ url_for('double2FA_add') }}'">Ajouter la double authentification.</button> {% else %} Activé {% endif %}<br>
             Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
             Theme: {{ user_information[13] }}<br>
