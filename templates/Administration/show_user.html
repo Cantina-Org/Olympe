@@ -123,6 +123,10 @@
                 On/Off Maintenance Mode: {{ selected_user_permission[25] }}<br>
                 Delete module: {{ selected_user_permission[26] }}<br>
                 Add module: {{ selected_user_permission[27] }}<br>
+                Edit module name: {{ selected_user_permission[28] }}<br>
+                Edit module url: {{ selected_user_permission[29] }}<br>
+                Edit socket url: {{ selected_user_permission[30] }}<br>
+                Edit SMTP config: {{ selected_user_permission[31] }}<br>
                 {% if user_permission[22] and user_info[1] != request.cookies.get('token')%}
                     <button onclick="showPermissionForm()">Modifier les permissions</button>
                 {% endif %}
@@ -246,6 +250,22 @@
             <label>
                 Add module
                 <input type="checkbox" name="add-module" {% if selected_user_permission[27] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit module name
+                <input type="checkbox" name="edit-module-name" {% if selected_user_permission[28] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit module url
+                <input type="checkbox" name="edit-module-url" {% if selected_user_permission[29] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit socket url
+                <input type="checkbox" name="edit-socket-url" {% if selected_user_permission[30] %} checked {% endif %}>
+            </label><br>
+            <label>
+                Edit SMTP config
+                <input type="checkbox" name="edit-smtp-config" {% if selected_user_permission[31] %} checked {% endif %}>
             </label><br>
             <button type="submit">Edit Permission</button>
         </form>
