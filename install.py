@@ -98,8 +98,8 @@ while database_password == '' or database_username == '' or database_host == '' 
     print("Merci de rentrer des valeurs!")
     database_username = input("    Nom d'utilisateur: ")
     database_password = input("    Mots de passe: ")
-    database_host = input("     Adresse: ")
-    database_port = input("     Port: ")
+    database_host = input("    Adresse: ")
+    database_port = input("    Port: ")
 
 try:
     con = connect(user=database_username, password=database_password, host=database_host, port=int(database_port))
@@ -148,7 +148,7 @@ print("Nous allons donc créer un premier compte administrateur.")
 
 username = input("    Nom d'utilisateur: ")
 password = input("    Mots de passe: ")
-email = input("     Email: ")
+email = input("    Email: ")
 
 create_user()
 create_config()

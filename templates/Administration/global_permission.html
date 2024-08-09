@@ -24,35 +24,35 @@
             <br>
             {% if user_permission[14] %}
                 <label>
-                    Allow edit username: <input type="checkbox" name="edit_username" {% if permission[0] %}checked{% endif %}><br>
+                    Allow edit username: <input type="checkbox" name="edit_username" {% if permission[0] != '0' %}checked{% endif %}><br>
                 </label>
             {% else %}
                 Allow edit username: {{ permission[0] }}<br>
             {% endif %}
             {% if user_permission[15] %}
                 <label>
-                    Allow edit password: <input type="checkbox" name="edit_password" {% if permission[1] %}checked{% endif %}><br>
+                    Allow edit password: <input type="checkbox" name="edit_password" {% if permission[1] != '0' %}checked{% endif %}><br>
                 </label>
             {% else %}
                 Allow edit password: {{ permission[1] }}<br>
             {% endif %}
             {% if user_permission[16] %}
                 <label>
-                    Allow edit email: <input type="checkbox" name="edit_email" {% if permission[2] %}checked{% endif %}><br>
+                    Allow edit email: <input type="checkbox" name="edit_email" {% if permission[2] != '0' %}checked{% endif %}><br>
                 </label>
             {% else %}
                 Allow edit email: {{ permission[2] }}<br>
             {% endif %}
             {% if user_permission[17] %}
                 <label>
-                    Allow edit profile picture: <input type="checkbox" name="edit_profile_picture" {% if permission[3] %}checked{% endif %}><br>
+                    Allow edit profile picture: <input type="checkbox" name="edit_profile_picture" {% if permission[3] != '0' %}checked{% endif %}><br>
                 </label>
             {% else %}
                 Allow edit profile picture: {{ permission[3] }}<br>
             {% endif %}
             {% if user_permission[14] %}
                 <label>
-                    Allow edit A2F: <input type="checkbox" name="edit_a2f" {% if permission[4] %}checked{% endif %}><br>
+                    Allow edit A2F: <input type="checkbox" name="edit_a2f" {% if permission[4] != '0' %}checked{% endif %}><br>
                 </label>
             {% else %}
                 Allow edit A2F: {{ permission[4] }}<br>
