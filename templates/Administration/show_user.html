@@ -19,7 +19,7 @@
                 <button type="button" class="btn btn-primary" onclick="delete_account()">Supprimer le compte</button>
             </form>
         {% endif %}
-        {% if user_permission[21] %}
+        {% if user_permission[21] and user_info[1] != request.cookies.get('token') %}
             <form action="{{ url_for('desactivate_user') }}" method="post" id="desactivate_account">
                 <input type='hidden' name='token_to_desactivate' value="{{ user_info[1] }}"/>
                 {% if not user_info[12] or user_info[12] == 0 %}
