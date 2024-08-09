@@ -82,6 +82,7 @@ system("sudo usermod -a -G cantina cantina")
 system("git clone https://github.com/Cantina-Org/Olympe /home/cantina/Olympe")
 system("python3 -m venv /home/cantina/Olympe/venv")
 system('/home/cantina/Olympe/venv/bin/pip install -r /home/cantina/Olympe/requirements.txt')
+system('sudo mkdir /home/cantina/Olympe/static/ProfilePicture')
 
 print(CRED +
       "----------------------------------------------------------------------------------------------------------------"
