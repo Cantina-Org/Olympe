@@ -60,6 +60,7 @@ if "Debian" in os_info.version:
     print("Système Debian détecté.")
     system("sudo adduser cantina --system")
     system("sudo addgroup cantina")
+    system("sudo apt install python3-venv")
 else:
     distrib_check = input(
         "Votre système est:\n     1: Basé sur Debian\n     2: Basé sur Arch\n     3: Basé sur Red Hat\n")
@@ -79,8 +80,8 @@ else:
 
 system("sudo usermod -a -G cantina cantina")
 system("git clone https://github.com/Cantina-Org/Olympe /home/cantina/Olympe")
-system("python -m venv /home/cantina/Olympe/venv")
-system('/home/cantina/Olympe/venv/bin/pip install -r requirements.txt')
+system("python3 -m venv /home/cantina/Olympe/venv")
+system('/home/cantina/Olympe/venv/bin/pip install -r /home/cantina/Olympe/requirements.txt')
 
 print(CRED +
       "----------------------------------------------------------------------------------------------------------------"
