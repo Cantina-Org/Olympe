@@ -168,11 +168,18 @@ print(CRED +
 
 print("Sur quel port local souhaitez-vous utiliser Cantina Olympe ?")
 port = input("Port : ")
+print("Sur quel domaine internet souhaitez-vous utiliser Cantina Olympe ?")
+domain = input("Domaine internet : ")
 
 print(CRED +
       "----------------------------------------------------------------------------------------------------------------"
       "--------------------------------------------------------" + CEND
       )
+
+
+cursor.execute('''INSERT INTO cantina_administration.modules(token, name, fqdn) VALUES (%s, 'olympe', %s)''',
+               (str(uuid3(uuid1(), str(uuid1()))), domain))
+con.commit()
 
 json_data = {
     "database": [{

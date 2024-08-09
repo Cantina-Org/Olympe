@@ -4,12 +4,10 @@ from cantinaUtils import Database
 from os import path, getcwd
 from json import load
 
-
 from Cogs.SSO.login import sso_login_cogs
 from Cogs.User.home import user_home_cogs
 from Cogs.User.doublefa_add import doubleFA_add_cogs
 from Cogs.User.email_verif import email_verif_cogs
-
 from Cogs.Administration.User.show_user import show_user_cogs
 from Cogs.Administration.User.desactivate_user import desactivate_user_cogs
 from Cogs.Administration.User.delete_user import delete_user_cogs
