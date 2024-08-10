@@ -82,6 +82,7 @@ system("sudo usermod -a -G cantina cantina")
 system("git clone https://github.com/Cantina-Org/Olympe /home/cantina/Olympe")
 system("python3 -m venv /home/cantina/Olympe/venv")
 system('/home/cantina/Olympe/venv/bin/pip install -r /home/cantina/Olympe/requirements.txt')
+system('sudo mkdir /home/cantina/Olympe/static/ProfilePicture')
 
 print(CRED +
       "----------------------------------------------------------------------------------------------------------------"
@@ -98,8 +99,8 @@ while database_password == '' or database_username == '' or database_host == '' 
     print("Merci de rentrer des valeurs!")
     database_username = input("    Nom d'utilisateur: ")
     database_password = input("    Mots de passe: ")
-    database_host = input("     Adresse: ")
-    database_port = input("     Port: ")
+    database_host = input("    Adresse: ")
+    database_port = input("    Port: ")
 
 try:
     con = connect(user=database_username, password=database_password, host=database_host, port=int(database_port))
@@ -148,7 +149,7 @@ print("Nous allons donc créer un premier compte administrateur.")
 
 username = input("    Nom d'utilisateur: ")
 password = input("    Mots de passe: ")
-email = input("     Email: ")
+email = input("    Email: ")
 
 create_user()
 create_config()
@@ -167,11 +168,18 @@ print(CRED +
 
 print("Sur quel port local souhaitez-vous utiliser Cantina Olympe ?")
 port = input("Port : ")
+print("Sur quel domaine internet souhaitez-vous utiliser Cantina Olympe ?")
+domain = input("Domaine internet : ")
 
 print(CRED +
       "----------------------------------------------------------------------------------------------------------------"
       "--------------------------------------------------------" + CEND
       )
+
+
+cursor.execute('''INSERT INTO cantina_administration.modules(token, name, fqdn) VALUES (%s, 'olympe', %s)''',
+               (str(uuid3(uuid1(), str(uuid1()))), domain))
+con.commit()
 
 json_data = {
     "database": [{

@@ -6,15 +6,22 @@
 </head>
 <body>
     <h1>Cantina  - Olympe</h1>
-    {% if error == 1 %}
-        <h2>Erreur, le code n'est pas bon !</h2>
+    <a href="{{ url_for('home') }}">accueil</a>
+    {% if  error == 0 or error == 1 %}
+        {% if error == 1 %}
+            <p>Erreur, le code n'est pas bon !</p>
+        {% endif %}
+        <form method="post">
+            <label>
+                Code envoyé par mail
+                <input type="text" name="mail-code" required>
+            </label>
+            <button type="submit">Valider le code</button>
+        </form>
+    {% elif error == 2 %}
+        <p>Attention ! La configuration du serveur SMTP n'est pas complète !!</p>
+    {% elif error == 3 %}
+        <p>Attention ! La configuration des messages n'est pas complète !!</p>
     {% endif %}
-    <form method="post">
-        <label>
-            Code envoyé par mail
-            <input type="text" name="mail-code" required>
-        </label>
-        <button type="submit">Valider le code</button>
-    </form>
 </body>
 </html>

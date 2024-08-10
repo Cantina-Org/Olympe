@@ -1,3 +1,5 @@
+from logging import error
+
 from flask import request, render_template, redirect, url_for
 from Utils.email_utils import send_verification_email
 from Utils.verify_login import verify_login
@@ -26,5 +28,12 @@ def email_verif_cogs(database):
             return render_template('User/email-verif.html', error=1)
 
     elif request.method == 'GET':  # Si l'utilisateur visite juste la page
-        send_verification_email(database)  # Envoie du mail avec le code
-        return render_template('User/email-verif.html')
+        email = send_verification_email(database)  # Envoie du mail avec le code
+        if email == "success":
+            return render_template('User/email-verif.html', error=0)
+        elif email.startswith("error1"):
+            return render_template('User/email-verif.html', error=2)
+        elif email.startswith("error2"):
+            return render_template('User/email-verif.html', error=3)
+        elif email == "already_check":
+            return redirect(url_for("home"))
