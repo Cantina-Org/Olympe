@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Cantina - Olympe</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script type="application/javascript" src={{ url_for('static', filename='JS/show_edit_user_form.js') }}></script>
 </head>
 <body>
-    <h1>Cantina  - Olympe</h1>
+    {% include "PlaceHolder/sidebar.html" %}
+    <main class="p-4 md:ml-64 h-auto pt-20 min-h-screen">
     <div id="user-info">
         <p>
             Profil Picture: {% if user_information[7] == 0 %} Non {% else %} Oui {% endif %}<br>
@@ -77,25 +80,11 @@
         </form>
     </div>
 
-    <div id="link">
-        {% if user_permission[9] %}
-            <a href="{{ url_for('show_user') }}">Voir les comptes utilisateurs</a>
-        {% endif %}
-        {% if user_permission[14] or user_permission[15] or user_permission[16] or user_permission[17] or user_permission[18] %}
-            <br><a href="{{ url_for('global_permission') }}">Permission générale</a>
-        {% endif %}
-        {% if user_permission[23]%}
-            <br><a href="{{ url_for('show_modules') }}">Gestion des modules</a>
-        {% endif %}
-        {% if user_permission[31]%}
-            <br><a href="{{ url_for('smtp_config') }}">Configuration SMTP</a>
-        {% endif %}
-    </div>
-
     <div id="portal"><br>
         {% for element in modules_info %}
             <a href="{{ element[3] }}" target="_blank">{{ element[2] }}</a><br>
         {% endfor %}
     </div>
+    </main>
 </body>
 </html>

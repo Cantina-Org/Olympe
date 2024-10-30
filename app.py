@@ -5,6 +5,7 @@ from os import path, getcwd
 from json import load
 
 from Cogs.SSO.login import sso_login_cogs
+from Cogs.SSO.logout import sso_logout_cogs
 from Cogs.User.home import user_home_cogs
 from Cogs.User.doublefa_add import doubleFA_add_cogs
 from Cogs.User.email_verif import email_verif_cogs
@@ -131,6 +132,10 @@ def smtp_config():
 @app.route('/sso/login/', methods=['GET', 'POST'])
 def sso_login(error=0):
     return sso_login_cogs(database, error)
+
+@app.route('/sso/logout', methods=['GET'])
+def sso_logout():
+    return sso_logout_cogs()
 
 
 if __name__ == '__main__':
