@@ -14,7 +14,6 @@ def global_permission_cogs(database):
                                           (request.cookies.get('token')), number_of_data=1)
         if request.method == 'POST':
             for i in ['edit_username', 'edit_password', 'edit_email', 'edit_profile_picture', 'edit_a2f']:
-                print(i, check_perm(i))
                 database.exec(f'''UPDATE cantina_administration.permission SET {i} = %s''', (check_perm(i)))
                 database.exec('''UPDATE cantina_administration.config SET content = %s WHERE name = %s''',
                               (check_perm(i), i))
