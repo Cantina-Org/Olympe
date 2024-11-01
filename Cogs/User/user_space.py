@@ -23,9 +23,11 @@ def user_space_cogs(database, upload_path):
         # Récupération des permission de l'utilisateur
         user_permission = database.select("""SELECT * FROM cantina_administration.permission WHERE user_token = %s""",
                                           (request.cookies.get('token')), 1)
+        # On récupère les modules afin de pouvoir faire une redirection sur la page via la sidebar
+        modules_info = database.select("""SELECT * FROM cantina_administration.modules""", None)
 
         return render_template('User/user_space.html', user_information=user_information,
-                               user_permission=user_permission)
+                               user_permission=user_permission, modules_info=modules_info)
 
     elif request.method == 'POST':
         try:

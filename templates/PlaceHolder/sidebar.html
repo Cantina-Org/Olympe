@@ -11,7 +11,7 @@
         </div>
         <ul class="menu space-y-2">
             <li>
-                <a href="{{ url_for("home") }}" class="flex items-center p-2 hover:bg-base-content/20">
+                <a href="{{ url_for("home") }}" class="flex items-center p-2 hover:bg-base-content/20 {% if request.path == url_for('home') %}active{% endif %}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="flex-shrink-0 w-6 h-6 transition duration-75"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                         <path d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
@@ -20,7 +20,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url_for("user_space") }}" class="flex items-center p-2 ">
+                <a href="{{ url_for("user_space") }}" class="flex items-center p-2 {% if request.path == url_for('user_space') %}active{% endif %}">
                     <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
                         <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
@@ -33,7 +33,7 @@
             <ul class="menu pt-5 mt-5 space-y-2 border-primary border-t">
                 {% if user_permission[9] %}
                     <li>
-                        <a href="{{ url_for('show_user') }}" class="flex items-center">
+                        <a href="{{ url_for('show_user') }}" class="flex items-center p-2 {% if request.path == url_for('show_user') %}active{% endif %}">
                             <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
@@ -46,7 +46,7 @@
                 {% endif %}
                 {% if user_permission[14] or user_permission[15] or user_permission[16] or user_permission[17] or user_permission[18]  %}
                     <li>
-                        <a href="{{ url_for('global_permission') }}" class="flex items-center p-2 ">
+                        <a href="{{ url_for('global_permission') }}" class="flex items-center p-2 {% if request.path == url_for('global_permission') %}active{% endif %}">
                             <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
@@ -59,7 +59,7 @@
                 {% endif %}
                 {% if user_permission[23]  %}
                     <li>
-                        <a href="{{ url_for('show_modules') }}" class="flex items-center p-2 ">
+                        <a href="{{ url_for('show_modules') }}" class="flex items-center p-2 {% if request.path == url_for('show_modules') %}active{% endif %}">
                             <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
@@ -72,7 +72,7 @@
                 {% endif %}
                 {% if user_permission[31]  %}
                     <li>
-                        <a href="{{ url_for('smtp_config') }}" class="flex items-center p-2 ">
+                        <a href="{{ url_for('smtp_config') }}" class="flex items-center p-2 {% if request.path == url_for('smtp_config') %}active{% endif %}">
                             <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
