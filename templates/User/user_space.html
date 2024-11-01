@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cantina - Olympe</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="application/javascript" src={{ url_for('static', filename='JS/show_edit_user_form.js') }}></script>
+</head>
+<body>
+    {% include "PlaceHolder/sidebar.html" %}
+    <main class="p-4 md:ml-64 h-auto pt-20 min-h-screen">
+        <div id="user-info">
+            <p>
+                Profil Picture: {% if user_information[7] == 0 %} Non {% else %} Oui {% endif %}<br>
+                Username: {{ user_information[2] }}<br>
+                Password: ••••••••••••••••<br>
+                Email: {{ user_information[4] }}<br>
+                Email verified: {% if not user_information[6] or user_information[6] == 0 %} Non {% if user_information[4] %}<button onclick="window.location.href='{{ url_for('email_verif') }}'">Vérifier mon email.</button>{% endif %}  {% else %} Oui {% endif %} <br>
+                A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé <button onclick="window.location.href='{{ url_for('double2FA_add') }}'">Ajouter la double authentification.</button> {% else %} Activé {% endif %}<br>
+                Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
+                Theme: {{ user_information[13] }}<br>
+                <button onclick="showUserForm()">Modifier les informations</button>
+            </p>
+        </div>
+        <div id="user-info-form" hidden>
+            <form method="post" action="#" enctype="multipart/form-data">
+                {% if user_permission[6] %}
+                    <label>
+                        Profil Picture:
+                        <input type="file" accept="image/*" name="profile_picture"><br>
+                    </label>
+                {% else %}
+                    Profil Picture: {{ user_information[7] }}<br>
+                {% endif %}
+                {% if user_permission[3] %}
+                    <label>
+                        Username:
+                        <input type="text" value="{{ user_information[2] }}" name="username">
+                    </label><br>
+                {% else %}
+                    Username: {{ user_information[2] }}<br>
+                {% endif %}
+                {% if user_permission[5] %}
+                    <label>
+                        Password:
+                        <input type="password" placeholder="••••••••••••••••" name="password1">
+                    </label>
+                    <label>
+                        Confirm Password:
+                        <input type="password" placeholder="••••••••••••••••" name="password2">
+                    </label><br>
+                {% else %}
+                    Password: ••••••••••••••••<br>
+                {% endif %}
+                {% if user_permission[4] %}
+                    <label>
+                        Email:
+                        <input type="email" value="{{ user_information[4] }}" name="email">
+                    </label><br>
+                {% else %}
+                    Email: {{ user_information[4] }}<br>
+                {% endif %}
+                Email verified: {% if not user_information[5] or user_information[5] == 0 %} Non {% else %} Oui {% endif %}<br>
+                A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
+                Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
+                {% if user_permission[8] %}
+                    <label>
+                        Theme:
+                        <input list="theme" value="{{ user_information[13] }}" name="theme">
+                        <datalist id="theme">
+                            <option name="white">White</option>
+                            <option name="dark">Dark</option>
+                        </datalist>
+                    </label><br>
+                {% else %}
+                    Theme: {{ user_information[13] }}<br>
+                {% endif %}
+                <button type="submit">Modifier</button>
+            </form>
+        </div>
+
+        <div id="portal"><br>
+            {% for element in modules_info %}
+                <a href="{{ element[3] }}" target="_blank">{{ element[2] }}</a><br>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

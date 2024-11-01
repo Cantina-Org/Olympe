@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from os import path
 
 
-def user_home_cogs(database, upload_path):
+def user_space_cogs(database, upload_path):
     # Verification si l'utilisateur est connecté
     if not verify_login(database):
         return redirect(url_for('sso_login', error='0'))
@@ -25,10 +25,10 @@ def user_home_cogs(database, upload_path):
                                           (request.cookies.get('token')), 1)
         modules_info = database.select("""SELECT * FROM cantina_administration.modules""", None)
 
-        return render_template('User/index.html', user_information=user_information,
+        return render_template('User/user_space.html', user_information=user_information,
                                user_permission=user_permission, modules_info=modules_info)
 
-    """elif request.method == 'POST':
+    elif request.method == 'POST':
         try:
             if request.form['username'] != user_information[2]:
                 # Modification de l'username après vérification qu'il ai changé
@@ -77,4 +77,4 @@ def user_home_cogs(database, upload_path):
                               (request.cookies.get('token')))
 
         return redirect(url_for('home'))
-        """
+        
