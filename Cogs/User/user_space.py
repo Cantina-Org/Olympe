@@ -23,10 +23,9 @@ def user_space_cogs(database, upload_path):
         # Récupération des permission de l'utilisateur
         user_permission = database.select("""SELECT * FROM cantina_administration.permission WHERE user_token = %s""",
                                           (request.cookies.get('token')), 1)
-        modules_info = database.select("""SELECT * FROM cantina_administration.modules""", None)
 
         return render_template('User/user_space.html', user_information=user_information,
-                               user_permission=user_permission, modules_info=modules_info)
+                               user_permission=user_permission)
 
     elif request.method == 'POST':
         try:
@@ -76,5 +75,5 @@ def user_space_cogs(database, upload_path):
                 database.exec('''UPDATE cantina_administration.user SET picture = 1 WHERE token = %s''',
                               (request.cookies.get('token')))
 
-        return redirect(url_for('home'))
+        return redirect(url_for('user_space'))
         

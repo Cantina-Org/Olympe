@@ -1,9 +1,5 @@
 from Utils.verify_login import verify_login
 from flask import redirect, url_for, request, render_template
-from argon2 import PasswordHasher, exceptions
-from werkzeug.exceptions import BadRequestKeyError
-from werkzeug.utils import secure_filename
-from os import path
 
 
 def user_home_cogs(database, upload_path):

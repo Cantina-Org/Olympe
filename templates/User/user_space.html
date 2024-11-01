@@ -10,25 +10,100 @@
 <body>
     {% include "PlaceHolder/sidebar.html" %}
     <main class="p-4 md:ml-64 h-auto pt-20 min-h-screen">
-        <div id="user-info">
-            <p>
-                Profil Picture: {% if user_information[7] == 0 %} Non {% else %} Oui {% endif %}<br>
-                Username: {{ user_information[2] }}<br>
-                Password: ••••••••••••••••<br>
-                Email: {{ user_information[4] }}<br>
-                Email verified: {% if not user_information[6] or user_information[6] == 0 %} Non {% if user_information[4] %}<button onclick="window.location.href='{{ url_for('email_verif') }}'">Vérifier mon email.</button>{% endif %}  {% else %} Oui {% endif %} <br>
-                A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé <button onclick="window.location.href='{{ url_for('double2FA_add') }}'">Ajouter la double authentification.</button> {% else %} Activé {% endif %}<br>
-                Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
-                Theme: {{ user_information[13] }}<br>
-                <button onclick="showUserForm()">Modifier les informations</button>
-            </p>
+        <div class="card card-side bg-base-100 shadow-xl" id="user-info">
+            <figure class="px-4 py-4">
+                <div class="w-48 h-full">
+                    <img
+                        class="w-full h-full rounded-lg object-contain"
+                        src="{% if user_information[7] == 0 %}
+                            {{ url_for('static', filename='ProfilePicture/general-logo.png') }}
+                            {% else %}
+                            {{ url_for('static', filename='ProfilePicture/'+user_information[1]+'.png') }}
+                            {% endif %}"
+                        alt="profile_picture"
+                    />
+                </div>
+            </figure>
+            <div class="card-body">
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Nom d'utilisateur</div>
+                    <div class="font-semibold">{{ user_information[2] }}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Mot de passe</div>
+                    <div class="font-semibold">••••••••••••••••</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Email</div>
+                    <div class="font-semibold">{{user_information[4]}}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Authetification à deux facteurs</div>
+                    <div class="font-semibold">{{user_information[4]}}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Thème</div>
+                    <div class="font-semibold">{{user_information[13]}}</div>
+                </div>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-primary" onclick="showUserForm()">Modifier mes informations</button>
+                </div>
+            </div>
         </div>
-        <div id="user-info-form" hidden>
-            <form method="post" action="#" enctype="multipart/form-data">
+
+        <div class="card card-side bg-base-100 shadow-xl" id="user-info-form" hidden="hidden">
+            <figure class="px-4 py-4">
+                <div class="w-48 h-full">
+                    <img
+                        class="w-full h-full rounded-lg object-contain"
+                        src="{% if user_information[7] == 0 %}
+                            {{ url_for('static', filename='ProfilePicture/general-logo.png') }}
+                            {% else %}
+                            {{ url_for('static', filename='ProfilePicture/'+user_information[1]+'.png') }}
+                            {% endif %}"
+                        alt="profile_picture"
+                    />
+                </div>
+            </figure>
+            <div class="card-body">
+                {% if user_permission[3] %}
+                    <label>
+                        Username:
+                        <input type="text" value="{{ user_information[2] }}" name="username">
+                    </label><br>
+                {% else %}
+                    <div class="bg-base-200 p-4 rounded-lg">
+                        <div class="text-sm opacity-70 mb-1">Nom d'utilisateur</div>
+                        <div class="font-semibold">{{ user_information[2] }}</div>
+                    </div>
+                {% endif %}
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Mot de passe</div>
+                    <div class="font-semibold">••••••••••••••••</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Email</div>
+                    <div class="font-semibold">{{user_information[4]}}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Authetification à deux facteurs</div>
+                    <div class="font-semibold">{{user_information[4]}}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Thème</div>
+                    <div class="font-semibold">{{user_information[13]}}</div>
+                </div>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-primary" onclick="showUserForm()">Modifier mes informations</button>
+                </div>
+            </div>
+        </div>
+        <div hidden>
+            <form method="post" action="{{ url_for('user_space') }}" enctype="multipart/form-data">
                 {% if user_permission[6] %}
                     <label>
                         Profil Picture:
-                        <input type="file" accept="image/*" name="profile_picture"><br>
+                        <input type="file" accept="image/png" name="profile_picture"><br>
                     </label>
                 {% else %}
                     Profil Picture: {{ user_information[7] }}<br>
@@ -78,12 +153,6 @@
                 {% endif %}
                 <button type="submit">Modifier</button>
             </form>
-        </div>
-
-        <div id="portal"><br>
-            {% for element in modules_info %}
-                <a href="{{ element[3] }}" target="_blank">{{ element[2] }}</a><br>
-            {% endfor %}
         </div>
     </main>
 </body>
