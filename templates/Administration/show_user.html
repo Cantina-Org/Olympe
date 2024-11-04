@@ -1,308 +1,366 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="{{ local_user_theme[0] }}">
 <head>
     <meta charset="UTF-8">
     <title>Cantina - Olympe</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/table.css') }}">
     <script type="application/javascript" src="{{ url_for('static', filename='JS/show_edit_user_form.js') }}"></script>
     <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/desactivate_account.js') }}"></script>
     <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/delete_account.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1>Cantina  - Olympe - Admin Mode</h1>
-    {% if user_info %}
-        <a href="{{ url_for('show_user') }}">All users</a>
+    {% include "PlaceHolder/sidebar.html" %}
+    <main class="p-4 md:ml-64 h-auto pt-20 min-h-screen">
+        {% if selected_user_info %}
+            <div id="button-bar" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Premier bouton -->
+                <div class="w-full">
+                    <button onclick="window.location.href='{{ url_for('show_user') }}'" class="btn btn-primary w-full">
+                        Tout les utilisateurs
+                    </button>
+                </div>
 
-        {% if user_permission[20] %}
-            <form action="{{ url_for('delete_user') }}" method="post" id="delete_account">
-                <input type='hidden' name='token_to_delete' value="{{ user_info[1] }}"/>
-                <button type="button" class="btn btn-primary" onclick="delete_account()">Supprimer le compte</button>
-            </form>
-        {% endif %}
-        {% if user_permission[21] and user_info[1] != request.cookies.get('token') %}
-            <form action="{{ url_for('desactivate_user') }}" method="post" id="desactivate_account">
-                <input type='hidden' name='token_to_desactivate' value="{{ user_info[1] }}"/>
-                {% if not user_info[12] or user_info[12] == 0 %}
-                    <button type="button" class="btn btn-primary" onclick="desactivate_account(1)">Désactiver le compte</button>
-                {% elif user_info[12] == 1 %}
-                    <button type="button" class="btn btn-primary" onclick="desactivate_account(0)">Réactiver le compte</button>
+                <!-- Deuxième bouton (conditionnel) -->
+                {% if user_permission[20] %}
+                    <div class="w-full">
+                        <form action="{{ url_for('delete_user') }}" method="post" id="delete_account" class="w-full">
+                            <input type='hidden' name='token_to_delete' value="{{ selected_user_info[1] }}"/>
+                            <button type="button" class="btn btn-primary w-full" onclick="delete_account()">
+                                Supprimer le compte
+                            </button>
+                        </form>
+                    </div>
                 {% endif %}
-            </form>
-        {% endif %}
-        <div id="data">
-            <p id="user-info">
-                Profil Picture: {% if user_info[7] == 0 %} Non {% else %} Oui {% endif %}<br>
-                Username: {{ user_info[2] }}<br>
-                Password: ••••••••••••••••<br>
-                Email: {{ user_info[4] }}<br>
-                Email verified: {% if not user_info[5] or user_info[5] == 0 %} Non {% else %} Oui {% endif %} <br>
-                A2F: {% if not user_info[8] or user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
-                Desactivated: {% if not user_info[12] or user_info[12] == 0 %} Non {% else %} Oui {% endif %}<br>
-                Theme: {{ user_info[13] }}<br>
-                {% if user_permission[10] == 1 or user_permission[11] == 1 or user_permission[12] == 1 or user_permission[13] == 1 %}
-                    <button onclick="showUserForm()">Modifier les informations</button>
+
+                <!-- Troisième bouton (conditionnel) -->
+                {% if user_permission[21] and selected_user_info[1] != request.cookies.get('token') %}
+                    <div class="w-full">
+                        <form action="{{ url_for('desactivate_user') }}" method="post" id="desactivate_account" class="w-full">
+                            <input type='hidden' name='token_to_desactivate' value="{{ selected_user_info[1] }}"/>
+                            {% if not selected_user_info[12] or selected_user_info[12] == 0 %}
+                                <button type="button" class="btn btn-primary w-full" onclick="desactivate_account(1)">
+                                    Désactiver le compte
+                                </button>
+                            {% elif selected_user_info[12] == 1 %}
+                                <button type="button" class="btn btn-primary w-full" onclick="desactivate_account(0)">
+                                    Réactiver le compte
+                                </button>
+                            {% endif %}
+                        </form>
+                    </div>
                 {% endif %}
-            </p>
-            <form method="post" action="#" enctype="multipart/form-data" id="user-info-form" hidden>
-            <br>
-                <input type="hidden" value="{{ user_info[1] }}" name="token">
-                {% if user_permission[13] %}
-                    <label>
-                        Profil Picture:
-                        <input type="file" accept="image/*" name="profile_picture"><br>
-                    </label>
-                {% else %}
-                    Profil Picture: {{ user_info[7] }}<br>
-                {% endif %}
-                {% if user_permission[10] %}
-                    <label>
-                        Username:
-                        <input type="text" value="{{ user_info[2] }}" name="username">
-                    </label><br>
-                {% else %}
-                    Username: {{ user_info[2] }}<br>
-                {% endif %}
-                {% if user_permission[12] %}
-                    <label>
-                        Password:
-                        <input type="password" placeholder="••••••••••••••••" name="password1">
-                    </label>
-                    <label>
-                        Confirm Password:
-                        <input type="password" placeholder="••••••••••••••••" name="password2">
-                    </label><br>
-                {% else %}
-                    Password: ••••••••••••••••<br>
-                {% endif %}
-                {% if user_permission[11] %}
-                    <label>
-                        Email:
-                        <input type="email" value="{{ user_info[4] }}" name="email">
-                    </label><br>
-                {% else %}
-                    Email: {{ user_info[4] }}<br>
-                {% endif %}
-                Email verified: {% if not user_info[5] or user_info[5] == 0 %} Non {% else %} Oui {% endif %}<br>
-                A2F: {% if not user_info[8] or user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
-                Desactivated: {% if not user_info[12] or user_info[12] == 0 %} Non {% else %} Oui {% endif %}<br>
-                Theme: {{ user_info[13] }}<br>
-                <button type="submit">Valider</button>
-            </form>
+            </div>
+            <div class="card card-side bg-base-100 shadow-xl" id="user-info">
+                <figure class="px-4 py-4">
+                    <div class="w-48 h-full">
+                        <img
+                            class="w-full h-full rounded-lg object-contain"
+                            src="{% if selected_user_info[7] == 0 %}
+                                {{ url_for('static', filename='ProfilePicture/general-logo.png') }}
+                                {% else %}
+                                {{ url_for('static', filename='ProfilePicture/'+selected_user_info[1]+'.png') }}
+                                {% endif %}"
+                            alt="profile_picture"
+                        />
+                    </div>
+                </figure>
+            <div class="card-body">
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Nom d'utilisateur</div>
+                    <div class="font-semibold">{{ selected_user_info[2] }}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Mot de passe</div>
+                    <div class="font-semibold">••••••••••••••••</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Email</div>
+                    <div class="font-semibold">{{selected_user_info[4]}}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Authetification à deux facteurs</div>
+                    <div class="font-semibold">{% if not selected_user_info[8] or selected_user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Thème</div>
+                    <div class="font-semibold">{{ selected_user_info[13] }}</div>
+                </div>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-primary" onclick="showUserForm()">Modifier les modifications du comptes</button>
+                </div>
+            </div>
         </div>
-        <div id="form">
-            <br>
-            <p id="user-permission">
-                <span style="text-decoration: underline; font-weight: bold">Permission</span><br>
-                <span style="text-decoration: underline">User Perm</span><br>
-                Edit Username: {{ selected_user_permission[3] }}<br>
-                Edit Email: {{ selected_user_permission[4] }}<br>
-                Edit Password: {{ selected_user_permission[5] }}<br>
-                Edit Profile Picture: {{ selected_user_permission[6] }}<br>
-                Edit A2F: {{ selected_user_permission[7] }}<br>
-                Edit Theme: {{ selected_user_permission[8] }}<br>
-                <span style="text-decoration: underline">Administration</span><br>
-                Admin: {{ user_info[11] }}<br>
-                Edit Username Admin: {{ selected_user_permission[10] }}<br>
-                Edit Email Admin: {{ selected_user_permission[11] }}<br>
-                Edit Password Admin: {{ selected_user_permission[12] }}<br>
-                Edit Profile Picture Admin: {{ selected_user_permission[13] }}<br>
-                Edit A2F Admin: soon<br>
-                On/Off edit username: {{ selected_user_permission[14] }}<br>
-                On/Off edit email: {{ selected_user_permission[15] }}<br>
-                On/Off edit password: {{ selected_user_permission[16] }}<br>
-                On/Off edit Profile Picture: {{ selected_user_permission[17] }}<br>
-                Allow edit A2F: {{ selected_user_permission[18] }}<br>
-                Show all user: {{ selected_user_permission[9] }}<br>
-                Create User: {{ selected_user_permission[19] }}<br>
-                Delete User: {{ selected_user_permission[20] }}<br>
-                Desactivate User: {{ selected_user_permission[21] }}<br>
-                Edit User Permission: {{ selected_user_permission[22] }}<br>
-                Show Log: {{ selected_user_permission[2] }}<br>
-                Show All Modules: {{ selected_user_permission[23] }}<br>
-                On/Off Modules: {{ selected_user_permission[24] }}<br>
-                On/Off Maintenance Mode: {{ selected_user_permission[25] }}<br>
-                Delete module: {{ selected_user_permission[26] }}<br>
-                Add module: {{ selected_user_permission[27] }}<br>
-                Edit module name: {{ selected_user_permission[28] }}<br>
-                Edit module url: {{ selected_user_permission[29] }}<br>
-                Edit socket url: {{ selected_user_permission[30] }}<br>
-                Edit SMTP config: {{ selected_user_permission[31] }}<br>
-                {% if user_permission[22] and user_info[1] != request.cookies.get('token')%}
-                    <button onclick="showPermissionForm()">Modifier les permissions</button>
-                {% endif %}
-        </p>
 
-        <form method="post" action="{{ url_for('edit_permission_user') }}" enctype="multipart/form-data" id="user-permission-form" hidden>
-            <input type="hidden" value="{{ user_info[1] }}" name="token">
+        <div class="card card-side bg-base-100 shadow-xl" id="user-info-form" hidden="hidden">
+            <figure class="px-4 py-4">
+                <div class="w-48 h-full">
+                    <img
+                        class="w-full h-full rounded-lg object-contain"
+                        src="{% if selected_user_info[7] == 0 %}
+                            {{ url_for('static', filename='ProfilePicture/general-logo.png') }}
+                            {% else %}
+                            {{ url_for('static', filename='ProfilePicture/'+selected_user_info[1]+'.png') }}
+                            {% endif %}"
+                        alt="profile_picture"
+                    />
+                </div>
+            </figure>
+            <div class="card-body">
+                <form method="post" action="#" enctype="multipart/form-data">
+                    <div style="gap: .5rem !important;">
+                        <input type="hidden" value="{{ selected_user_info[1] }}" name="token">
+                        {% if user_permission[3] %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Nom d'utilisateur</div>
+                                <div class="font-semibold">
+                                    <label>
+                                        <input type="text" value="{{ selected_user_info[2] }}" name="username" class="input w-full max-w-xs">
+                                    </label>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Nom d'utilisateur</div>
+                                <div class="font-semibold">{{ selected_user_info[2] }}</div>
+                            </div>
+                        {% endif %}
+                        <hr style="height:.5rem; visibility:hidden;" />
+                        {% if selected_user_info[5] %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Mot de passe</div>
+                                <div class="font-semibold">
+                                    <label>
+                                        <input type="password" placeholder="••••••••••••••••" name="password1" class="input w-full max-w-xs">
+                                    </label>
+                                </div>
+                            </div>
+                            <hr style="height:.5rem; visibility:hidden;" />
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Confirmation du mot de passe</div>
+                                <div class="font-semibold">
+                                    <label>
+                                        <input type="password" placeholder="••••••••••••••••" name="password2" class="input w-full max-w-xs">
+                                    </label>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Mot de passe</div>
+                                <div class="font-semibold">••••••••••••••••</div>
+                            </div>
+                        {% endif %}
+                        <hr style="height:.5rem; visibility:hidden;" />
+                        {% if selected_user_info[4] %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Email</div>
+                                <div class="font-semibold">
+                                    <label>
+                                        <input type="email" value="{{ selected_user_info[4] }}" name="email" class="input w-full max-w-xs">
+                                    </label>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Email</div>
+                                <div class="font-semibold">{{selected_user_info[4]}}</div>
+                            </div>
+                        {% endif %}
+                        <hr style="height:.5rem; visibility:hidden;" />
+                        <div class="bg-base-200 p-4 rounded-lg">
+                            <div class="text-sm opacity-70 mb-1">Authetification à deux facteurs</div>
+                            <div class="font-semibold">{% if not selected_user_info[8] or selected_user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}</div>
+                        </div>
+                        <hr style="height:.5rem; visibility:hidden;" />
+                        {% if selected_user_info[8] %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <label for="theme-select" class="text-sm opacity-70 mb-1 block">Thème</label>
+                                <select id="theme-select" name="theme" class="select select-bordered w-full max-w-xs">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                    <option value="cupcake">Cupcake</option>
+                                    <option value="bumblebee">Bumblebee</option>
+                                    <option value="emerald">Emerald</option>
+                                    <option value="corporate">Corporate</option>
+                                    <option value="synthwave">Synthwave</option>
+                                    <option value="retro">Retro</option>
+                                    <option value="cyberpunk">Cyberpunk</option>
+                                    <option value="valentine">Valentine</option>
+                                    <option value="halloween">Halloween</option>
+                                    <option value="garden">Garden</option>
+                                    <option value="forest">Forest</option>
+                                    <option value="aqua">Aqua</option>
+                                    <option value="lofi">Lofi</option>
+                                    <option value="pastel">Pastel</option>
+                                    <option value="fantasy">Fantasy</option>
+                                    <option value="wireframe">Wireframe</option>
+                                    <option value="black">Black</option>
+                                    <option value="luxury">Luxury</option>
+                                    <option value="dracula">Dracula</option>
+                                    <option value="cmyk">CMYK</option>
+                                    <option value="autumn">Autumn</option>
+                                    <option value="business">Business</option>
+                                    <option value="acid">Acid</option>
+                                    <option value="lemonade">Lemonade</option>
+                                    <option value="night">Night</option>
+                                    <option value="coffee">Coffee</option>
+                                    <option value="winter">Winter</option>
+                                    <option value="dim">Dim</option>
+                                    <option value="nord">Nord</option>
+                                    <option value="sunset">Sunset</option>
+                                </select>
+                            </div>
+                        {% else %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Thème</div>
+                                <div class="font-semibold">{{selected_user_info[13]}}</div>
+                            </div>
+                        {% endif %}
+                        <hr style="height:.5rem; visibility:hidden;" />
+                        <div class="card-actions justify-end">
+                            <button class="btn btn-primary" type="submit">Valider les modifications du comptes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% set permissions = [
+            ('Permissions Utilisateur', [
+                ('edit_username', 'Modifier son nom d\'utilisateur'),
+                ('edit_email', 'Modifier son email'),
+                ('edit_password', 'Modifier son mot de passe'),
+                ('edit_profile_picture', 'Modifier sa photo de profil'),
+                ('edit_A2F', 'Modifier sa 2FA'),
+                ('edit_ergo', 'Modifier son thème')
+            ]),
+            ('Administration Utilisateurs', [
+                ('user_admin', 'Droits administrateur'),
+                ('edit_username_admin', 'Modifier nom d\'utilisateur (Admin)'),
+                ('edit_email_admin', 'Modifier email (Admin)'),
+                ('edit_password_admin', 'Modifier mot de passe (Admin)'),
+                ('edit_profile_picture_admin', 'Modifier photo de profil (Admin)')
+            ]),
+            ('Gestion des Fonctionnalités', [
+                ('allow_edit_username', 'Activer modif. nom d\'utilisateur'),
+                ('allow_edit_email', 'Activer modif. email'),
+                ('allow_edit_password', 'Activer modif. mot de passe'),
+                ('allow_edit_profile_picture', 'Activer modif. photo de profil'),
+                ('allow_edit_A2F', 'Autoriser modif. 2FA')
+            ]),
+            ('Gestion des Utilisateurs', [
+                ('create_user', 'Créer un utilisateur'),
+                ('delete_account', 'Supprimer un utilisateur'),
+                ('desactivate_account', 'Désactiver un utilisateur'),
+            ]),
+            ('Modules et Maintenance', [
+                ('show_log', 'Voir les logs'),
+                ('show_all_modules', 'Voir tous les modules'),
+                ('on_off_modules', 'Activer/Désactiver modules'),
+                ('on_off_maintenance', 'Mode maintenance'),
+                ('delete_modules', 'Supprimer un module'),
+                ('add_modules', 'Ajouter un module')
+            ]),
+            ('Configuration Système', [
+                ('edit_name_module', 'Modifier nom du module'),
+                ('edit_url_module', 'Modifier URL du module'),
+                ('edit_socket_url', 'Modifier URL socket'),
+                ('edit_smtp_config', 'Modifier config SMTP')
+            ])
+        ] %}
 
-            <span style="text-decoration: underline; font-weight: bold">Permission</span><br>
-            <span style="text-decoration: underline">User Perm</span><br>
-            <label>
-                Edit Username
-                <input type="checkbox" name="edit-username" {% if selected_user_permission[3] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit Email
-                <input type="checkbox" name="edit-email" {% if selected_user_permission[4] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit Password
-                <input type="checkbox" name="edit-password" {% if selected_user_permission[5] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit Profile Picture
-                <input type="checkbox" name="edit-profile-picture" {% if selected_user_permission[6] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit A2F
-                <input type="checkbox" name="edit-a2f" {% if selected_user_permission[7] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit Theme
-                <input type="checkbox" name="edit-theme" {% if selected_user_permission[8] %} checked {% endif %}>
-            </label><br>
-
-            <span style="text-decoration: underline">Administration</span><br>
-            <label>
-                Admin
-                <input type="checkbox" name="user-admin" {% if user_info[11] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit Username Admin
-                <input type="checkbox" name="edit-username-admin" {% if selected_user_permission[10] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit Email Admin
-                <input type="checkbox" name="edit-email-admin" {% if selected_user_permission[11] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit Password Admin
-                <input type="checkbox" name="edit-password-admin" {% if selected_user_permission[12] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit Profile Picture Admin
-                <input type="checkbox" name="edit-profile-picture-admin" {% if selected_user_permission[13] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit A2F Admin
-                soon
-            </label><br>
-            <label>
-                On/Off edit username
-                <input type="checkbox" name="allow-edit-username" {% if selected_user_permission[14] %} checked {% endif %}>
-            </label><br>
-            <label>
-                On/Off edit email
-                <input type="checkbox" name="allow-edit-email" {% if selected_user_permission[15] %} checked {% endif %}>
-            </label><br>
-            <label>
-                On/Off edit password
-                <input type="checkbox" name="allow-edit-password" {% if selected_user_permission[16] %} checked {% endif %}>
-            </label><br>
-            <label>
-                On/Off edit Profile Picture
-                <input type="checkbox" name="allow-edit-profile-picture" {% if selected_user_permission[17] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Allow edit A2F
-                <input type="checkbox" name="allow-edit-a2f" {% if selected_user_permission[18] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Show all user
-                <input type="checkbox" name="show-all-user" {% if selected_user_permission[9] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Create User
-                <input type="checkbox" name="create-user" {% if selected_user_permission[19] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Delete User
-                <input type="checkbox" name="delete-user" {% if selected_user_permission[20] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Desactivate
-                <input type="checkbox" name="desactivate-user" {% if selected_user_permission[21] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit User Permission
-                <input type="checkbox" name="edit-user-permission" {% if selected_user_permission[22] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Show Log
-                <input type="checkbox" name="show-log" {% if selected_user_permission[2] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Show All Modules
-                <input type="checkbox" name="show-all-modules" {% if selected_user_permission[23] %} checked {% endif %}>
-            </label><br>
-            <label>
-                On/Off Modules
-                <input type="checkbox" name="on-off-modules" {% if selected_user_permission[24] %} checked {% endif %}>
-            </label><br>
-            <label>
-                On/Off Maintenance Mode
-                <input type="checkbox" name="on-off-maintenance" {% if selected_user_permission[25] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Delete module
-                <input type="checkbox" name="delete-module" {% if selected_user_permission[26] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Add module
-                <input type="checkbox" name="add-module" {% if selected_user_permission[27] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit module name
-                <input type="checkbox" name="edit-module-name" {% if selected_user_permission[28] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit module url
-                <input type="checkbox" name="edit-module-url" {% if selected_user_permission[29] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit socket url
-                <input type="checkbox" name="edit-socket-url" {% if selected_user_permission[30] %} checked {% endif %}>
-            </label><br>
-            <label>
-                Edit SMTP config
-                <input type="checkbox" name="edit-smtp-config" {% if selected_user_permission[31] %} checked {% endif %}>
-            </label><br>
-            <button type="submit">Edit Permission</button>
-        </form>
-    </div>
-    {% elif multiple_user_info %}
-        <a href="{{ url_for('home') }}">Home</a><br>
-        {% if user_permission[19] %}
-            <button onclick="window.location.href = '{{ url_for('add_user') }}'">Add user</button>
-        {% endif %}
-        <table>
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Profile Picture</th>
-                    <th scope="col">A2F</th>
-                    <th scope="col">Admin</th>
-                    <th scope="col">Desactivated</th>
-                    <th scope="col">Link to profile</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for element in multiple_user_info %}
-                    <tr>
-                        <th scope="row">{{ element[0] }}</th>
-                        <td>{{ element[2] }}</td>
-                        <td>{{ element[4] }}</td>
-                        <td>{{ element[7] }}</td>
-                        <td>{{ element[8] }}</td>
-                        <td>{{ element[11] }}</td>
-                        <td>{{ element[12] }}</td>
-                        <td><button onclick="window.location.href='{{ url_for('show_user', user_token=element[1]) }}'">Go to profile</button></td>
-                    </tr>
+            <input type="hidden" id="userToken" value="{{ selected_user_info[1] }}">
+            {% for category, perms in permissions %}
+                <div class="card bg-base-200 shadow-xl">
+                    <div class="card-body p-4">
+                        <h2 class="card-title text-lg mb-2">{{ category }}</h2>
+                            <div class="space-y-2">
+                                {% for perm_code, perm_name in perms %}
+                                    <label class="flex items-center justify-between p-2 hover:bg-base-300 rounded-lg transition-colors cursor-pointer group">
+                                        <div class="flex flex-col">
+                                            <span class="label-text">{{ perm_name }}</span>
+                                        </div>
+                                        <input
+                                            type="checkbox"
+                                            class="toggle toggle-primary"
+                                            {% if selected_user_permission[perm_code] %}checked{% endif %}
+                                            onchange="updatePermission('{{ perm_code }}', this.checked)"
+                                        />
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
+            </div>
+
+        {% elif multiple_user_info %}
+            {% if user_permission[19] %}
+                <button onclick="window.location.href='{{ url_for('add_user') }}'" class="btn btn-primary">Add user</button>
+            {% endif %}
+            <table class="table table-zebra">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Profile Picture</th>
+                        <th scope="col">A2F</th>
+                        <th scope="col">Admin</th>
+                        <th scope="col">Desactivated</th>
+                        <th scope="col">Link to profile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for element in multiple_user_info %}
+                        <tr>
+                            <th scope="row">{{ element[0] }}</th>
+                            <td>{{ element[2] }}</td>
+                            <td>{{ element[4] }}</td>
+                            <td>{{ element[7] }}</td>
+                            <td>{{ element[8] }}</td>
+                            <td>{{ element[11] }}</td>
+                            <td>{{ element[12] }}</td>
+                            <td>
+                                {% if element[1] == request.cookies.get('token') %}
+                                    <button onclick="window.location.href='{{ url_for('user_space') }}'" class="btn btn-secondary">Go to profile</button>
+                                {% else %}
+                                    <button onclick="window.location.href='{{ url_for('show_user', user_token=element[1]) }}'" class="btn btn-secondary">Go to profile</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </main>
 </body>
 </html>
+
+<script>
+function updatePermission(permissionName, value) {
+    const userToken = document.getElementById('userToken').value;
+
+    fetch('{{ url_for('edit_permission_user') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            permission_name: permissionName,
+            value: value,
+            token: userToken
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // TODO : Ajouter une notification de succès
+        }
+    })
+    .catch(error => {
+        // TODO : Ajouter une notification d'erreur
+        console.error('Erreur:', error);
+    });
+}
+</script>
