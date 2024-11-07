@@ -283,7 +283,12 @@
                                         <input
                                             type="checkbox"
                                             class="toggle toggle-primary"
-                                            {% if selected_user_permission[perm_code] %}checked{% endif %}
+                                            {% if perm_code == "user_admin" %}
+                                                {% if selected_user_info[11] %}checked{% endif %}
+                                                disabled
+                                            {% else %}
+                                                {% if selected_user_permission[perm_code] %}checked{% endif %}
+                                            {% endif %}
                                             onchange="updatePermission('{{ perm_code }}', this.checked)"
                                         />
                                     </label>
