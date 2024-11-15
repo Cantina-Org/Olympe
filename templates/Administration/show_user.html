@@ -331,9 +331,9 @@
                             <td>{{ element[12] }}</td>
                             <td>
                                 {% if element[1] == request.cookies.get('token') %}
-                                    <button onclick="window.location.href='{{ url_for('user_space') }}'" class="btn btn-secondary">Go to profile</button>
+                                    <button onclick="window.location.href='{{ url_for('user_space') }}'" class="btn btn-secondary">Voir le profile</button>
                                 {% else %}
-                                    <button onclick="window.location.href='{{ url_for('show_user', user_token=element[1]) }}'" class="btn btn-secondary">Go to profile</button>
+                                    <button onclick="window.location.href='{{ url_for('show_user', user_token=element[1]) }}'" class="btn btn-secondary">Voir le profile</button>
                                 {% endif %}
                             </td>
                         </tr>
