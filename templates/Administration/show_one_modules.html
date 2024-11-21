@@ -10,22 +10,8 @@
 <body>
     {% include "PlaceHolder/sidebar.html" %}
     <main class="p-4 md:ml-64 h-auto pt-20 min-h-screen">
-
         <button onclick="window.location.href='{{ url_for('show_modules') }}'" class="btn btn-secondary">Tout les modules</button>
         <div class="card card-side bg-base-100 shadow-xl" id="module-data">
-            <figure class="px-4 py-4">
-                <div class="w-48 h-full">
-                    <img
-                        class="w-full h-full rounded-lg object-contain"
-                        src="{% if 0 == 0 %}
-                                {{ url_for('static', filename='ProfilePicture/general-logo.png') }}
-                            {% else %}
-                                {{ url_for('static', filename='ProfilePicture/'+selected_user_info[1]+'.png') }}
-                            {% endif %}"
-                            alt="profile_picture"
-                    />
-                </div>
-            </figure>
             <div class="card-body">
                 <div class="bg-base-200 p-4 rounded-lg">
                     <div class="text-sm opacity-70 mb-1">Identifiant</div>
@@ -49,7 +35,7 @@
                 </div>
                 <div class="bg-base-200 p-4 rounded-lg">
                     <div class="text-sm opacity-70 mb-1">URL du socket</div>
-                    <div class="font-semibold">{{ selected_module_info[3] }}{% if not selected_module_info[6].startswith('/') %}/{% endif %}{{ selected_module_info[6] }}</div>
+                    <div class="font-semibold">{{ selected_module_info[3] }}{% if not selected_module_info[6].startswith('/') and not selected_module_info[3].endswith('/') %}/{% endif %}{{ selected_module_info[6] }}</div>
                 </div>
                 <div class="card-actions justify-end">
                     <button class="btn btn-primary" onclick="showModuleEditForm()">Modifier les modifications du comptes</button>
@@ -57,19 +43,6 @@
             </div>
         </div>
         <div class="card card-side bg-base-100 shadow-xl" id="module-form" hidden>
-            <figure class="px-4 py-4">
-                <div class="w-48 h-full">
-                    <img
-                        class="w-full h-full rounded-lg object-contain"
-                        src="{% if 0 == 0 %}
-                                {{ url_for('static', filename='ProfilePicture/general-logo.png') }}
-                            {% else %}
-                                {{ url_for('static', filename='ProfilePicture/'+selected_user_info[1]+'.png') }}
-                            {% endif %}"
-                            alt="profile_picture"
-                    />
-                </div>
-            </figure>
             <div class="card-body">
                 <form method="post">
                     <input type="hidden" name="token" value="{{ selected_module_info[1] }}">
