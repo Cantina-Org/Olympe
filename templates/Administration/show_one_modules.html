@@ -23,7 +23,7 @@
                 </div>
                 <div class="bg-base-200 p-4 rounded-lg">
                     <div class="text-sm opacity-70 mb-1">Lien</div>
-                    <div class="font-semibold"><a href="{{ selected_module_info[3] }}" class="link">{{ selected_module_info[3] }}</a></div>
+                    <div class="font-semibold"><a href="{{ selected_module_info[3] }}" class="link" target="_blank">{{ selected_module_info[3] }}</a></div>
                 </div>
                 <div class="bg-base-200 p-4 rounded-lg">
                     <div class="text-sm opacity-70 mb-1">Maintenance</div>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="bg-base-200 p-4 rounded-lg">
                         <div class="text-sm opacity-70 mb-1">Lien</div>
-                        <div class="font-semibold">{% if not user_permission[29] %}<a href="{{ selected_module_info[3] }}">{{ selected_module_info[2] }}</a>{% else %}<label><input type="text" name="module_url" value="{{ selected_module_info[3] }}" class="input input-accent"></label>{% endif %}</div>
+                        <div class="font-semibold">{% if not user_permission[29] %}<a href="{{ selected_module_info[3] }}" target="_blank">{{ selected_module_info[2] }}</a>{% else %}<label><input type="text" name="module_url" value="{{ selected_module_info[3] }}" class="input input-accent"></label>{% endif %}</div>
                     </div>
                     <div class="bg-base-200 p-4 rounded-lg">
                         <div class="text-sm opacity-70 mb-1">Maintenance</div>

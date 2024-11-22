@@ -27,7 +27,7 @@
                     <tr>
                         <th scope="row">{{ element[0] }}</th>
                         <td>{{ element[2] }}</td>
-                        <td>{{ element[3] }}</td>
+                        <td><a href="{{ element[3] }}" target="_blank" class="link">{{ element[3] }}</a></td>
                         <td>{{ element[5] }}</td>
                         <td><button onclick="window.location.href='{{ url_for('show_modules', module_name=element[2]) }}'" class="btn btn-secondary">Plus d'info</button></td>
                     </tr>
