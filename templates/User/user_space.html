@@ -133,38 +133,38 @@
                             <div class="bg-base-200 p-4 rounded-lg">
                                 <label for="theme-select" class="text-sm opacity-70 mb-1 block">Thème</label>
                                 <select id="theme-select" name="theme" class="select select-bordered w-full max-w-xs">
-                                    <option value="light">Light</option>
-                                    <option value="dark">Dark</option>
-                                    <option value="cupcake">Cupcake</option>
-                                    <option value="bumblebee">Bumblebee</option>
-                                    <option value="emerald">Emerald</option>
-                                    <option value="corporate">Corporate</option>
-                                    <option value="synthwave">Synthwave</option>
-                                    <option value="retro">Retro</option>
-                                    <option value="cyberpunk">Cyberpunk</option>
-                                    <option value="valentine">Valentine</option>
-                                    <option value="halloween">Halloween</option>
-                                    <option value="garden">Garden</option>
-                                    <option value="forest">Forest</option>
-                                    <option value="aqua">Aqua</option>
-                                    <option value="lofi">Lofi</option>
-                                    <option value="pastel">Pastel</option>
-                                    <option value="fantasy">Fantasy</option>
-                                    <option value="wireframe">Wireframe</option>
-                                    <option value="black">Black</option>
-                                    <option value="luxury">Luxury</option>
-                                    <option value="dracula">Dracula</option>
-                                    <option value="cmyk">CMYK</option>
-                                    <option value="autumn">Autumn</option>
-                                    <option value="business">Business</option>
-                                    <option value="acid">Acid</option>
-                                    <option value="lemonade">Lemonade</option>
-                                    <option value="night">Night</option>
-                                    <option value="coffee">Coffee</option>
-                                    <option value="winter">Winter</option>
-                                    <option value="dim">Dim</option>
-                                    <option value="nord">Nord</option>
-                                    <option value="sunset">Sunset</option>
+                                    <option value="light" {% if user_information[13] == 'light' %}selected{% endif %}>Light</option>
+                                    <option value="dark" {% if user_information[13] == 'dark' %}selected{% endif %}>Dark</option>
+                                    <option value="cupcake" {% if user_information[13] == 'cupcake' %}selected{% endif %}>Cupcake</option>
+                                    <option value="bumblebee" {% if user_information[13] == 'bumblebee' %}selected{% endif %}>Bumblebee</option>
+                                    <option value="emerald" {% if user_information[13] == 'emerald' %}selected{% endif %}>Emerald</option>
+                                    <option value="corporate" {% if user_information[13] == 'corporate' %}selected{% endif %}>Corporate</option>
+                                    <option value="synthwave" {% if user_information[13] == 'synthwave' %}selected{% endif %}>Synthwave</option>
+                                    <option value="retro" {% if user_information[13] == 'retro' %}selected{% endif %}>Retro</option>
+                                    <option value="cyberpunk" {% if user_information[13] == 'cyberpunk' %}selected{% endif %}>Cyberpunk</option>
+                                    <option value="valentine" {% if user_information[13] == 'valentine' %}selected{% endif %}>Valentine</option>
+                                    <option value="halloween" {% if user_information[13] == 'halloween' %}selected{% endif %}>Halloween</option>
+                                    <option value="garden" {% if user_information[13] == 'garden' %}selected{% endif %}>Garden</option>
+                                    <option value="forest" {% if user_information[13] == 'forest' %}selected{% endif %}>Forest</option>
+                                    <option value="aqua" {% if user_information[13] == 'aqua' %}selected{% endif %}>Aqua</option>
+                                    <option value="lofi" {% if user_information[13] == 'lofi' %}selected{% endif %}>Lofi</option>
+                                    <option value="pastel" {% if user_information[13] == 'pastel' %}selected{% endif %}>Pastel</option>
+                                    <option value="fantasy" {% if user_information[13] == 'fantasy' %}selected{% endif %}>Fantasy</option>
+                                    <option value="wireframe" {% if user_information[13] == 'wireframe' %}selected{% endif %}>Wireframe</option>
+                                    <option value="black" {% if user_information[13] == 'black' %}selected{% endif %}>Black</option>
+                                    <option value="luxury" {% if user_information[13] == 'luxury' %}selected{% endif %}>Luxury</option>
+                                    <option value="dracula" {% if user_information[13] == 'dracula' %}selected{% endif %}>Dracula</option>
+                                    <option value="cmyk" {% if user_information[13] == 'cmyk' %}selected{% endif %}>CMYK</option>
+                                    <option value="autumn" {% if user_information[13] == 'autumn' %}selected{% endif %}>Autumn</option>
+                                    <option value="business" {% if user_information[13] == 'business' %}selected{% endif %}>Business</option>
+                                    <option value="acid" {% if user_information[13] == 'acid' %}selected{% endif %}>Acid</option>
+                                    <option value="lemonade" {% if user_information[13] == 'lemonade' %}selected{% endif %}>Lemonade</option>
+                                    <option value="night" {% if user_information[13] == 'night' %}selected{% endif %}>Night</option>
+                                    <option value="coffee" {% if user_information[13] == 'coffee' %}selected{% endif %}>Coffee</option>
+                                    <option value="winter" {% if user_information[13] == 'winter' %}selected{% endif %}>Winter</option>
+                                    <option value="dim" {% if user_information[13] == 'dim' %}selected{% endif %}>Dim</option>
+                                    <option value="nord" {% if user_information[13] == 'nord' %}selected{% endif %}>Nord</option>
+                                    <option value="sunset" {% if user_information[13] == 'sunset' %}selected{% endif %}>Sunset</option>
                                 </select>
                             </div>
                         {% else %}
