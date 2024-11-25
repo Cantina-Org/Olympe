@@ -65,14 +65,10 @@ edit_url_module BOOL DEFAULT FALSE, edit_socket_url BOOL DEFAULT FALSE, edit_smt
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.log(id INT PRIMARY KEY AUTO_INCREMENT, 
     action_name TEXT, user_ip TEXT, user_token TEXT, details TEXT, log_level INT)""", None)
 
-# recreate_db(database)
-# create_user(database, 'matyu', 'LeMdPDeTest', 'test@test.com', 1, 1)
-# clear_log(database)
-
 
 @app.route('/', methods=['GET'])
 def home():
-    return user_home_cogs(database, app.config['UPLOAD_FOLDER'])
+    return user_home_cogs(database)
 
 
 @app.route('/user_space/', methods=['GET', 'POST'])

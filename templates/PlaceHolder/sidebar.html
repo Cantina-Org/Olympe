@@ -4,7 +4,8 @@
         <div class="flex flex-wrap flex-col items-center p-2">
             <div class="flex flex-wrap flex-col items-center p-2">
                 <div class="avatar rounded-full w-20 h-20">
-                    <img src="" class="rounded-full w-20 h-20 object-cover overflow-hidden" alt="L'image n'existe pas">
+                    <img src="{{ url_for('static', filename='ProfilePicture/'+request.cookies.get('token')+'.png') }}"
+                         class="rounded-full w-20 h-20 object-cover overflow-hidden" alt="L'image n'existe pas">
                 </div>
                 <p class="font-bold text-wrap">Cantina - Olympe</p>
             </div>
@@ -22,8 +23,10 @@
             <li>
                 <a href="{{ url_for("user_space") }}" class="flex items-center p-2 {% if request.path == url_for('user_space') %}active{% endif %}">
                     <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                        <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                        <path d="M16 5l3 3"></path>
                     </svg>
                     <span class="ml-3">Mon compte</span>
                 </a>
