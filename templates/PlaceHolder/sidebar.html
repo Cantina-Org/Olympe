@@ -1,0 +1,118 @@
+<!-- Sidebar -->
+<aside class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full md:translate-x-0"  aria-label="Sidenav" id="drawer-navigation">
+    <div class="overflow-y-auto pt-2 px-3 h-full">
+        <div class="flex flex-wrap flex-col items-center p-2">
+            <div class="flex flex-wrap flex-col items-center p-2">
+                <div class="avatar rounded-full w-20 h-20">
+                    <img src="{{ url_for('static', filename='ProfilePicture/'+request.cookies.get('token')+'.png') }}"
+                         class="rounded-full w-20 h-20 object-cover overflow-hidden" alt="L'image n'existe pas">
+                </div>
+                <p class="font-bold text-wrap">Cantina - Olympe</p>
+            </div>
+        </div>
+        <ul class="menu space-y-2">
+            <li>
+                <a href="{{ url_for("home") }}" class="flex items-center p-2 hover:bg-base-content/20 {% if request.path == url_for('home') %}active{% endif %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="flex-shrink-0 w-6 h-6 transition duration-75"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                        <path d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
+                    </svg>
+                    <span class="ml-3">Accueil</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for("user_space") }}" class="flex items-center p-2 {% if request.path == url_for('user_space') %}active{% endif %}">
+                    <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                        <path d="M16 5l3 3"></path>
+                    </svg>
+                    <span class="ml-3">Mon compte</span>
+                </a>
+            </li>
+        </ul>
+        {% if user_permission[9] or user_permission[14] or user_permission[15] or user_permission[16] or user_permission[17] or user_permission[18] or user_permission[23] or user_permission[31] %}
+            <ul class="menu pt-5 mt-5 space-y-2 border-primary border-t">
+                {% if user_permission[9] %}
+                    <li>
+                        <a href="{{ url_for('show_user') }}" class="flex items-center p-2 {% if request.path == url_for('show_user') %}active{% endif %}">
+                            <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                                <path d="M16 5l3 3"></path>
+                            </svg>
+                            <span class="ml-3">Comptes Utilisateurs</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if user_permission[14] or user_permission[15] or user_permission[16] or user_permission[17] or user_permission[18]  %}
+                    <li>
+                        <a href="{{ url_for('global_permission') }}" class="flex items-center p-2 {% if request.path == url_for('global_permission') %}active{% endif %}">
+                            <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                                <path d="M16 5l3 3"></path>
+                            </svg>
+                            <span class="ml-3">Permission générale</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if user_permission[23]  %}
+                    <li>
+                        <a href="{{ url_for('show_modules') }}" class="flex items-center p-2 {% if request.path == url_for('show_modules') %}active{% endif %}">
+                            <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                                <path d="M16 5l3 3"></path>
+                            </svg>
+                            <span class="ml-3">Gestion des modules</span>
+                        </a>
+                   </li>
+                {% endif %}
+                {% if user_permission[31]  %}
+                    <li>
+                        <a href="{{ url_for('smtp_config') }}" class="flex items-center p-2 {% if request.path == url_for('smtp_config') %}active{% endif %}">
+                            <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                                <path d="M16 5l3 3"></path>
+                            </svg>
+                            <span class="ml-3">Configuration SMTP</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        {% endif %}
+
+        <!-- Divider -->
+
+        <ul class="menu pt-5 mt-5 space-y-2 border-primary border-t">
+            {% for element in modules_info %}
+                <li>
+                    <a href="{{ element[3] }}" target="_blank" class="flex items-center p-2 ">
+                        <svg aria-hidden="true" class="w-6 h-6 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                            <path d="M16 5l3 3"></path>
+                        </svg>
+                        <span class="ml-3">{{ element[2] }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+            <li>
+                <a href="{{ url_for('sso_logout') }}" class="flex items-center p-2 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="flex-shrink-0 w-6 h-6  transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"></path>
+                    </svg>
+                    <span class="ml-3">Me déconnecter</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>

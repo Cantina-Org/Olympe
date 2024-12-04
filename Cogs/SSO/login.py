@@ -10,7 +10,7 @@ def sso_login_cogs(database, error):
         username = request.form['username']  # Sauvegarde du nom d'utilisateur
         password = request.form['password']  # Sauvegarde du mot de passe
         try:
-            dfa_code = request.form['2fa-code']  # Sauvegarde du code d'A2F si l'utilisateur en à rempli un
+            dfa_code = request.form['a2f-code']  # Sauvegarde du code d'A2F si l'utilisateur en à rempli un
         except BadRequestKeyError:
             dfa_code = None
 

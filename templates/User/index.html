@@ -1,101 +1,45 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="{{ user_information[13] }}">
 <head>
     <meta charset="UTF-8">
     <title>Cantina - Olympe</title>
+    <link rel="icon" href="{{ url_for('static', filename='SVG/logo.svg') }}" sizes="any" type="image/svg+xml">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script type="application/javascript" src={{ url_for('static', filename='JS/show_edit_user_form.js') }}></script>
 </head>
 <body>
-    <h1>Cantina  - Olympe</h1>
-    <div id="user-info">
-        <p>
-            Profil Picture: {% if user_information[7] == 0 %} Non {% else %} Oui {% endif %}<br>
-            Username: {{ user_information[2] }}<br>
-            Password: ••••••••••••••••<br>
-            Email: {{ user_information[4] }}<br>
-            Email verified: {% if not user_information[6] or user_information[6] == 0 %} Non {% if user_information[4] %}<button onclick="window.location.href='{{ url_for('email_verif') }}'">Vérifier mon email.</button>{% endif %}  {% else %} Oui {% endif %} <br>
-            A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé <button onclick="window.location.href='{{ url_for('double2FA_add') }}'">Ajouter la double authentification.</button> {% else %} Activé {% endif %}<br>
-            Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
-            Theme: {{ user_information[13] }}<br>
-            <button onclick="showUserForm()">Modifier les informations</button>
-        </p>
-    </div>
-    <div id="user-info-form" hidden>
-        <form method="post" action="#" enctype="multipart/form-data">
-            {% if user_permission[6] %}
-                <label>
-                    Profil Picture:
-                    <input type="file" accept="image/*" name="profile_picture"><br>
-                </label>
-            {% else %}
-                Profil Picture: {{ user_information[7] }}<br>
-            {% endif %}
-            {% if user_permission[3] %}
-                <label>
-                    Username:
-                    <input type="text" value="{{ user_information[2] }}" name="username">
-                </label><br>
-            {% else %}
-                Username: {{ user_information[2] }}<br>
-            {% endif %}
-            {% if user_permission[5] %}
-                <label>
-                    Password:
-                    <input type="password" placeholder="••••••••••••••••" name="password1">
-                </label>
-                <label>
-                    Confirm Password:
-                    <input type="password" placeholder="••••••••••••••••" name="password2">
-                </label><br>
-            {% else %}
-                Password: ••••••••••••••••<br>
-            {% endif %}
-            {% if user_permission[4] %}
-            	<label>
-                    Email:
-                    <input type="email" value="{{ user_information[4] }}" name="email">
-                </label><br>
-            {% else %}
-                Email: {{ user_information[4] }}<br>
-            {% endif %}
-            Email verified: {% if not user_information[5] or user_information[5] == 0 %} Non {% else %} Oui {% endif %}<br>
-            A2F: {% if not user_information[8] or user_information[8] == 0 %} Désactivé {% else %} Activé {% endif %}<br>
-            Desactivated: {% if not user_information[12] or user_information[12] == 0 %} Non {% else %} Oui {% endif %}<br>
-            {% if user_permission[8] %}
-                <label>
-                    Theme:
-                    <input list="theme" value="{{ user_information[13] }}" name="theme">
-                    <datalist id="theme">
-                        <option name="white">White</option>
-                        <option name="dark">Dark</option>
-                    </datalist>
-                </label><br>
-            {% else %}
-                Theme: {{ user_information[13] }}<br>
-            {% endif %}
-            <button type="submit">Modifier</button>
-        </form>
-    </div>
+    {% include "PlaceHolder/sidebar.html" %}
+    <main class="p-4 md:ml-64 h-auto pt-20 min-h-screen">
+        <div role="alert" class="alert alert-info">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-6 w-6 shrink-0 stroke-current">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Plus d'infos viendront s'ajouter à cette page, au fur et à mesure de l'avancement du projet.</span>
+        </div>
+        <br>
+        <div class="stats stats-vertical lg:stats-horizontal shadow grid gap-4">
+            <div class="stat place-items-center">
+                <div class="stat-title">Nombre de modules</div>
+                <div class="stat-value text-primary">{{ nb_module }}</div>
+            </div>
 
-    <div id="link">
-        {% if user_permission[9] %}
-            <a href="{{ url_for('show_user') }}">Voir les comptes utilisateurs</a>
-        {% endif %}
-        {% if user_permission[14] or user_permission[15] or user_permission[16] or user_permission[17] or user_permission[18] %}
-            <br><a href="{{ url_for('global_permission') }}">Permission générale</a>
-        {% endif %}
-        {% if user_permission[23]%}
-            <br><a href="{{ url_for('show_modules') }}">Gestion des modules</a>
-        {% endif %}
-        {% if user_permission[31]%}
-            <br><a href="{{ url_for('smtp_config') }}">Configuration SMTP</a>
-        {% endif %}
-    </div>
+            <div class="stat place-items-center">
+                <div class="stat-title">Nombre d'utilisateurs</div>
+                <div class="stat-value text-secondary">{{ nb_user }}</div>
+            </div>
 
-    <div id="portal"><br>
-        {% for element in modules_info %}
-            <a href="{{ element[3] }}" target="_blank">{{ element[2] }}</a><br>
-        {% endfor %}
-    </div>
+            <div class="stat place-items-center">
+                <div class="stat-title">Nombre de connexion par jours</div>
+                <div class="stat-value text-primary">0</div>
+                <div class="stat-desc">Analytics en cours de création</div>
+            </div>
+
+            <div class="stat place-items-center">
+                <div class="stat-title">Stat 4</div>
+                <div class="stat-value text-primary">J'ai pas d'idée</div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

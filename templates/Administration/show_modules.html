@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="{{ local_user_theme[0] }}">
 <head>
     <meta charset="UTF-8">
     <title>Cantina - Olympe</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/table.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='SVG/logo.svg') }}" sizes="any" type="image/svg+xml">
     <script type="application/javascript" src="{{ url_for('static', filename='JS/show_edit_user_form.js') }}"></script>
     <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/desactivate_account.js') }}"></script>
     <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/delete_account.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1>Cantina  - Olympe - Admin Mode</h1>
-    <a href="{{ url_for('home') }}">Home</a><br>
-    <a href="{{ url_for('add_modules') }}">Add modules</a><br>
-
-    <table>
+    {% include "PlaceHolder/sidebar.html" %}
+    <main class="p-4 md:ml-64 h-auto pt-20 min-h-screen">
+        <table class="table table-zebra">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -28,12 +28,13 @@
                     <tr>
                         <th scope="row">{{ element[0] }}</th>
                         <td>{{ element[2] }}</td>
-                        <td>{{ element[3] }}</td>
+                        <td><a href="{{ element[3] }}" target="_blank" class="link">{{ element[3] }}</a></td>
                         <td>{{ element[5] }}</td>
-                        <td><button onclick="window.location.href='{{ url_for('show_modules', module_name=element[2]) }}'">Plus d'info</button></td>
+                        <td><button onclick="window.location.href='{{ url_for('show_modules', module_name=element[2]) }}'" class="btn btn-secondary">Plus d'info</button></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </main>
 </body>
 </html>

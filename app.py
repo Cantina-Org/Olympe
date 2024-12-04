@@ -5,7 +5,9 @@ from os import path, getcwd
 from json import load
 
 from Cogs.SSO.login import sso_login_cogs
+from Cogs.SSO.logout import sso_logout_cogs
 from Cogs.User.home import user_home_cogs
+from Cogs.User.user_space import user_space_cogs
 from Cogs.User.doublefa_add import doubleFA_add_cogs
 from Cogs.User.email_verif import email_verif_cogs
 from Cogs.Administration.User.show_user import show_user_cogs
@@ -63,14 +65,15 @@ edit_url_module BOOL DEFAULT FALSE, edit_socket_url BOOL DEFAULT FALSE, edit_smt
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.log(id INT PRIMARY KEY AUTO_INCREMENT, 
     action_name TEXT, user_ip TEXT, user_token TEXT, details TEXT, log_level INT)""", None)
 
-# recreate_db(database)
-# create_user(database, 'matyu', 'LeMdPDeTest', 'test@test.com', 1, 1)
-# clear_log(database)
 
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def home():
-    return user_home_cogs(database, app.config['UPLOAD_FOLDER'])
+    return user_home_cogs(database)
+
+
+@app.route('/user_space/', methods=['GET', 'POST'])
+def user_space():
+    return user_space_cogs(database, app.config['UPLOAD_FOLDER'])
 
 
 @app.route('/2FA/add/', methods=['GET', 'POST'])
@@ -83,54 +86,68 @@ def email_verif():
     return email_verif_cogs(database)
 
 
+"""
+    Partie administration
+"""
+
+
 @app.route('/admin/user/', methods=['GET', 'POST'])
 def show_user():
     return show_user_cogs(database, app.config['UPLOAD_FOLDER'])
 
 
-@app.route('/admin/user/add', methods=['GET', 'POST'])
+@app.route('/admin/user/add/', methods=['GET', 'POST'])
 def add_user():
     return add_user_cogs(database)
 
 
-@app.route('/admin/user/edit_permission', methods=['POST'])
+@app.route('/admin/user/edit_permission/', methods=['POST'])
 def edit_permission_user():
     return edit_user_permission_cogs(database)
 
 
-@app.route('/admin/user/desactivate', methods=['POST'])
+@app.route('/admin/user/desactivate/', methods=['POST'])
 def desactivate_user():
     return desactivate_user_cogs(database)
 
 
-@app.route('/admin/user/delete', methods=['POST'])
+@app.route('/admin/user/delete/', methods=['POST'])
 def delete_user():
     return delete_user_cogs(database)
 
 
-@app.route('/admin/permission/global', methods=['POST', 'GET'])
+@app.route('/admin/permission/global/', methods=['POST', 'GET'])
 def global_permission():
     return global_permission_cogs(database)
 
 
-@app.route('/admin/modules', methods=['POST', 'GET'])
+@app.route('/admin/modules/', methods=['POST', 'GET'])
 def show_modules():
     return show_modules_cogs(database)
 
 
-@app.route('/admin/modules/add', methods=['POST', 'GET'])
+@app.route('/admin/modules/add/', methods=['POST', 'GET'])
 def add_modules():
     return add_modules_cogs(database)
 
 
-@app.route('/admin/smtp/config', methods=['POST', 'GET'])
+@app.route('/admin/smtp/config/', methods=['POST', 'GET'])
 def smtp_config():
     return smtp_config_cogs(database)
+
+
+"""
+    Partie Single Sign On
+"""
 
 
 @app.route('/sso/login/', methods=['GET', 'POST'])
 def sso_login(error=0):
     return sso_login_cogs(database, error)
+
+@app.route('/sso/logout/', methods=['GET'])
+def sso_logout():
+    return sso_logout_cogs()
 
 
 if __name__ == '__main__':

@@ -1,32 +1,83 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="{{ local_user_theme[0] }}">
 <head>
     <meta charset="UTF-8">
     <title>Cantina - Olympe</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/table.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='SVG/logo.svg') }}" sizes="any" type="image/svg+xml">
     <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/show_form_module_edit.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1>Cantina  - Olympe - Admin Mode</h1>
-    <a href="{{ url_for('show_modules') }}">All modules</a><br>
-    <p id="module-data">
-        ID: {{ modules_info[0] }}<br>
-        Nom: {{ modules_info[2] }}<br>
-        Url: <a href="{{ modules_info[3] }}">{{ modules_info[3] }}</a><br>
-        Maintenance: {% if modules_info[4] %}Oui{% else %}Non{% endif %}<br>
-        Status: {{ modules_info[5] }}<br>
-        Url du Socket: {{ modules_info[3] }}{% if not modules_info[6].startswith('/') %}/{% endif %}{{ modules_info[6] }}<br>
-        <button onclick="showModuleEditForm()">Modifier les informations</button>
-    </p>
-    <form method="post" id="module-form" hidden>
-        <input type="hidden" name="token" value="{{ modules_info[1] }}">
-        ID: {{ modules_info[0] }}<br>
-        Nom: {% if not user_permission[28] %}{{ modules_info[2] }}{% else %}<label><input type="text" name="module_name" value="{{ modules_info[2] }}"></label>{% endif %}<br>
-        Url: {% if not user_permission[29] %}<a href="{{ modules_info[3] }}">{{ modules_info[2] }}</a>{% else %}<label><input type="text" name="module_url" value="{{ modules_info[3] }}"></label>{% endif %}<br>
-        Maintenance: {% if modules_info[4] %}Oui{% else %}Non{% endif %}<br>
-        Status: {{ modules_info[5] }}<br>
-        Url du Socket: {% if not user_permission[30] %}{{ modules_info[3] }}{{ modules_info[6] }}{% else %}<label><input type="text" name="socket_url" value="{{ modules_info[6] }}"></label>{% endif %}<br>
-        <button>Valider les informations</button>
-    </form>
+    {% include "PlaceHolder/sidebar.html" %}
+    <main class="p-4 md:ml-64 h-auto pt-20 min-h-screen">
+        <button onclick="window.location.href='{{ url_for('show_modules') }}'" class="btn btn-secondary">Tout les modules</button>
+        <div class="card card-side bg-base-100 shadow-xl" id="module-data">
+            <div class="card-body">
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Identifiant</div>
+                    <div class="font-semibold">{{ selected_module_info[0] }}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Nom</div>
+                    <div class="font-semibold">{{ selected_module_info[2] }}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Lien</div>
+                    <div class="font-semibold"><a href="{{ selected_module_info[3] }}" class="link" target="_blank">{{ selected_module_info[3] }}</a></div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Maintenance</div>
+                    <div class="font-semibold">{% if selected_module_info[4] %}Oui{% else %}Non{% endif %}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">Status</div>
+                    <div class="font-semibold">{{ selected_module_info[5] }}</div>
+                </div>
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-70 mb-1">URL du socket</div>
+                    <div class="font-semibold">{{ selected_module_info[3] }}{% if not selected_module_info[6].startswith('/') and not selected_module_info[3].endswith('/') %}/{% endif %}{{ selected_module_info[6] }}</div>
+                </div>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-primary" onclick="showModuleEditForm()">Modifier les modifications du comptes</button>
+                </div>
+            </div>
+        </div>
+        <div class="card card-side bg-base-100 shadow-xl" id="module-form" hidden>
+            <div class="card-body">
+                <form method="post">
+                    <input type="hidden" name="token" value="{{ selected_module_info[1] }}">
+
+                    <div class="bg-base-200 p-4 rounded-lg">
+                        <div class="text-sm opacity-70 mb-1">Identifiant</div>
+                        <div class="font-semibold">{{ selected_module_info[0] }}</div>
+                    </div>
+                    <div class="bg-base-200 p-4 rounded-lg">
+                        <div class="text-sm opacity-70 mb-1">Nom</div>
+                        <div class="font-semibold">{% if not user_permission[28] %}{{ selected_module_info[2] }}{% else %}<label><input type="text" name="module_name" value="{{ selected_module_info[2] }}" class="input input-accent"></label>{% endif %}</div>
+                    </div>
+                    <div class="bg-base-200 p-4 rounded-lg">
+                        <div class="text-sm opacity-70 mb-1">Lien</div>
+                        <div class="font-semibold">{% if not user_permission[29] %}<a href="{{ selected_module_info[3] }}" target="_blank">{{ selected_module_info[2] }}</a>{% else %}<label><input type="text" name="module_url" value="{{ selected_module_info[3] }}" class="input input-accent"></label>{% endif %}</div>
+                    </div>
+                    <div class="bg-base-200 p-4 rounded-lg">
+                        <div class="text-sm opacity-70 mb-1">Maintenance</div>
+                        <div class="font-semibold">{% if selected_module_info[4] %}Oui{% else %}Non{% endif %}</div>
+                    </div>
+                    <div class="bg-base-200 p-4 rounded-lg">
+                        <div class="text-sm opacity-70 mb-1">Status</div>
+                        <div class="font-semibold">{{ selected_module_info[5] }}</div>
+                    </div>
+                    <div class="bg-base-200 p-4 rounded-lg">
+                        <div class="text-sm opacity-70 mb-1">URL du socket</div>
+                        <div class="font-semibold">{% if not user_permission[30] %}{{ selected_module_info[3] }}{{ selected_module_info[6] }}{% else %}<label><input type="text" name="socket_url" value="{{ selected_module_info[6] }}" class="input input-accent"></label>{% endif %}</div>
+                    </div>
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-primary" onclick="showModuleEditForm()">Modifier les modifications du comptes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
