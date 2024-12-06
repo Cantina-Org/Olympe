@@ -1,3 +1,5 @@
+from xml.sax.handler import property_interning_dict
+
 from flask import Flask
 from flask_socketio import SocketIO
 from cantinaUtils import Database
@@ -20,6 +22,8 @@ from Cogs.Administration.User.smtp_config import smtp_config_cogs
 from Cogs.Administration.Modules.show_modules import show_modules_cogs
 from Cogs.Administration.Modules.add_modules import add_modules_cogs
 
+from Cogs.Socket.heart_beat_cogs import heart_beat_cogs
+
 file_path = path.abspath(path.join(getcwd(), "config.json"))  # Trouver le chemin complet du fichier config.json
 
 # Lecture du fichier JSON
@@ -27,7 +31,8 @@ with open(file_path, 'r') as file:
     config_data = load(file)  # Ouverture du fichier config.json
 
 app = Flask(__name__)  # Création de l'application Flask
-socketio = SocketIO(app)  # Lien entre l'application Flaks et le WebSocket
+app.config['SECRET_KEY'] = config_data['modules'][0]['secret_key']
+socketio = SocketIO(app, cors_allowed_origins="*")  # Lien entre l'application Flaks et le WebSocket
 app.config['UPLOAD_FOLDER'] = path.abspath(path.join(getcwd(), "static/ProfilePicture/"))
 
 
@@ -148,6 +153,14 @@ def sso_login(error=0):
 @app.route('/sso/logout/', methods=['GET'])
 def sso_logout():
     return sso_logout_cogs()
+
+"""
+    Partie Socket
+"""
+
+@socketio.on('heartbeat')
+def heart_beat(data):
+    return heart_beat_cogs(data)
 
 
 if __name__ == '__main__':

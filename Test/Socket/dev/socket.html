@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Socket</title>
+
+    <script type="module">
+        import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
+
+        const socket = io('http://127.0.0.1:3001');
+
+        socket.on('connect', () => {
+            console.log('Connecté au serveur distant');
+            socket.emit('heartbeat', {"date":Date.now()});
+        });
+
+        socket.on('response', (data) => {
+            console.log('Réponse du serveur distant :', data);
+        });
+    </script>
+</head>
+<body>
+    <h1>Hello Socket World</h1>
+</body>
+</html>
