@@ -1,5 +1,3 @@
-from xml.sax.handler import property_interning_dict
-
 from flask import Flask
 from flask_socketio import SocketIO
 from cantinaUtils import Database
@@ -23,6 +21,7 @@ from Cogs.Administration.Modules.show_modules import show_modules_cogs
 from Cogs.Administration.Modules.add_modules import add_modules_cogs
 
 from Cogs.Socket.heart_beat_cogs import heart_beat_cogs
+from Cogs.Socket.ping_server_socket_cogs import ping_server_socket_cogs
 
 file_path = path.abspath(path.join(getcwd(), "config.json"))  # Trouver le chemin complet du fichier config.json
 
@@ -161,6 +160,10 @@ def sso_logout():
 @socketio.on('heartbeat')
 def heart_beat(data):
     return heart_beat_cogs(data)
+
+@socketio.on('ping_server')
+def ping_server_socket():
+    return ping_server_socket_cogs()
 
 
 if __name__ == '__main__':
