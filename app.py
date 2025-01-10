@@ -17,6 +17,7 @@ from Cogs.Administration.User.add_user import add_user_cogs
 from Cogs.Administration.User.edit_user_permission import edit_user_permission_cogs
 from Cogs.Administration.User.global_permission import global_permission_cogs
 from Cogs.Administration.User.smtp_config import smtp_config_cogs
+from Cogs.Administration.User.smtp_test import smtp_test_cogs
 from Cogs.Administration.Modules.show_modules import show_modules_cogs
 from Cogs.Administration.Modules.add_modules import add_modules_cogs
 
@@ -138,6 +139,11 @@ def add_modules():
 @app.route('/admin/smtp/config/', methods=['POST', 'GET'])
 def smtp_config():
     return smtp_config_cogs(database)
+
+
+@app.route('/admin/smtp/config/test', methods=['POST'])
+def smtp_test():
+    return smtp_test_cogs(database)
 
 
 """
