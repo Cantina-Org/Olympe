@@ -1,6 +1,6 @@
 from cantinaUtils.verify_login import verify_login
 from Utils.email_utils import send_test_email
-from flask import redirect, url_for, request, render_template
+from flask import redirect, url_for, request
 
 
 def smtp_test_cogs(database):
@@ -11,8 +11,7 @@ def smtp_test_cogs(database):
             return redirect(url_for('home'))
 
         if request.method == 'POST':
-            code = send_test_email(database)
-            print(code)
+            send_test_email(database)
             return redirect(url_for('smtp_config'))
         else:
             return redirect(url_for('smtp_config'))

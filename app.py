@@ -54,7 +54,7 @@ database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.config(id INT
 name TEXT, content TEXT)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.modules(id INT PRIMARY KEY AUTO_INCREMENT, 
 token TEXT, name TEXT, fqdn TEXT, maintenance BOOL default FALSE, status INTEGER DEFAULT 0, 
-socket_url TEXT DEFAULT '/socket/')""", None)
+socket_url TEXT DEFAULT '/socket/', last_heartbeat INT)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.permission(id INT PRIMARY KEY AUTO_INCREMENT,
 user_token TEXT NOT NULL, show_log BOOL DEFAULT FALSE, edit_username BOOL DEFAULT FALSE, edit_email BOOL DEFAULT FALSE, 
 edit_password BOOL DEFAULT FALSE, edit_profile_picture BOOL DEFAULT FALSE, edit_A2F BOOL DEFAULT FALSE, 
@@ -165,7 +165,7 @@ def sso_logout():
 
 @socketio.on('heartbeat')
 def heart_beat(data):
-    return heart_beat_cogs(data)
+    return heart_beat_cogs(data, database)
 
 @socketio.on('ping_server')
 def ping_server_socket():

@@ -11,11 +11,16 @@
 
         socket.on('connect', () => {
             console.log('Connecté au serveur distant');
-            socket.emit('heartbeat', {"date":Date.now()});
+            socket.emit('heartbeat', {
+                "fqdn": window.location.origin,
+                "token": "ec696969-6969-6969-6969-2e227b76fec2",
+                "date": Math.floor(Date.now() / 1000)
+            });
         });
 
-        socket.on('response', (data) => {
+        socket.on('response-heartbeat', (data) => {
             console.log('Réponse du serveur distant :', data);
+            console.log(data["receive-at"]);
         });
     </script>
 </head>
