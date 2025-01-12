@@ -21,7 +21,7 @@ class TestSocket(TestCase):
 
     def test_hearbeat(self):
         # define HeartBeat Data
-        data_to_send = {"date": time(), "module_name": "test-olympe", "module_key": "546ee675-4011-41ba-84ab-56340f2ab815"}
+        data_to_send = {"date": time(), "fqdn": "file://", "token": "ec696969-6969-6969-6969-2e227b76fec2"}
 
         # Empty responses
         self.client.emit("heartbeat", data_to_send)

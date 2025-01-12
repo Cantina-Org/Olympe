@@ -27,7 +27,7 @@
                     <div class="w-full">
                         <form action="{{ url_for('delete_user') }}" method="post" id="delete_account" class="w-full">
                             <input type='hidden' name='token_to_delete' value="{{ selected_user_info[1] }}"/>
-                            <button type="button" class="btn btn-primary w-full" onclick="delete_account()">
+                            <button type="button" class="btn btn-warning w-full" onclick="delete_account()">
                                 Supprimer le compte
                             </button>
                         </form>
@@ -40,11 +40,11 @@
                         <form action="{{ url_for('desactivate_user') }}" method="post" id="desactivate_account" class="w-full">
                             <input type='hidden' name='token_to_desactivate' value="{{ selected_user_info[1] }}"/>
                             {% if not selected_user_info[12] or selected_user_info[12] == 0 %}
-                                <button type="button" class="btn btn-primary w-full" onclick="desactivate_account(1)">
+                                <button type="button" class="btn btn-warning w-full" onclick="desactivate_account(1)">
                                     Désactiver le compte
                                 </button>
                             {% elif selected_user_info[12] == 1 %}
-                                <button type="button" class="btn btn-primary w-full" onclick="desactivate_account(0)">
+                                <button type="button" class="btn btn-warning w-full" onclick="desactivate_account(0)">
                                     Réactiver le compte
                                 </button>
                             {% endif %}
