@@ -5,7 +5,7 @@ from argon2.exceptions import VerifyMismatchError
 from werkzeug.exceptions import BadRequestKeyError
 
 
-def sso_login_cogs(database, error):
+def sso_login_cogs(database, error, global_domain):
     if request.method == 'POST':  # Si l'utilisateur à rempli le formulaire
         username = request.form['username']  # Sauvegarde du nom d'utilisateur
         password = request.form['password']  # Sauvegarde du mot de passe
@@ -38,8 +38,8 @@ def sso_login_cogs(database, error):
                     response = make_response(redirect(domain_to_redirect[0], code=302))
 
                 # Création des cookies de vérification d'authentification
-                response.set_cookie('token', row[1])
-                response.set_cookie('validation', validation_code[0])
+                response.set_cookie('token', row[1], domain='.'+str(global_domain))
+                response.set_cookie('validation', validation_code[0], domain='.'+str(global_domain))
                 return response
             else:  # Dans tout les autres cas
                 return redirect(url_for('sso_login', error='1'))
