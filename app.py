@@ -29,7 +29,7 @@ with open(file_path, 'r') as file:
 app = Flask(__name__)  # Création de l'application Flask
 socketio = SocketIO(app)  # Lien entre l'application Flaks et le WebSocket
 app.config['UPLOAD_FOLDER'] = path.abspath(path.join(getcwd(), "static/ProfilePicture/"))
-app.config['SERVER_NAME'] = config_data['modules'][0]['global_domain']
+# app.config['SERVER_NAME'] = config_data['modules'][0]['global_domain']
 
 database = Database.DataBase(
     user=config_data['database'][0]['username'],
@@ -143,7 +143,7 @@ def smtp_config():
 
 @app.route('/sso/login/', methods=['GET', 'POST'])
 def sso_login(error=0):
-    return sso_login_cogs(database, error, app.config['SERVER_NAME'])
+    return sso_login_cogs(database, error, config_data['modules'][0]['global_domain'])
 
 @app.route('/sso/logout/', methods=['GET'])
 def sso_logout():
