@@ -143,7 +143,7 @@ def smtp_config():
 
 @app.route('/sso/login/', methods=['GET', 'POST'])
 def sso_login(error=0):
-    return sso_login_cogs(database, error)
+    return sso_login_cogs(database, error, app.config['SERVER_NAME'])
 
 @app.route('/sso/logout/', methods=['GET'])
 def sso_logout():
