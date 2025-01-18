@@ -114,7 +114,7 @@
                     <form method="post" action="#" enctype="multipart/form-data">
                         <div style="gap: .5rem !important;">
                             <input type="hidden" value="{{ selected_user_info[1] }}" name="token">
-                            {% if user_permission[3] %}
+                            {% if user_permission[10] or user_permission[32] %}
                                 <div class="bg-base-200 p-4 rounded-lg">
                                     <div class="text-sm opacity-70 mb-1">Nom d'utilisateur</div>
                                     <div class="font-semibold">
@@ -130,7 +130,7 @@
                                 </div>
                             {% endif %}
                             <hr style="height:.5rem; visibility:hidden;" />
-                            {% if selected_user_info[5] %}
+                            {% if user_permission[12] or user_permission[32] %}
                                 <div class="bg-base-200 p-4 rounded-lg">
                                     <div class="text-sm opacity-70 mb-1">Mot de passe</div>
                                     <div class="font-semibold">
@@ -155,7 +155,7 @@
                                 </div>
                             {% endif %}
                             <hr style="height:.5rem; visibility:hidden;" />
-                            {% if selected_user_info[4] %}
+                            {% if user_permission[11] or user_permission[32] %}
                                 <div class="bg-base-200 p-4 rounded-lg">
                                     <div class="text-sm opacity-70 mb-1">Email</div>
                                     <div class="font-semibold">
@@ -176,7 +176,7 @@
                                 <div class="font-semibold">{% if not selected_user_info[8] or selected_user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}</div>
                             </div>
                             <hr style="height:.5rem; visibility:hidden;" />
-                            {% if selected_user_info[8] %}
+                            {% if user_permission[10] or user_permission[32] %}
                                 <div class="bg-base-200 p-4 rounded-lg">
                                     <label for="theme-select" class="text-sm opacity-70 mb-1 block">Thème</label>
                                     <select id="theme-select" name="theme" class="select select-bordered w-full max-w-xs">
@@ -239,7 +239,7 @@
                         ('edit_ergo', 'Modifier son thème')
                     ]),
                     ('Administration Utilisateurs', [
-                        ('user_admin', 'Droits administrateur'),
+                        ('admin', 'Droits administrateur'),
                         ('edit_username_admin', 'Modifier nom d\'utilisateur (Admin)'),
                         ('edit_email_admin', 'Modifier email (Admin)'),
                         ('edit_password_admin', 'Modifier mot de passe (Admin)'),
@@ -287,12 +287,8 @@
                                             <input
                                                 type="checkbox"
                                                 class="toggle toggle-primary"
-                                                {% if perm_code == "user_admin" %}
-                                                    {% if selected_user_info[11] %}checked{% endif %}
-                                                    disabled
-                                                {% else %}
-                                                    {% if selected_user_permission[perm_code] %}checked{% endif %}
-                                                {% endif %}
+                                                {% if perm_code == 'admin' %}disabled{% endif %}
+                                                {% if selected_user_permission[perm_code] %}checked{% endif %}
                                                 onchange="updatePermission('{{ perm_code }}', this.checked)"
                                             />
                                         </label>

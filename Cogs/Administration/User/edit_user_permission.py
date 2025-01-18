@@ -11,12 +11,8 @@ def edit_user_permission_cogs(database):
         if not user_permission[0] and not user_permission[1]:
             return redirect(url_for('show_user'))
 
-        if request.json['permission_name'] != "user_admin":
-            database.exec(f'''UPDATE cantina_administration.permission SET {request.json['permission_name']} = %s 
-            WHERE user_token = %s''', (request.json['value'], request.json['token']))
-        else:
-            database.exec(f'''UPDATE cantina_administration.user SET admin=%s WHERE token = %s''',
-                          (request.json['value'], request.json['token']))
+        database.exec(f'''UPDATE cantina_administration.permission SET {request.json['permission_name']} = %s 
+        WHERE user_token = %s''', (request.json['value'], request.json['token']))
 
         return jsonify({"uuid":"caca"})
 
