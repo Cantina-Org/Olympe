@@ -4,6 +4,8 @@ from cantinaUtils import Database
 from os import path, getcwd
 from json import load
 
+from Utils.verify_maintenance import verify_maintenance
+
 from Cogs.SSO.login import sso_login_cogs
 from Cogs.SSO.logout import sso_logout_cogs
 from Cogs.User.home import user_home_cogs
@@ -34,7 +36,6 @@ app = Flask(__name__)  # Création de l'application Flask
 app.config['SECRET_KEY'] = config_data['modules'][0]['secret_key']
 socketio = SocketIO(app, cors_allowed_origins="*")  # Lien entre l'application Flaks et le WebSocket
 app.config['UPLOAD_FOLDER'] = path.abspath(path.join(getcwd(), "static/ProfilePicture/"))
-# app.config['SERVER_NAME'] = config_data['modules'][0]['global_domain']
 
 database = Database.DataBase(
     user=config_data['database'][0]['username'],
@@ -69,6 +70,11 @@ delete_modules BOOL DEFAULT FALSE, add_modules BOOL DEFAULT FALSE, edit_name_mod
 edit_url_module BOOL DEFAULT FALSE, edit_socket_url BOOL DEFAULT FALSE, edit_smtp_config BOOL DEFAULT FALSE, admin BOOL DEFAULT FALSE)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.log(id INT PRIMARY KEY AUTO_INCREMENT, 
     action_name TEXT, user_ip TEXT, user_token TEXT, details TEXT, log_level INT)""", None)
+
+# Vérifiacation du mode de maintenance
+@app.before_request
+def before_req():
+    return verify_maintenance(database, config_data['modules'][0]['maintenance'])
 
 
 @app.route('/', methods=['GET'])
