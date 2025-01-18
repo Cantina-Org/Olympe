@@ -37,7 +37,7 @@
                     <div class="text-sm opacity-70 mb-1">Contenue du mail de verification :</div>
                     <div class="font-semibold">{{ smtp_info[5][2] }}</div>
                 </div>
-                {% if user_permission[31] %}
+                {% if user_permission[31] or user_permission[32] %}
                     <div class="card-actions justify-end">
                         <button class="btn btn-primary" onclick="showSMTPEditForm()">Modifier</button>
                     </div>
@@ -101,7 +101,7 @@
                             </label>
                         </div>
                     </div>
-                    {% if user_permission[31] %}
+                    {% if user_permission[31] or user_permission[32] %}
                         <div class="card-actions justify-end">
                             <button class="btn btn-primary" onclick="showSMTPEditForm()">Modifier</button>
                         </div>

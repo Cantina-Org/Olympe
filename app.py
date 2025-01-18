@@ -66,7 +66,7 @@ allow_edit_profile_picture BOOL DEFAULT FALSE, allow_edit_A2F BOOL DEFAULT FALSE
 delete_account BOOL DEFAULT FALSE, desactivate_account BOOL DEFAULT FALSE, edit_permission BOOL DEFAULT FALSE, 
 show_all_modules BOOL DEFAULT FALSE, on_off_modules BOOL DEFAULT FALSE, on_off_maintenance BOOL DEFAULT FALSE, 
 delete_modules BOOL DEFAULT FALSE, add_modules BOOL DEFAULT FALSE, edit_name_module BOOL DEFAULT FALSE, 
-edit_url_module BOOL DEFAULT FALSE, edit_socket_url BOOL DEFAULT FALSE, edit_smtp_config BOOL DEFAULT FALSE)""", None)
+edit_url_module BOOL DEFAULT FALSE, edit_socket_url BOOL DEFAULT FALSE, edit_smtp_config BOOL DEFAULT FALSE, admin BOOL DEFAULT FALSE)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.log(id INT PRIMARY KEY AUTO_INCREMENT, 
     action_name TEXT, user_ip TEXT, user_token TEXT, details TEXT, log_level INT)""", None)
 

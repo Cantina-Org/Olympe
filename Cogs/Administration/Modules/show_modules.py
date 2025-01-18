@@ -15,7 +15,7 @@ def show_modules_cogs(database):
         local_user_theme = database.select('''SELECT theme FROM cantina_administration.user WHERE token= %s''',
                                            (request.cookies.get('token')), 1)
 
-        if not user_permission[23]:  # Si l'utilisateur n'as pas la permission, redirection vers la page d'accueil
+        if not user_permission[23] and not user_permission[32]:  # Si l'utilisateur n'as pas la permission, redirection vers la page d'accueil
             return redirect(url_for('home'))
 
         if request.method == 'POST':
