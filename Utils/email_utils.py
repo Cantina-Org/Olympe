@@ -21,11 +21,10 @@ def send_verification_email(database):
         message = database.select('''SELECT content FROM cantina_administration.config WHERE 
         name='MAIL_VERIFICATION_CONTENU' ''', None, number_of_data=1)[0]
         destinataire = database.select('''SELECT email, email_verified FROM cantina_administration.user 
-        WHERE token = %s''',
-                                       (request.cookies.get('token')), number_of_data=1)[0]
+        WHERE token = %s''', (request.cookies.get('token')), number_of_data=1)
 
         db_code = database.select('''SELECT email_verification_code FROM cantina_administration.user WHERE token = %s''',
-                                  (request.cookies.get('token')), number_of_data=1)[0]
+                                  (request.cookies.get('token')), number_of_data=1)
 
     except TypeError:
         return 'error1: Configuration incomplète ou inexistante'
@@ -33,7 +32,7 @@ def send_verification_email(database):
     if destinataire[1]:
         return 'already_check'
 
-    if db_code is None or db_code == 'reset':
+    if db_code is None or db_code[0] == 'reset':
         code = get_rand_num_for_email_verif()
         database.exec("""UPDATE cantina_administration.user SET email_verification_code = %s WHERE token = %s""",
                       (code, request.cookies.get('token')))
@@ -49,7 +48,7 @@ def send_verification_email(database):
 
     mail = MIMEMultipart()
     mail['From'] = conn_email
-    mail['To'] = destinataire
+    mail['To'] = destinataire[0]
     mail['Subject'] = subject
     try:
         content = MIMEText(message.format(code).encode('utf-8'), 'plain', 'utf-8')
@@ -59,7 +58,7 @@ def send_verification_email(database):
         smtp_server.ehlo()
         smtp_server.login(conn_email, conn_passwd)
 
-        smtp_server.sendmail(conn_email, destinataire, mail.as_string())
+        smtp_server.sendmail(conn_email, destinataire[0], mail.as_string())
         smtp_server.close()
 
         return 'success'
