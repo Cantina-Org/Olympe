@@ -93,140 +93,134 @@
                 </div>
             </div>
 
-            <div class="card card-side bg-base-100 shadow-xl" id="user-info-form" hidden="hidden">
-                <figure class="px-4 py-4 relative">
-                    <div class="flex flex-col items-center w-48 h-full">
-                        <img
-                            class="w-full h-full rounded-lg object-contain"
-                            src="{% if selected_user_info[7] == 0 %}
-                                {{ url_for('static', filename='ProfilePicture/general-logo.png') }}
-                                {% else %}
-                                {{ url_for('static', filename='ProfilePicture/'+selected_user_info[1]+'.png') }}
-                                {% endif %}"
-                            alt="profile_picture"
-                        />
-                        {% if user_permission[13] %}
-                            <input type="file" class="file-input w-full max-w-xs absolute" style="transform: translateY(100%);" />
-                        {% endif %}
+           <div class="card card-side bg-base-100 shadow-xl" id="user-info-form" hidden="hidden">
+                <form method="post" action="#" enctype="multipart/form-data" class="flex w-full">
+                    <div class="flex-none">
+                        <figure class="px-4 py-4 relative flex flex-col justify-center h-full">
+                            <div class="flex flex-col items-center w-48">
+                                <img
+                                    class="w-full h-full rounded-lg object-contain"
+                                    src="
+                                        {% if selected_user_info[7] == 0 %}
+                                            {{ url_for('static', filename='ProfilePicture/general-logo.png') }}
+                                        {% else %}
+                                            {{ url_for('static', filename='ProfilePicture/'+selected_user_info[1]+'.png') }}
+                                        {% endif %}"
+                                    alt="profile_picture"
+                                />
+                                {% if user_permission[13] %}
+                                    <input type="file" class="file-input file-input-sm w-full max-w-xs mt-2" name="profile_picture" />
+                                {% endif %}
+                            </div>
+                        </figure>
                     </div>
-                </figure>
-                <div class="card-body">
-                    <form method="post" action="#" enctype="multipart/form-data">
-                        <div style="gap: .5rem !important;">
-                            <input type="hidden" value="{{ selected_user_info[1] }}" name="token">
-                            {% if user_permission[10] or user_permission[32] %}
-                                <div class="bg-base-200 p-4 rounded-lg">
-                                    <div class="text-sm opacity-70 mb-1">Nom d'utilisateur</div>
-                                    <div class="font-semibold">
-                                        <label>
-                                            <input type="text" value="{{ selected_user_info[2] }}" name="username" class="input w-full max-w-xs">
-                                        </label>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <div class="bg-base-200 p-4 rounded-lg">
-                                    <div class="text-sm opacity-70 mb-1">Nom d'utilisateur</div>
-                                    <div class="font-semibold">{{ selected_user_info[2] }}</div>
-                                </div>
-                            {% endif %}
-                            <hr style="height:.5rem; visibility:hidden;" />
-                            {% if user_permission[12] or user_permission[32] %}
-                                <div class="bg-base-200 p-4 rounded-lg">
-                                    <div class="text-sm opacity-70 mb-1">Mot de passe</div>
-                                    <div class="font-semibold">
-                                        <label>
-                                            <input type="password" placeholder="••••••••••••••••" name="password1" class="input w-full max-w-xs">
-                                        </label>
-                                    </div>
-                                </div>
-                                <hr style="height:.5rem; visibility:hidden;" />
-                                <div class="bg-base-200 p-4 rounded-lg">
-                                    <div class="text-sm opacity-70 mb-1">Confirmation du mot de passe</div>
-                                    <div class="font-semibold">
-                                        <label>
-                                            <input type="password" placeholder="••••••••••••••••" name="password2" class="input w-full max-w-xs">
-                                        </label>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <div class="bg-base-200 p-4 rounded-lg">
-                                    <div class="text-sm opacity-70 mb-1">Mot de passe</div>
-                                    <div class="font-semibold">••••••••••••••••</div>
-                                </div>
-                            {% endif %}
-                            <hr style="height:.5rem; visibility:hidden;" />
-                            {% if user_permission[11] or user_permission[32] %}
-                                <div class="bg-base-200 p-4 rounded-lg">
-                                    <div class="text-sm opacity-70 mb-1">Email</div>
-                                    <div class="font-semibold">
-                                        <label>
-                                            <input type="email" value="{{ selected_user_info[4] }}" name="email" class="input w-full max-w-xs">
-                                        </label>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <div class="bg-base-200 p-4 rounded-lg">
-                                    <div class="text-sm opacity-70 mb-1">Email</div>
-                                    <div class="font-semibold">{{selected_user_info[4]}}</div>
-                                </div>
-                            {% endif %}
-                            <hr style="height:.5rem; visibility:hidden;" />
+
+                    <div class="card-body space-y-4 flex-grow">
+                        <input type="hidden" value="{{ selected_user_info[1] }}" name="token">
+
+                        {% if user_permission[10] or user_permission[32] %}
                             <div class="bg-base-200 p-4 rounded-lg">
-                                <div class="text-sm opacity-70 mb-1">Authetification à deux facteurs</div>
-                                <div class="font-semibold">{% if not selected_user_info[8] or selected_user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}</div>
-                            </div>
-                            <hr style="height:.5rem; visibility:hidden;" />
-                            {% if user_permission[10] or user_permission[32] %}
-                                <div class="bg-base-200 p-4 rounded-lg">
-                                    <label for="theme-select" class="text-sm opacity-70 mb-1 block">Thème</label>
-                                    <select id="theme-select" name="theme" class="select select-bordered w-full max-w-xs">
-                                        <option value="light" {% if selected_user_info[13] == 'light' %}selected{% endif %}>Light</option>
-                                        <option value="dark" {% if selected_user_info[13] == 'dark' %}selected{% endif %}>Dark</option>
-                                        <option value="cupcake" {% if selected_user_info[13] == 'cupcake' %}selected{% endif %}>Cupcake</option>
-                                        <option value="bumblebee" {% if selected_user_info[13] == 'bumblebee' %}selected{% endif %}>Bumblebee</option>
-                                        <option value="emerald" {% if selected_user_info[13] == 'emerald' %}selected{% endif %}>Emerald</option>
-                                        <option value="corporate" {% if selected_user_info[13] == 'corporate' %}selected{% endif %}>Corporate</option>
-                                        <option value="synthwave" {% if selected_user_info[13] == 'synthwave' %}selected{% endif %}>Synthwave</option>
-                                        <option value="retro" {% if selected_user_info[13] == 'retro' %}selected{% endif %}>Retro</option>
-                                        <option value="cyberpunk" {% if selected_user_info[13] == 'cyberpunk' %}selected{% endif %}>Cyberpunk</option>
-                                        <option value="valentine" {% if selected_user_info[13] == 'valentine' %}selected{% endif %}>Valentine</option>
-                                        <option value="halloween" {% if selected_user_info[13] == 'halloween' %}selected{% endif %}>Halloween</option>
-                                        <option value="garden" {% if selected_user_info[13] == 'garden' %}selected{% endif %}>Garden</option>
-                                        <option value="forest" {% if selected_user_info[13] == 'forest' %}selected{% endif %}>Forest</option>
-                                        <option value="aqua" {% if selected_user_info[13] == 'aqua' %}selected{% endif %}>Aqua</option>
-                                        <option value="lofi" {% if selected_user_info[13] == 'lofi' %}selected{% endif %}>Lofi</option>
-                                        <option value="pastel" {% if selected_user_info[13] == 'pastel' %}selected{% endif %}>Pastel</option>
-                                        <option value="fantasy" {% if selected_user_info[13] == 'fantasy' %}selected{% endif %}>Fantasy</option>
-                                        <option value="wireframe" {% if selected_user_info[13] == 'wireframe' %}selected{% endif %}>Wireframe</option>
-                                        <option value="black" {% if selected_user_info[13] == 'black' %}selected{% endif %}>Black</option>
-                                        <option value="luxury" {% if selected_user_info[13] == 'luxury' %}selected{% endif %}>Luxury</option>
-                                        <option value="dracula" {% if selected_user_info[13] == 'dracula' %}selected{% endif %}>Dracula</option>
-                                        <option value="cmyk" {% if selected_user_info[13] == 'cmyk' %}selected{% endif %}>CMYK</option>
-                                        <option value="autumn" {% if selected_user_info[13] == 'autumn' %}selected{% endif %}>Autumn</option>
-                                        <option value="business" {% if selected_user_info[13] == 'business' %}selected{% endif %}>Business</option>
-                                        <option value="acid" {% if selected_user_info[13] == 'acid' %}selected{% endif %}>Acid</option>
-                                        <option value="lemonade" {% if selected_user_info[13] == 'lemonade' %}selected{% endif %}>Lemonade</option>
-                                        <option value="night" {% if selected_user_info[13] == 'night' %}selected{% endif %}>Night</option>
-                                        <option value="coffee" {% if selected_user_info[13] == 'coffee' %}selected{% endif %}>Coffee</option>
-                                        <option value="winter" {% if selected_user_info[13] == 'winter' %}selected{% endif %}>Winter</option>
-                                        <option value="dim" {% if selected_user_info[13] == 'dim' %}selected{% endif %}>Dim</option>
-                                        <option value="nord" {% if selected_user_info[13] == 'nord' %}selected{% endif %}>Nord</option>
-                                        <option value="sunset" {% if selected_user_info[13] == 'sunset' %}selected{% endif %}>Sunset</option>
-                                    </select>
+                                <div class="text-sm opacity-70 mb-1">Nom d'utilisateur</div>
+                                <div class="font-semibold">
+                                    <input type="text" value="{{ selected_user_info[2] }}" name="username" class="input w-full max-w-xs">
                                 </div>
-                            {% else %}
-                                <div class="bg-base-200 p-4 rounded-lg">
-                                    <div class="text-sm opacity-70 mb-1">Thème</div>
-                                    <div class="font-semibold">{{selected_user_info[13]}}</div>
-                                </div>
-                            {% endif %}
-                            <hr style="height:.5rem; visibility:hidden;" />
-                            <div class="card-actions justify-end">
-                                <button class="btn btn-primary" type="submit">Valider les modifications du comptes</button>
                             </div>
+                        {% else %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Nom d'utilisateur</div>
+                                <div class="font-semibold">{{ selected_user_info[2] }}</div>
+                            </div>
+                        {% endif %}
+
+                        {% if user_permission[12] or user_permission[32] %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Mot de passe</div>
+                                <div class="font-semibold">
+                                    <input type="password" placeholder="••••••••••••••••" name="password1" class="input  w-full max-w-xs">
+                                </div>
+                            </div>
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Confirmation du mot de passe</div>
+                                <div class="font-semibold">
+                                    <input type="password" placeholder="••••••••••••••••" name="password2" class="input  w-full max-w-xs">
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Mot de passe</div>
+                                <div class="font-semibold">••••••••••••••••</div>
+                            </div>
+                        {% endif %}
+
+                        {% if user_permission[11] or user_permission[32] %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Email</div>
+                                <div class="font-semibold">
+                                    <input type="email" value="{{ selected_user_info[4] }}" name="email" class="input  w-full max-w-xs">
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Email</div>
+                                <div class="font-semibold">{{ selected_user_info[4] }}</div>
+                            </div>
+                        {% endif %}
+
+                        <div class="bg-base-200 p-4 rounded-lg">
+                            <div class="text-sm opacity-70 mb-1">Authentification à deux facteurs</div>
+                            <div class="font-semibold">{% if not selected_user_info[8] or selected_user_info[8] == 0 %} Désactivé {% else %} Activé {% endif %}</div>
                         </div>
-                    </form>
-                </div>
+
+                        {% if user_permission[10] or user_permission[32] %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <label for="theme-select" class="opacity-70 mb-1 block">Thème</label>
+                                <select id="theme-select" name="theme" class="select select-bordered w-full max-w-xs">
+                                    <option value="light" {% if selected_user_info[13] == 'light' %}selected{% endif %}>Light</option>
+                                    <option value="dark" {% if selected_user_info[13] == 'dark' %}selected{% endif %}>Dark</option>
+                                    <option value="cupcake" {% if selected_user_info[13] == 'cupcake' %}selected{% endif %}>Cupcake</option>
+                                    <option value="bumblebee" {% if selected_user_info[13] == 'bumblebee' %}selected{% endif %}>Bumblebee</option>
+                                    <option value="emerald" {% if selected_user_info[13] == 'emerald' %}selected{% endif %}>Emerald</option>
+                                    <option value="corporate" {% if selected_user_info[13] == 'corporate' %}selected{% endif %}>Corporate</option>
+                                    <option value="synthwave" {% if selected_user_info[13] == 'synthwave' %}selected{% endif %}>Synthwave</option>
+                                    <option value="retro" {% if selected_user_info[13] == 'retro' %}selected{% endif %}>Retro</option>
+                                    <option value="cyberpunk" {% if selected_user_info[13] == 'cyberpunk' %}selected{% endif %}>Cyberpunk</option>
+                                    <option value="valentine" {% if selected_user_info[13] == 'valentine' %}selected{% endif %}>Valentine</option>
+                                    <option value="halloween" {% if selected_user_info[13] == 'halloween' %}selected{% endif %}>Halloween</option>
+                                    <option value="garden" {% if selected_user_info[13] == 'garden' %}selected{% endif %}>Garden</option>
+                                    <option value="forest" {% if selected_user_info[13] == 'forest' %}selected{% endif %}>Forest</option>
+                                    <option value="aqua" {% if selected_user_info[13] == 'aqua' %}selected{% endif %}>Aqua</option>
+                                    <option value="lofi" {% if selected_user_info[13] == 'lofi' %}selected{% endif %}>Lofi</option>
+                                    <option value="pastel" {% if selected_user_info[13] == 'pastel' %}selected{% endif %}>Pastel</option>
+                                    <option value="fantasy" {% if selected_user_info[13] == 'fantasy' %}selected{% endif %}>Fantasy</option>
+                                    <option value="wireframe" {% if selected_user_info[13] == 'wireframe' %}selected{% endif %}>Wireframe</option>
+                                    <option value="black" {% if selected_user_info[13] == 'black' %}selected{% endif %}>Black</option>
+                                    <option value="luxury" {% if selected_user_info[13] == 'luxury' %}selected{% endif %}>Luxury</option>
+                                    <option value="dracula" {% if selected_user_info[13] == 'dracula' %}selected{% endif %}>Dracula</option>
+                                    <option value="cmyk" {% if selected_user_info[13] == 'cmyk' %}selected{% endif %}>CMYK</option>
+                                    <option value="autumn" {% if selected_user_info[13] == 'autumn' %}selected{% endif %}>Autumn</option>
+                                    <option value="business" {% if selected_user_info[13] == 'business' %}selected{% endif %}>Business</option>
+                                    <option value="acid" {% if selected_user_info[13] == 'acid' %}selected{% endif %}>Acid</option>
+                                    <option value="lemonade" {% if selected_user_info[13] == 'lemonade' %}selected{% endif %}>Lemonade</option>
+                                    <option value="night" {% if selected_user_info[13] == 'night' %}selected{% endif %}>Night</option>
+                                    <option value="coffee" {% if selected_user_info[13] == 'coffee' %}selected{% endif %}>Coffee</option>
+                                    <option value="winter" {% if selected_user_info[13] == 'winter' %}selected{% endif %}>Winter</option>
+                                    <option value="dim" {% if selected_user_info[13] == 'dim' %}selected{% endif %}>Dim</option>
+                                    <option value="nord" {% if selected_user_info[13] == 'nord' %}selected{% endif %}>Nord</option>
+                                    <option value="sunset" {% if selected_user_info[13] == 'sunset' %}selected{% endif %}>Sunset</option>
+                                </select>
+                            </div>
+                        {% else %}
+                            <div class="bg-base-200 p-4 rounded-lg">
+                                <div class="text-sm opacity-70 mb-1">Thème</div>
+                                <div class="font-semibold">{{ selected_user_info[13] }}</div>
+                            </div>
+                        {% endif %}
+
+                        <div class="card-actions justify-end">
+                            <button class="btn btn-primary" type="submit">Valider les modifications du compte</button>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {% set permissions = [

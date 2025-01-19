@@ -11,7 +11,26 @@
 <body>
     {% include "PlaceHolder/sidebar.html" %}
     <main class="p-4 md:ml-64 h-auto pt-20 min-h-screen">
-        <button onclick="window.location.href='{{ url_for('show_modules') }}'" class="btn btn-secondary">Tout les modules</button>
+        <div id="button-bar" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Premier bouton -->
+            <div class="w-full">
+                <button onclick="window.location.href='{{ url_for('show_modules') }}'" class="btn btn-primary w-full">
+                    Tout les modules
+                </button>
+            </div>
+
+            <!-- Deuxième bouton (conditionnel) -->
+            {% if user_permission[20] or user_permission[32] %}
+                <div class="w-full">
+                    <form action="{{ url_for('delete_user') }}" method="post" id="delete_account" class="w-full">
+                        <input type='hidden' name='token' value="{{ selected_module_info[1] }}"/>
+                        <button type="button" class="btn btn-error w-full" onclick="delete_account()">
+                            Activer le mode maintenance
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
         <div class="card card-side bg-base-100 shadow-xl" id="module-data">
             <div class="card-body">
                 <div class="bg-base-200 p-4 rounded-lg">
