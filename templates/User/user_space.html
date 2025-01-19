@@ -16,11 +16,7 @@
                 <div class="w-48 h-full">
                     <img
                         class="w-full h-full rounded-lg object-contain"
-                        src="{% if user_information[7] == 0 %}
-                            {{ url_for('static', filename='ProfilePicture/general-logo.png') }}
-                            {% else %}
-                            {{ url_for('static', filename='ProfilePicture/'+user_information[1]+'.png') }}
-                            {% endif %}"
+                        src="{{ url_for('get_profile_picture') }}"
                         alt="profile_picture"
                     />
                 </div>

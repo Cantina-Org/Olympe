@@ -4,8 +4,9 @@
         <div class="flex flex-wrap flex-col items-center p-2">
             <div class="flex flex-wrap flex-col items-center p-2">
                 <div class="avatar rounded-full w-20 h-20">
-                    <img src="{{ url_for('static', filename='ProfilePicture/'+request.cookies.get('token')+'.png') }}"
-                         class="rounded-full w-20 h-20 object-cover overflow-hidden" alt="L'image n'existe pas">
+                    <img src="{{ url_for('get_profile_picture')}}"
+                     class="rounded-full w-20 h-20 object-cover overflow-hidden"
+                     alt="L'image n'existe pas">
                 </div>
                 <p class="font-bold text-wrap">Cantina - Olympe</p>
             </div>

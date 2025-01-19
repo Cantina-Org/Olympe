@@ -9,6 +9,7 @@ from Utils.verify_maintenance import verify_maintenance
 from Cogs.SSO.login import sso_login_cogs
 from Cogs.SSO.logout import sso_logout_cogs
 from Cogs.User.home import user_home_cogs
+from Cogs.User.get_profile_picture import get_profile_picture_cogs
 from Cogs.User.user_space import user_space_cogs
 from Cogs.User.doublefa_add import doubleFA_add_cogs
 from Cogs.User.email_verif import email_verif_cogs
@@ -81,6 +82,11 @@ def before_req():
 @app.route('/', methods=['GET'])
 def home():
     return user_home_cogs(database)
+
+
+@app.route('/user_space/get_profile_picture')
+def get_profile_picture():
+    return get_profile_picture_cogs(database, app.config['UPLOAD_FOLDER'])
 
 
 @app.route('/user_space/', methods=['GET', 'POST'])
@@ -190,3 +196,4 @@ if __name__ == '__main__':
                  debug=config_data["modules"][0]["debug_mode"],
                  port=config_data["modules"][0]["port"]
                  )
+

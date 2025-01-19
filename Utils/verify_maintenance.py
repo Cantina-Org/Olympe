@@ -2,7 +2,7 @@ from flask import request, render_template, redirect, url_for
 from Utils.verify_login import verify_login
 
 def verify_maintenance(database, maintenance):
-    if not request.path.startswith('/static/') and not request.path.startswith('/sso/'):
+    if not request.path.startswith('/static/') and not request.path.startswith('/sso/') and not request.path.startswith('/user_space/get_profile_picture'):
         if not verify_login(database):
             return redirect(url_for('sso_login', error='0'))
         else:

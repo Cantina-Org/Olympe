@@ -57,11 +57,7 @@
                     <div class="w-48 h-full">
                         <img
                             class="w-full h-full rounded-lg object-contain"
-                            src="{% if selected_user_info[7] == 0 %}
-                                {{ url_for('static', filename='ProfilePicture/general-logo.png') }}
-                                {% else %}
-                                {{ url_for('static', filename='ProfilePicture/'+selected_user_info[1]+'.png') }}
-                                {% endif %}"
+                            src="{{ url_for('get_profile_picture', token=selected_user_info[1]) }}"
                             alt="profile_picture"
                         />
                     </div>
@@ -100,12 +96,7 @@
                             <div class="flex flex-col items-center w-48">
                                 <img
                                     class="w-full h-full rounded-lg object-contain"
-                                    src="
-                                        {% if selected_user_info[7] == 0 %}
-                                            {{ url_for('static', filename='ProfilePicture/general-logo.png') }}
-                                        {% else %}
-                                            {{ url_for('static', filename='ProfilePicture/'+selected_user_info[1]+'.png') }}
-                                        {% endif %}"
+                                    src="{{ url_for('get_profile_picture', token=selected_user_info[1]) }}"
                                     alt="profile_picture"
                                 />
                                 {% if user_permission[13] %}
