@@ -22,9 +22,9 @@
             <!-- Deuxième bouton (conditionnel) -->
             {% if user_permission[20] or user_permission[32] %}
                 <div class="w-full">
-                    <form action="{{ url_for('delete_user') }}" method="post" id="delete_account" class="w-full">
-                        <input type='hidden' name='token' value="{{ selected_module_info[1] }}"/>
-                        <button type="button" class="btn btn-error w-full" onclick="delete_account()">
+                    <form action="{{ url_for('maintenance') }}" method="post" id="maintenance_mode" class="w-full">
+                        <input type='hidden' name='module_name' value="{{ selected_module_info[2] }}"/>
+                        <button type="button" class="btn btn-error w-full" onclick="maintenance_mode()">
                             Activer le mode maintenance
                         </button>
                     </form>
@@ -122,5 +122,20 @@
             </div>
         </div>
     </main>
+
+    <script>
+        function maintenance_mode(){
+            if (confirm('Êtes vous sûr de vouloir activer le mode maintenance sur ce module ?')) {
+                let form = document.getElementById('maintenance_mode');
+                let input = document.createElement("input");
+                input.type = "hidden";
+                form.appendChild(input);
+                form.submit();
+            } else {
+                console.log('Annulation de la requete.');
+            }
+        }
+    </script>
 </body>
 </html>
+

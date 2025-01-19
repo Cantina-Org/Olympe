@@ -21,6 +21,7 @@ from Cogs.Administration.User.global_permission import global_permission_cogs
 from Cogs.Administration.User.smtp_config import smtp_config_cogs
 from Cogs.Administration.User.smtp_test import smtp_test_cogs
 from Cogs.Administration.Modules.show_modules import show_modules_cogs
+from Cogs.Administration.Modules.maintenance import maintenance_cogs
 from Cogs.Administration.Modules.add_modules import add_modules_cogs
 
 from Cogs.Socket.heart_beat_cogs import heart_beat_cogs
@@ -140,6 +141,13 @@ def show_modules():
 @app.route('/admin/modules/add/', methods=['POST', 'GET'])
 def add_modules():
     return add_modules_cogs(database)
+
+
+@app.route('/admin/modules/maintenance/', methods=['POST'])
+def maintenance():
+    print("----------------------")
+    print(config_data['modules'][0]['maintenance'])
+    return maintenance_cogs(database)
 
 
 @app.route('/admin/smtp/config/', methods=['POST', 'GET'])
