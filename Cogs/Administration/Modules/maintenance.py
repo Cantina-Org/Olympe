@@ -14,12 +14,18 @@ def maintenance_cogs(database):
             return redirect(url_for('home'))
 
         if request.method == 'POST':
-            print(app.config_data['modules'][0]['maintenance'])
-            app.config_data['modules'][0]['maintenance'] = not app.config_data['modules'][0]['maintenance']
-            print(app.config_data['modules'][0]['maintenance'])
+            if request.form["module_name"] == app.config_data['modules'][0]['name']:
+                app.config_data['modules'][0]['maintenance'] = not app.config_data['modules'][0]['maintenance']
 
-            with open(app.file_path, 'w') as file:
-                dump(app.config_data, file, indent=4)
+                with open(app.file_path, 'w') as file:
+                    dump(app.config_data, file, indent=4)
+
+                database.exec("""UPDATE cantina_administration.modules SET maintenance = %s 
+                WHERE token = %s""", (not app.config_data['modules'][0]['maintenance'], request.form["module_token"]))
+
+            else:
+                database.exec("""UPDATE cantina_administration.modules SET maintenance = NOT maintenance 
+                                WHERE token = %s""", (request.form["module_token"]))
 
             return redirect(url_for('show_modules', module_name=request.form["module_name"]))
 

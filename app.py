@@ -145,8 +145,6 @@ def add_modules():
 
 @app.route('/admin/modules/maintenance/', methods=['POST'])
 def maintenance():
-    print("----------------------")
-    print(config_data['modules'][0]['maintenance'])
     return maintenance_cogs(database)
 
 

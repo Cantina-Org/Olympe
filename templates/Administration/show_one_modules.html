@@ -14,7 +14,7 @@
         <div id="button-bar" class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <!-- Premier bouton -->
             <div class="w-full">
-                <button onclick="window.location.href='{{ url_for('show_modules') }}'" class="btn btn-primary w-full">
+                <button onclick="window.location.href='{{ url_for('show_modules') }}'" class="btn btn-secondary w-full">
                     Tout les modules
                 </button>
             </div>
@@ -24,8 +24,13 @@
                 <div class="w-full">
                     <form action="{{ url_for('maintenance') }}" method="post" id="maintenance_mode" class="w-full">
                         <input type='hidden' name='module_name' value="{{ selected_module_info[2] }}"/>
+                        <input type='hidden' name='module_token' value="{{ selected_module_info[1] }}"/>
                         <button type="button" class="btn btn-error w-full" onclick="maintenance_mode()">
-                            Activer le mode maintenance
+                            {% if selected_module_info[4] %}
+                                Désactiver le mode maintenance
+                            {% else %}
+                                Activer le mode maintenance
+                            {% endif %}
                         </button>
                     </form>
                 </div>
