@@ -39,7 +39,13 @@
                 </div>
                 <div class="bg-base-200 p-4 rounded-lg">
                     <div class="text-sm opacity-70 mb-1">Authetification à deux facteurs</div>
-                    <div class="font-semibold">{% if not user_information[8] or user_information[8] == 0 %} Désactivé {% else %} Activé {% endif %}</div>
+                    <div class="font-semibold">
+                        {% if not user_information[8] or user_information[8] == 0 %}
+                            Désactivé
+                            <button onclick="window.location.href='{{ url_for('double2FA_add') }}'" class="btn btn-primary">Ajouter l'A2F.</button>
+                        {% else %}
+                            Activé
+                        {% endif %}</div>
                 </div>
                 <div class="bg-base-200 p-4 rounded-lg">
                     <div class="text-sm opacity-70 mb-1">Thème</div>

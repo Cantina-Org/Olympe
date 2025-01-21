@@ -12,11 +12,22 @@ def doubleFA_add_cogs(database):
                                     number_of_data=1)[0]
         return redirect(login_url+'/sso/login/?error=2')
 
+    # On récupère les permissions de l'utilisateurs
+    user_permission = database.select('''SELECT * from cantina_administration.permission WHERE user_token = %s''',
+                                      (request.cookies.get('token')), 1)
+
+    # On récupère les modules afin de pouvoir faire une redirection sur la page via la sidebar
+    modules_info = database.select("""SELECT * FROM cantina_administration.modules""", None)
+
+    # On récupère le thème de l'utilisateur afin de pouvoir l'afficher
+    local_user_theme = database.select('''SELECT theme FROM cantina_administration.user WHERE token= %s''',
+                                       (request.cookies.get('token')), 1)
+
     if request.method == 'POST':  # Si l'utilisateur valide le formulaire
         if verify_A2F(database):  # Vérification réussi du code via la base de donnée
             database.exec('''UPDATE cantina_administration.user SET A2F = 1 WHERE token=%s''',
                           (request.cookies.get('token')))  # Activation de l'A2F pour l'authentification
-            return redirect(url_for('home'))
+            return redirect(url_for('user_space'))
         else:  # Vérification raté du code
             # Génération du lien avec la chaine de caractère lié a l'utilisateur.
             key = database.select('''SELECT A2F_secret FROM cantina_administration.user WHERE token = %s''',
@@ -27,7 +38,7 @@ def doubleFA_add_cogs(database):
                                             (request.cookies.get('token'),), number_of_data=1)[0]
             )
             return render_template('User/2FA-add.html', totp_auth=totp_auth,
-                                   error=1)
+                                   error=1, user_permission=user_permission, modules_info=modules_info, local_user_theme=local_user_theme)
     elif request.method == 'GET':  # Si l'utilisateur consulte la page du formulaire.
         # Si l'utilisateur à déjà l'A2F d'activé, redirection vers la page d'accueil.
         if database.select('''SELECT A2F FROM cantina_administration.user WHERE token=%s''',
@@ -50,5 +61,6 @@ def doubleFA_add_cogs(database):
             issuer_name=database.select("""SELECT username FROM cantina_administration.user WHERE token = %s""",
                                         (request.cookies.get('token'),), number_of_data=1)[0]
         )
+
         return render_template('User/2FA-add.html', totp_auth=totp_auth,
-                               error=0)
+                               error=0, user_permission=user_permission, modules_info=modules_info, local_user_theme=local_user_theme)
