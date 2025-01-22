@@ -1,28 +1,63 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="{{ local_user_theme[0] }}">
 <head>
     <meta charset="UTF-8">
     <title>Cantina - Olympe</title>
     <link rel="icon" href="{{ url_for('static', filename='SVG/logo.svg') }}" sizes="any" type="image/svg+xml">
+    <script src="{{ url_for('static', filename='JS/Administration/show_form_smtp_edit.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script type="application/javascript" src="{{ url_for('static', filename='JS/User/2FA-add.js') }}"></script>
 </head>
 <body>
-    <h1>Cantina  - Olympe</h1>
-    {% if error == 1 %}
-        <h2>Erreur, le code n'est pas bon !</h2>
-    {% endif %}
-    <div id="qrcode"></div>
-    <script type="application/javascript">
-        new QRCode(document.getElementById('qrcode'), '{{ totp_auth }}')
-    </script>
-    <form method="post">
-        <input type="hidden" value="{{ totp_auth }}" name="totp_auth">
-        <label>
-            Code générer par l'application
-            <input type="text" name="a2f-code" required>
-        </label>
-        <button type="submit">Valider le code</button>
-    </form>
+    {% include "PlaceHolder/sidebar.html" %}
+    <main class="p-4 md:ml-64 h-auto pt-20 min-h-screen">
+        <div class="min-h-screen flex flex-col items-center py-8">
+            <div class="card card-side shadow-xl max-w-md w-full">
+                <div class="card-body space-y-6">
+                    {% if error == 0 or error == 1 %}
+                        {% if error == 1 %}
+                            <div class="alert alert-error mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>Erreur, le code n'est pas bon !</span>
+                            </div>
+                        {% endif %}
+
+                        <div id="qrcode" class="mx-auto"></div>
+                        <script type="application/javascript">
+                            new QRCode(document.getElementById('qrcode'), '{{ totp_auth }}')
+                        </script>
+
+                        <form method="post" class="space-y-6 text-center">
+                            <input type="hidden" value="{{ totp_auth }}" name="totp_auth">
+                            <label class="label">
+                                <span class="label-text font-semibold text-2xl">Code généré par l'application</span>
+                            </label>
+                            <input type="text" name="a2f-code" class="input input-bordered w-full" required>
+                            <button type="submit" class="btn btn-primary w-full">Valider le code</button>
+                        </form>
+
+                    {% elif error == 2 %}
+                        <div class="alert alert-warning">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <span>Attention ! La configuration du serveur SMTP n'est pas complète !!</span>
+                        </div>
+                    {% elif error == 3 %}
+                        <div class="alert alert-warning">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <span>Attention ! La configuration des messages n'est pas complète !!</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
