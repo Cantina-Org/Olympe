@@ -42,7 +42,7 @@ def show_user_cogs(database, upload_path):
                                        modules_info=modules_info)
 
             else:  # Sinon
-                # On séléctionne toute la base de données
+                # On sélectionne toute la base de données
                 users_data = database.select('SELECT * FROM cantina_administration.user', None)
                 return render_template('Administration/show_user.html',
                                        multiple_user_info=users_data,
@@ -94,7 +94,7 @@ def show_user_cogs(database, upload_path):
                 pass  # Permission refusé
 
             try:
-                if request.form['theme'] != user_information[13]:
+                if request.form['theme'] != user_information[12]:
                     # Modification du theme si il est différent de celui déjà mis.
                     database.exec('''UPDATE cantina_administration.user SET theme = %s WHERE token = %s''',
                                   (request.form['theme'], request.form['token']))

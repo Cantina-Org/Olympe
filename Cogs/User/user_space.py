@@ -40,14 +40,14 @@ def user_space_cogs(database, upload_path):
 
         try:
             if PasswordHasher().verify(user_information[3], request.form['password1']):
-                pass  # Le MDP ne change pas
+                pass  # Le MDP ne change pas.
         except exceptions.VerifyMismatchError:
             if request.form['password1'] != '' and request.form['password1'] == request.form['password2']:
                 # Modification du MDP après vérification que les deux entrées sont strictement égal et pas vides
                 database.exec('''UPDATE cantina_administration.user SET password = %s WHERE token = %s''',
                               (PasswordHasher().hash(password=request.form['password1']), request.cookies.get('token')))
             else:
-                pass  # L'entrée est vide
+                pass  # L'entrée est vide.
         except BadRequestKeyError:
             pass  # Permission refusé
 
@@ -60,8 +60,8 @@ def user_space_cogs(database, upload_path):
             pass  # Permission refusé
 
         try:
-            if request.form['theme'] != user_information[13]:
-                # Modification du theme si il est différent de celui déjà mis.
+            if request.form['theme'] != user_information[12]:
+                # Modification du theme s'il est différent de celui déjà mis.
                 database.exec('''UPDATE cantina_administration.user SET theme = %s WHERE token = %s''',
                               (request.form['theme'], request.cookies.get('token')))
         except BadRequestKeyError:
