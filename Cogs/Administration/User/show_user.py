@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 def show_user_cogs(database, upload_path):
     # Vérification de si l'utilisateur est bien connecté et n'a pas un compte désactivé
     if verify_login(database) and verify_login(database) != "desactivated":
-        if request.method == 'GET':  # Si il fait une requete de type GET
+        if request.method == 'GET':  # S'il fait une requete de type GET
             # On récupère les modules afin de pouvoir faire une redirection sur la page via la sidebar
             modules_info = database.select("""SELECT * FROM cantina_administration.modules""", None)
 
