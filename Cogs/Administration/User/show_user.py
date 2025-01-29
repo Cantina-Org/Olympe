@@ -17,7 +17,7 @@ def show_user_cogs(database, upload_path):
             local_user_theme = database.select('''SELECT theme FROM cantina_administration.user WHERE token= %s''',
                                                 (request.cookies.get('token')), 1)
 
-            # On récupère les permission de l'utilisateur afin de pouvoir afficher les options qui correspondent
+            # On récupère les permissions de l'utilisateur afin de pouvoir afficher les options qui correspondent
             local_user_permission = database.select('''SELECT * FROM cantina_administration.permission 
             WHERE user_token = %s''', (request.cookies.get('token')), 1)
 
@@ -54,11 +54,11 @@ def show_user_cogs(database, upload_path):
 
         # Si l'utilisateur fait une requete POST
         elif request.method == 'POST':
-            # On séléctionne toute les infos de l'utilisateur
+            # On sélectionne toutes les infos de l'utilisateur
             user_information = database.select("""SELECT * FROM cantina_administration.user WHERE token = %s""",
                                                (request.form['token']), 1)
             try:
-                # On vérifie si le username a changé
+                # On vérifie si l'username a changé
                 if request.form['username'] != user_information[2]:
                     # Modification de l'username
                     database.exec('''UPDATE cantina_administration.user SET username = %s WHERE token = %s''',
@@ -79,7 +79,7 @@ def show_user_cogs(database, upload_path):
                                   (PasswordHasher().hash(password=request.form['password1']),
                                    request.form['token']))
                 else:
-                    pass  # L'entrée est vide
+                    pass  # L'entrée est vide.
             except BadRequestKeyError:
                 pass  # Permission refusé
 
@@ -95,7 +95,7 @@ def show_user_cogs(database, upload_path):
 
             try:
                 if request.form['theme'] != user_information[12]:
-                    # Modification du theme si il est différent de celui déjà mis.
+                    # Modification du theme s'il est différent de celui déjà mis.
                     database.exec('''UPDATE cantina_administration.user SET theme = %s WHERE token = %s''',
                                   (request.form['theme'], request.form['token']))
             except BadRequestKeyError:
