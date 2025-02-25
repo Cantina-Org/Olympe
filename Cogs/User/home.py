@@ -16,7 +16,7 @@ def user_home_cogs(database):
                                        (request.cookies.get('token')), 1)
 
     if request.method == 'GET':
-        # Récupération des permission de l'utilisateur
+        # Récupération des permissions de l'utilisateur
         user_permission = database.select("""SELECT * FROM cantina_administration.permission WHERE user_token = %s""",
                                           (request.cookies.get('token')), 1)
         modules_info = database.select("""SELECT * FROM cantina_administration.modules""", None)

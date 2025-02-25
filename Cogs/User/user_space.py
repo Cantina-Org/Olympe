@@ -67,10 +67,10 @@ def user_space_cogs(database, upload_path):
         except BadRequestKeyError:
             pass  # Permission refusé
 
-        if 'profile_picture' in request.files:  # Si une photo de profile a été envoyé
+        if 'profile_picture' in request.files:  # Si une photo de profil a été envoyé
             profile_picture = request.files['profile_picture']  # Récupération de la photo
             if profile_picture.filename != '':
-                # Supression des autres photos de profile
+                # Supression des autres photos de profil
                 for extension in ['png', 'jpg', 'jpeg', 'heic']:
                     filepath = path.join(upload_path, f"{request.cookies.get('token')}.{extension}")
                     if path.exists(filepath):
