@@ -24,6 +24,8 @@ from Cogs.Administration.User.smtp_test import smtp_test_cogs
 from Cogs.Administration.Modules.show_modules import show_modules_cogs
 from Cogs.Administration.Modules.add_modules import add_modules_cogs
 
+from Cogs.SSO.API.login import api_login_cogs
+
 from Cogs.Socket.heart_beat_cogs import heart_beat_cogs
 from Cogs.Socket.ping_server_socket_cogs import ping_server_socket_cogs
 
@@ -172,6 +174,10 @@ def smtp_test():
 @app.route('/sso/login/', methods=['GET', 'POST'])
 def sso_login(error=0):
     return sso_login_cogs(database, error, config_data['modules'][0]['global_domain'])
+
+@app.route('/sso/login/api', methods=['POST'])
+def api_sso_login(error=0):
+    return api_login_cogs(database, error)
 
 @app.route('/sso/logout/', methods=['GET'])
 def sso_logout():
