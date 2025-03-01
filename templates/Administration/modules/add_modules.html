@@ -1,31 +1,57 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="{{ local_user_theme[0] }}">
 <head>
     <meta charset="UTF-8">
     <title>Cantina - Olympe</title>
     <link rel="icon" href="{{ url_for('static', filename='SVG/logo.svg') }}" sizes="any" type="image/svg+xml">
-    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/Modules/show_file_input.js') }}"></script>
-    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/Modules/create_form.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/show_edit_user_form.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/desactivate_account.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='JS/Administration/delete_account.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1>Cantina  - Olympe - Admin Mode</h1>
-    <a href="{{ url_for('show_modules') }}">Show modules</a>
-     <form method="post">
-         <div id="step-1">
-             <label id="modules-name-select">
-                 <select id="modules-name" name="modules" onchange="show_file_input()">
-                     <option value="" selected disabled>--Please choose an option--</option>
-                     <option value="nephelees">Néphélées</option>
-                     <option value="hermes">Hermes</option>
-                     <option value="example">Exemple</option>
-                     <option value="autre">Autre</option>
-                 </select>
-             </label>
-             <label id="modules-name-file" hidden="hidden">
-                 <input type="file" name="file-input" id="file-input">
-             </label>
-             <button type="button" onclick="create_form()">Séléctionner le modules</button>
-         </div>
-     </form>
+    {% include "PlaceHolder/sidebar.html" %}
+    <main class="p-4 md:ml-64 h-auto pt-20 min-h-screen">
+        <form action="#" method="post">
+            <div class="card card-side bg-base-100 shadow-xl" id="user-info">
+                <div class="card-body">
+                    <div style="gap: .5rem !important;">
+                        <div class="bg-base-200 p-4 rounded-lg">
+                            <div class="text-bold opacity-70 mb-1">Nom du module</div>
+                            <div class="font-semibold">
+                                <label>
+                                    <input type="text" name="module_name" class="input w-full max-w-xs">
+                                </label>
+                            </div>
+                        </div>
+                        <hr style="height:.5rem; visibility:hidden;" />
+                        <div class="bg-base-200 p-4 rounded-lg">
+                            <div class="text-bold opacity-70 mb-1">URL du module</div>
+                            <div class="font-semibold">
+                                <label>
+                                    <input type="text" name="module_fqdn" class="input w-full max-w-xs">
+                                </label>
+                            </div>
+                        </div>
+                        <hr style="height:.5rem; visibility:hidden;" />
+                        <hr style="height:.5rem; visibility:hidden;" />
+                        <div class="bg-base-200 p-4 rounded-lg">
+                            <div class="text-bold opacity-70 mb-1">Mode maintenance activé lors de la création</div>
+                            <div class="font-semibold">
+                                <label>
+                                    <input type="checkbox" name="module_maintenance" class="toggle">
+                                </label>
+                            </div>
+                        </div>
+                        <hr style="height:.5rem; visibility:hidden;" />
+                        <div class="card-actions justify-end">
+                            <button class="btn btn-primary" type="submit">Ajouter le module</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
 </body>
 </html>

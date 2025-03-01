@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 def show_user_cogs(database, upload_path):
     # Vérification de si l'utilisateur est bien connecté et n'a pas un compte désactivé
     if verify_login(database) and verify_login(database) != "desactivated":
-        if request.method == 'GET':  # Si il fait une requete de type GET
+        if request.method == 'GET':  # S'il fait une requete de type GET
             # On récupère les modules afin de pouvoir faire une redirection sur la page via la sidebar
             modules_info = database.select("""SELECT * FROM cantina_administration.modules""", None)
 
@@ -17,7 +17,7 @@ def show_user_cogs(database, upload_path):
             local_user_theme = database.select('''SELECT theme FROM cantina_administration.user WHERE token= %s''',
                                                 (request.cookies.get('token')), 1)
 
-            # On récupère les permission de l'utilisateur afin de pouvoir afficher les options qui correspondent
+            # On récupère les permissions de l'utilisateur afin de pouvoir afficher les options qui correspondent
             local_user_permission = database.select('''SELECT * FROM cantina_administration.permission 
             WHERE user_token = %s''', (request.cookies.get('token')), 1)
 
@@ -42,7 +42,7 @@ def show_user_cogs(database, upload_path):
                                        modules_info=modules_info)
 
             else:  # Sinon
-                # On séléctionne toute la base de données
+                # On sélectionne toute la base de données
                 users_data = database.select('SELECT * FROM cantina_administration.user', None)
                 return render_template('Administration/show_user.html',
                                        multiple_user_info=users_data,
@@ -54,11 +54,11 @@ def show_user_cogs(database, upload_path):
 
         # Si l'utilisateur fait une requete POST
         elif request.method == 'POST':
-            # On séléctionne toute les infos de l'utilisateur
+            # On sélectionne toutes les infos de l'utilisateur
             user_information = database.select("""SELECT * FROM cantina_administration.user WHERE token = %s""",
                                                (request.form['token']), 1)
             try:
-                # On vérifie si le username a changé
+                # On vérifie si l'username a changé
                 if request.form['username'] != user_information[2]:
                     # Modification de l'username
                     database.exec('''UPDATE cantina_administration.user SET username = %s WHERE token = %s''',
@@ -79,7 +79,7 @@ def show_user_cogs(database, upload_path):
                                   (PasswordHasher().hash(password=request.form['password1']),
                                    request.form['token']))
                 else:
-                    pass  # L'entrée est vide
+                    pass  # L'entrée est vide.
             except BadRequestKeyError:
                 pass  # Permission refusé
 
@@ -94,8 +94,8 @@ def show_user_cogs(database, upload_path):
                 pass  # Permission refusé
 
             try:
-                if request.form['theme'] != user_information[13]:
-                    # Modification du theme si il est différent de celui déjà mis.
+                if request.form['theme'] != user_information[12]:
+                    # Modification du theme s'il est différent de celui déjà mis.
                     database.exec('''UPDATE cantina_administration.user SET theme = %s WHERE token = %s''',
                                   (request.form['theme'], request.form['token']))
             except BadRequestKeyError:

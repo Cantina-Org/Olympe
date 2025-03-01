@@ -22,8 +22,9 @@ from Cogs.Administration.User.global_permission import global_permission_cogs
 from Cogs.Administration.User.smtp_config import smtp_config_cogs
 from Cogs.Administration.User.smtp_test import smtp_test_cogs
 from Cogs.Administration.Modules.show_modules import show_modules_cogs
-from Cogs.Administration.Modules.maintenance import maintenance_cogs
 from Cogs.Administration.Modules.add_modules import add_modules_cogs
+
+from Cogs.SSO.API.login import api_login_cogs
 
 from Cogs.Socket.heart_beat_cogs import heart_beat_cogs
 from Cogs.Socket.ping_server_socket_cogs import ping_server_socket_cogs
@@ -50,14 +51,14 @@ database.connection()  # Connexion à la base de données
 
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.user(id INT PRIMARY KEY AUTO_INCREMENT, 
 token TEXT NOT NULL,  username TEXT NOT NULL, password TEXT NOT NULL, email TEXT NOT NULL, 
-picture BOOL DEFAULT false, email_verified BOOL DEFAULT FALSE, email_verification_code TEXT, 
-A2F BOOL DEFAULT FALSE, A2F_secret TEXT, last_connection DATE, admin BOOL DEFAULT FALSE, 
-desactivated BOOL DEFAULT FALSE, theme TEXT DEFAULT 'white')""", None)
+email_verified BOOL DEFAULT FALSE, email_verification_code TEXT, picture BOOL DEFAULT false, 
+A2F BOOL DEFAULT FALSE, A2F_secret TEXT, last_connection DATE, 
+desactivated BOOL DEFAULT FALSE, theme TEXT DEFAULT 'light')""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.config(id INT PRIMARY KEY AUTO_INCREMENT, 
 name TEXT, content TEXT)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.modules(id INT PRIMARY KEY AUTO_INCREMENT, 
 token TEXT, name TEXT, fqdn TEXT, maintenance BOOL default FALSE, status INTEGER DEFAULT 0, 
-socket_url TEXT DEFAULT '/socket/', last_heartbeat INT)""", None)
+socket_url TEXT DEFAULT '/socket/', last_heartbeat INT default 0)""", None)
 database.exec("""CREATE TABLE IF NOT EXISTS cantina_administration.permission(id INT PRIMARY KEY AUTO_INCREMENT,
 user_token TEXT NOT NULL, show_log BOOL DEFAULT FALSE, edit_username BOOL DEFAULT FALSE, edit_email BOOL DEFAULT FALSE, 
 edit_password BOOL DEFAULT FALSE, edit_profile_picture BOOL DEFAULT FALSE, edit_A2F BOOL DEFAULT FALSE, 
@@ -151,6 +152,7 @@ def add_modules():
 
 @app.route('/admin/modules/maintenance/', methods=['POST'])
 def maintenance():
+    from Cogs.Administration.Modules.maintenance import maintenance_cogs
     return maintenance_cogs(database)
 
 
@@ -172,6 +174,10 @@ def smtp_test():
 @app.route('/sso/login/', methods=['GET', 'POST'])
 def sso_login(error=0):
     return sso_login_cogs(database, error, config_data['modules'][0]['global_domain'])
+
+@app.route('/sso/login/api', methods=['POST'])
+def api_sso_login(error=0):
+    return api_login_cogs(database, error)
 
 @app.route('/sso/logout/', methods=['GET'])
 def sso_logout():
